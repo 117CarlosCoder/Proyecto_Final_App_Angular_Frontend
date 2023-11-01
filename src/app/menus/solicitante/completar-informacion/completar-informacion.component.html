@@ -1,0 +1,32 @@
+    <app-navbar-solicitante></app-navbar-solicitante>
+    <div class="container-sm mt-5 h-75 d-flex flex-column justify-content-center">
+        <form [formGroup]="form" class=" border rounded-top p-4 " (ngSubmit)="submit()">
+            <h1>Completar Informacion</h1>
+            <h3>Curriculum</h3>
+            <div class="mb-2 badge bg-primary text-wrap" style="width: auto;">
+                Suba su curriculum en pdf porfavor
+            </div>
+            <div class="mb-5">
+            <input type="file" class="form-control" aria-label="file example" required 
+            id="curriculum" name="curriculum" formControlName="curriculum">
+            <div class="invalid-feedback">Ingrese algun archivo</div>
+            </div>
+        
+            <h3>Categorias</h3>
+            <div class="mb-2 badge bg-primary text-wrap" style="width: auto;">
+                Seleccione almenos una categoria
+            </div>
+            <div class="mb-3" *ngFor="let dato of listacategorias let i = index">
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" [value]="dato.nombre"
+                 [id]="dato.codigo" name="categoria" (change)="categoriaSeleccionada($event, dato.codigo.toString())">
+                <label class="form-check-label" [for]="dato.codigo"> {{ dato.descripcion }} </label>
+                </div>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-end">
+            <button class="btn btn-primary" type="submit" >Completar Informacion</button>
+            </div>
+        </form>
+        
+    </div>

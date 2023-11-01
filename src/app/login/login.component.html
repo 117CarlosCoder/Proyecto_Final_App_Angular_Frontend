@@ -1,0 +1,51 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="h-75 d-flex justify-content-center align-items-center">
+  <form [formGroup]="usuarioForm" (ngSubmit)="submit()"
+    class="d-flex justify-content-center align-items-center flex-column border border-primary border-3 p-lg-4 rounded-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#0275d8" class="bi bi-person"
+      viewBox="0 0 16 16">
+      <path
+        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+    </svg>
+    <h1 class="h3 mb-3 fw-normal">Inicie Sesión</h1>
+
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control"
+        [class.is-invalid]="usuarioForm.controls['username'].invalid && usuarioForm.controls['username'].touched"
+        id="username" placeholder="name@example.com" name="username" formControlName="username">
+        <div
+          *ngIf="usuarioForm.controls['username'].invalid && (usuarioForm.controls['username'].dirty || usuarioForm.controls['username'].touched)"
+          class="invalid-feedback">
+          <div>
+            Por favor ingrese su usuario o correo 
+          </div>
+        </div>
+      <label for="username">Correo electronico o Usuario</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="password" class="form-control"
+        [class.is-invalid]="usuarioForm.controls['password'].invalid && usuarioForm.controls['password'].touched"
+        id="password" placeholder="Password" name="password" formControlName="password">
+        <div
+          *ngIf="usuarioForm.controls['username'].invalid && (usuarioForm.controls['username'].dirty || usuarioForm.controls['username'].touched)"
+          class="invalid-feedback">
+          <div>
+            Por favor ingrese su contraseña 
+          </div>
+        </div>
+      <label for="password">Contraseña</label>
+    </div>
+    <div *ngIf="login" class="alert alert-danger" role="alert">
+      Usuario o contraseña incorrectos
+    </div>
+    <div class="w-100 d-flex mb-3">
+      <a href="">Restablecer Contraseña</a>
+    </div>
+
+    <button class="btn btn-primary w-100 py-2 mb-3" type="submit">Inciar Sesion</button>
+    <div class="w-100 d-flex">
+      <a href="">Crear Usuario</a>
+    </div>
+    
+  </form>
+</div>
