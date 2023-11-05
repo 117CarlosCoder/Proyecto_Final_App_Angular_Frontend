@@ -1,0 +1,44 @@
+<app-navbar-solicitante></app-navbar-solicitante>
+<div class="container border rounded-top p-4 mt-5 h-auto d-flex flex-row justify-content-evenly align-items-start">
+    <div class="w-25 " *ngIf="oferta">
+        <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-thumbnail" alt="Empresa">
+        <h4 class="mt-3">Empresa</h4>
+        <h5 class="text-primary">{{oferta.empresa}}</h5>
+        <h4 class="mt-3">Lugar</h4>
+        <h5 class="text-primary">{{oferta.ubicacion}}</h5>
+    </div>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item">Empresa
+                <p>{{oferta.empresa}}</p>
+            </li>
+            <li class="list-group-item">Puesto
+                <p>{{oferta.nombre}}</p>
+            </li>
+            <li class="list-group-item">Salario X
+                <p>{{oferta.salario}}</p>
+            </li>
+          </ul>
+    </div>
+    <div>
+        <div class="card mb-5">
+            <div class="card-header">
+              Descripcion
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Oferta {{oferta.nombre}}</h5>
+              <p class="card-text">{{oferta.descripcion}}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+              Requisitos
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{oferta.detalles}}</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+

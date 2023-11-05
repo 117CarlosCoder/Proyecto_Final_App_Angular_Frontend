@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Usuario } from '../../entities/Usuario';
 import { UsuarioService } from '../../services/usuario/UsuarioService';
 import { Router } from '@angular/router';
-import { HttpResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { NavbarSolicitanteComponent } from '../navbars/navbar-solicitante/navbar-solicitante.component';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
 
@@ -55,9 +55,11 @@ export class LoginComponent implements OnInit{
               this.router.navigate([this.usuarioService.comprobarUsuario(this.rol)]);
             }
             if(response.status === 200){
-              console.log(response.status)
+              console.log(response.status);
+              this.rol = data.rol;
+              console.log(this.rol);
               this.sharedService.updateCompletarInfo(true);
-              this.router.navigate([this.usuarioService.paginaInicial("Solicitante")]);
+              this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
             }
         },
         error: (error: any) => {

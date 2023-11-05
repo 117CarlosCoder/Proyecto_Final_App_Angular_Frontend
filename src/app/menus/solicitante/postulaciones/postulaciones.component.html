@@ -1,2 +1,21 @@
 <app-navbar-solicitante></app-navbar-solicitante>
-<p>postulaciones works!</p>
+<div class="container-sm mt-5 h-75 d-flex flex-column justify-content-center">
+    <table class="table table-primary" >
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Oferta</th>
+            <th scope="col">Estado</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let dato of listarPostulantes let i =index ">
+          <tr>
+            <th>{{i+1}}</th>
+            <td>{{dato.nombre}}</td>
+            <td>{{dato.estado}}</td>
+            <td><button class="btn btn-primary" type="submit" (click)="eliminarPostulacion(dato.codigo)">Eliminar</button></td>
+          </tr>
+        </tbody>
+      </table>  
+</div>

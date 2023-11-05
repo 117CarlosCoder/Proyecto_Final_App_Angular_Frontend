@@ -1,0 +1,12 @@
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="cambiar()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{mensaje}}
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()">
+      OK  <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>

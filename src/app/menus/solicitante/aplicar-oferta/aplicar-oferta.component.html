@@ -42,12 +42,12 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title"><a href="/solicitante-aplicar-oferta">Empresa {{dato.empresa}}</a></h5>
+                    <h5 class="card-title"><a (click)="masInformacion(dato.codigo)">Empresa {{dato.empresa}}</a></h5>
                     <p class="card-text">Puesto {{dato.nombre}}</p>
                     <p class="card-text">Salario {{dato.salario}} </p> 
                     <h5 class="card-title">Descripcion de Oferta</h5>
                     <p class="card-text">{{dato.descripcion}}</p>
-                    <button type="button" class="btn btn-info">Mas Informacion</button>
+                    <button type="button" class="btn btn-info" (click)="masInformacion(dato.codigo)">Mas Informacion</button>
                     </div>
                 </div>
                 </div>

@@ -13,6 +13,7 @@ import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavba
   templateUrl: './navbar-solicitante.component.html',
   styleUrls: ['./navbar-solicitante.component.css']
 })
+
 export class NavbarSolicitanteComponent {
   nombreVistaPagina !: String;
   completarInfo!:boolean;

@@ -1,2 +1,25 @@
 <app-navbar-solicitante></app-navbar-solicitante>
-<p>entrevistas works!</p>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+    <table class="table table-primary" >
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Entrevista</th>
+            <th scope="col">Hora</th>
+            <th scope="col">Ubicacion</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let dato of listarEntrevistas let i = index" >
+          <tr>
+            <th>{{i+1}}</th>
+            <td>{{dato.fecha}}</td>
+            <td>{{dato.codigo}}</td>
+            <td>{{dato.hora}}</td>
+            <td>{{dato.ubicacion}}</td>
+            <td><button class="btn btn-primary" type="submit"(click)="masInformacion(dato.usuario)" >Mas informacion</button></td>
+          </tr>
+        </tbody>
+      </table>  
+</div>

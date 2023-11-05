@@ -60,7 +60,7 @@ export class CompletarInformacionComponent{
       this.solicitanteService.completarInformacion(this.informacionCompleta).subscribe({
         next: (data:any) => {
           this.sharedService.updateCompletarInfo(false);
-          this.router.navigate([this.solicitanteService.elegirPagina("aplicar")]);
+          this.router.navigate([this.solicitanteService.elegirPagina("completar")]);
         },
         error: (error: any) => {
           console.log("error" + error);

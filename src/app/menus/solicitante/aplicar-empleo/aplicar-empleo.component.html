@@ -1,0 +1,39 @@
+<app-navbar-solicitante></app-navbar-solicitante>
+<div class="h-75 d-flex flex-column justify-content-center align-items-center">
+    <h3>Escriba porque debe tomar el empleo</h3>
+    <div class="form-floating w-75 mt-5" [formGroup]="mensajeForm">
+        <textarea class="form-control" 
+            [class.is-invalid]="mensajeForm.controls['mensaje'].invalid && mensajeForm.controls['mensaje'].touched"
+            id="floatingTextarea2" style="height: 300px" formControlName="mensaje"></textarea>
+        <label for="floatingTextarea2">Escribe Aqui</label>
+        <div
+          *ngIf="mensajeForm.controls['mensaje'].invalid && (mensajeForm.controls['mensaje'].dirty || mensajeForm.controls['mensaje'].touched)"
+          class="invalid-feedback">
+          <div>
+            Por favor ingrese el mensaje 
+          </div>
+    </div>
+    </div>
+    
+    <div class="d-flex w-75 justify-content-end align-items-end">
+        <button class="btn btn-primary mt-5" type="submit" (click)="enviarMensaje(template)">Aplicar</button>
+    </div>
+
+    <ng-template #template>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Mensaje</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Ha aplicado al empleo
+          </div>
+          <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                OK  
+            </button>
+          </div>
+          
+    </ng-template>
+</div>
