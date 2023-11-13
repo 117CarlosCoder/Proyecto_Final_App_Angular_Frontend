@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Entrevista } from 'src/entities/Entrevista';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { Router } from '@angular/router';
+import { EntrevistaN } from 'src/entities/EntrevistaN';
 
 @Component({
   selector: 'app-entrevistas',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./entrevistas.component.css']
 })
 export class EntrevistasComponent {
-  listarEntrevistas!:Entrevista[];
+  listarEntrevistas!:EntrevistaN[];
 
   constructor(private solicitanteService: SolicitanteService,
     private router:Router){
@@ -18,7 +19,7 @@ export class EntrevistasComponent {
 
   ngOnInit(){
     this.solicitanteService.listaEntrevista().subscribe({
-      next: (list: Entrevista[]) => {
+      next: (list: EntrevistaN[]) => {
         console.log("Cargar Entrevistas")
         this.listarEntrevistas = list;
         console.log(this.listarEntrevistas);

@@ -1,0 +1,70 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center align-items-start" [formGroup]="form" >
+    <h1>Generar Entrevista</h1>
+
+    <div class=" form-group mb-3" >
+        <h5>Fecha de la entrevista</h5>
+        <input type="text"
+            placeholder="Fecha"
+            class="form-control "
+            bsDatepicker
+            [class.is-invalid]="form.controls['fecha'].invalid && form.controls['fecha'].touched"
+            id="fecha"  name = "fecha" formControlName="fecha"
+        >
+        <div
+                *ngIf="form.controls['fecha'].invalid && (form.controls['fecha'].dirty || form.controls['fecha'].touched)"
+                class="invalid-feedback">
+                <div>
+                    Por favor ingrese la fecha 
+                </div>
+        </div>
+    </div>
+
+    <h5>Hora de la entrevista</h5>
+
+    <timepicker class="mb-3" [hoursPlaceholder]="hoursPlaceholder"
+    [minutesPlaceholder]="minutesPlaceholder"
+    [class.is-invalid]="form.controls['hora'].invalid && form.controls['hora'].touched"
+    id="hora" name="hora" formControlName="hora"
+    ></timepicker>
+    <div
+            *ngIf="form.controls['hora'].invalid && (form.controls['hora'].dirty || form.controls['hora'].touched)"
+            class="invalid-feedback">
+            <div>
+              Por favor ingrese la hora
+            </div>
+          </div>
+
+    <h5>Lugar de la entrevista</h5>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" 
+          [class.is-invalid]="form.controls['ubicacion'].invalid && form.controls['ubicacion'].touched"
+          id="ubicacion" placeholder="ubicacion" name="ubicacion" formControlName="ubicacion">
+          <div
+            *ngIf="form.controls['ubicacion'].invalid && (form.controls['ubicacion'].dirty || form.controls['ubicacion'].touched)"
+            class="invalid-feedback">
+            <div>
+              Por favor ingrese el lugar
+            </div>
+          </div>
+        <label for="ubicacion">Lugar</label>
+      </div>
+<button class="btn btn-primary h-25 mb-5" type="submit" (click)="generarEntrevista(template)" >Pasar Entrevista</button>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Se ha Generado Entrevista
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+</ng-template>
+</div>

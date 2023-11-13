@@ -25,10 +25,10 @@ export class UsuarioService {
 
     public comprobarUsuario(rol:String){
         if (rol == "Administrador") {
-            return '';
+            return 'admin-dashboard';
         }
         if (rol == "Empleador") {
-            return '';
+            return '/empleador-completar-informacion';
         }
         if (rol == "Solicitante") {
            return '/solicitante-completar-informacion';
@@ -37,8 +37,14 @@ export class UsuarioService {
     }
 
     public paginaInicial(rol:String){
+        if (rol == "Administrador") {
+            return 'admin-dashboard';
+        }
         if (rol == "Solicitante") {
            return '/solicitante-aplicar-oferta';
+        }
+        if (rol == "Empleador") {
+            return '/empleador-gestion';
         }
         return '';
     }

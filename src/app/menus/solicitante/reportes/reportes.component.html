@@ -5,7 +5,7 @@
         <h1>Ofertas con postulacion retirada</h1>
         <div class="d-flex flex-row w-100 justify-content-around mb-3">
             <div class=" form-group ">
-                <label for="fecha" class="form-label">Desde</label>
+                <label for="fechaA" class="form-label">Desde</label>
                 <input type="text"
                     placeholder="Fecha"
                     class="form-control "
@@ -22,7 +22,7 @@
                     </div>
             </div>
             <div class=" form-group ">
-                <label for="fecha" class="form-label">Hasta</label>
+                <label for="fechaB" class="form-label">Hasta</label>
                 <input type="text"
                     placeholder="Fecha"
                     class="form-control "
@@ -66,7 +66,7 @@
           <h1>Ofertas en fase de entrevista</h1>
           <div class="d-flex flex-row w-100 justify-content-around mb-3">
             <div class=" form-group ">
-                <label for="fecha" class="form-label">Desde</label>
+                <label for="fechaA" class="form-label">Desde</label>
                 <input type="text"
                     placeholder="Fecha"
                     class="form-control "
@@ -83,7 +83,7 @@
                     </div>
             </div>
             <div class=" form-group ">
-                <label for="fecha" class="form-label">Hasta</label>
+                <label for="fechaB" class="form-label">Hasta</label>
                 <input type="text"
                     placeholder="Fecha"
                     class="form-control "
@@ -126,7 +126,7 @@
     <h1>Ofertas en fase seleccion</h1>
     <div class="d-flex flex-row w-100 justify-content-around mb-3">
         <div class=" form-group ">
-            <label for="fecha" class="form-label">Desde</label>
+            <label for="fechaA" class="form-label">Desde</label>
             <input type="text"
                 placeholder="Fecha"
                 class="form-control "
@@ -143,7 +143,7 @@
                 </div>
         </div>
         <div class=" form-group ">
-            <label for="fecha" class="form-label">Hasta</label>
+            <label for="fechaB" class="form-label">Hasta</label>
             <input type="text"
                 placeholder="Fecha"
                 class="form-control "
@@ -167,13 +167,17 @@
         <thead>
           <tr>
             <th scope="col">No</th>
-            <th scope="col">Ofeta</th>
+            <th scope="col">Oferta</th>
+            <th scope="col">Empresa</th>
             <th scope="col">Estado</th>
+            <th scope="col">Cantidad</th>
           </tr>
         </thead>
         <tbody >
           <tr>
             <th></th>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
@@ -184,21 +188,25 @@
 
       <h1>Ofertas aplicadas sin obtener empleo</h1>
         <div class="d-flex flex-column w-100 justify-content-end align-items-end">
-            <button class="btn btn-primary w-25 mb-3" type="submit">Descarga</button>
+            <button class="btn btn-primary w-25 mb-3" type="submit" (click)="descargarOfertaCostos()">Descarga</button>
         </div>
         <table class="table table-primary mb-5" >
             <thead>
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Ofeta</th>
+                <th scope="col">Oferta</th>
+                <th scope="col">Empresa</th>
                 <th scope="col">Estado</th>
+                <th scope="col">Cantidad</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody  *ngFor="let dato of ofertaCostos let i =index ">
               <tr>
-                <th></th>
-                <td></td>
-                <td></td>
+                <th>{{dato.codigo}}</th>
+                <td>{{dato.oferta}}</td>
+                <td>{{dato.empresa}}</td>
+                <td>{{dato.estado}}</td>
+                <td>{{dato.cantidad}}</td>
               </tr>
             </tbody>
           </table>

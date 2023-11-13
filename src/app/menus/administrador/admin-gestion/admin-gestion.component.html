@@ -1,0 +1,26 @@
+<app-navbar-admin></app-navbar-admin>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+    <h1>Categorias</h1>  
+    <div class="d-flex w-100 justify-content-end aling-content-center">
+        <button class="btn btn-primary mt-3 mb-3 w-25 justify-self-center" type="submit"(click)="crearCategoria()" >Crear Categoria</button>
+    </div>
+    
+  <table class="table table-primary" >
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Descripcion</th>
+          <th scope="col">Editar</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let dato of listarCategoria let i = index" >
+        <tr>
+          <th>{{i+1}}</th>
+          <td>{{dato.nombre}}</td>
+          <td>{{dato.descripcion}}</td>
+          <td ><button class="btn btn-primary" type="submit"(click)="editarCategoria(dato.codigo)" >Editar</button></td>
+        </tr>
+      </tbody>
+  </table>
+  </div>

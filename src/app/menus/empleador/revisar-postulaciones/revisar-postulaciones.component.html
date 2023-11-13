@@ -1,0 +1,23 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+  <h1>Revision de Postulaciones</h1>  
+  <h3>Ofertas</h3>
+<table class="table table-primary" >
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Oferta</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Editar</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let dato of listaOferta let i = index" >
+      <tr>
+        <th>{{i+1}}</th>
+        <td>{{dato.nombre}}</td>
+        <td>{{dato.estado}}</td>
+        <td><button class="btn btn-primary" type="submit"(click)="seleccionarPostulante(dato.codigo)" >Seleccionar</button></td>
+      </tr>
+    </tbody>
+</table>
+</div>

@@ -1,0 +1,64 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center" [formGroup]="form">
+    <h1>Gestion</h1>
+    <div class="row row-cols-3 g-4 mb-5">
+        <div class=" form-group" >
+            <label for="fechaInicial" class="form-label">Fecha Inicial</label>
+            <input type="text"
+                placeholder="Fecha"
+                class="form-control "
+                bsDatepicker
+                [class.is-invalid]="form.controls['fechaInicial'].invalid && form.controls['fechaInicial'].touched"
+                id="fechaInicial"  name = "fechaInicial" formControlName="fechaInicial"
+            >
+            <div
+                    *ngIf="form.controls['fechaInicial'].invalid && (form.controls['fechaInicial'].dirty || form.controls['fechaInicial'].touched)"
+                    class="invalid-feedback">
+                    <div>
+                        Por favor ingrese la fecha 
+                    </div>
+                </div>
+        </div>
+        <div class=" form-group">
+            <label for="fechaFinal" class="form-label">Fecha Final</label>
+            <input type="text"
+                placeholder="Fecha"
+                class="form-control "
+                bsDatepicker
+                [class.is-invalid]="form.controls['fechaFinal'].invalid && form.controls['fechaFinal'].touched"
+                id="fechaFinal"  name = "fechaFinal" formControlName="fechaFinal"
+            >
+            <div
+                    *ngIf="form.controls['fechaFinal'].invalid && (form.controls['fechaFinal'].dirty || form.controls['fechaFinal'].touched)"
+                    class="invalid-feedback">
+                    <div>
+                        Por favor ingrese la fecha 
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary h-25" type="submit" >Cargar</button>
+    </div>
+
+    <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearOferta()" >Crear Oferta</button>
+    
+    <table class="table table-primary" >
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Oferta</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let dato of listarOfetas let i = index" >
+          <tr>
+            <th>{{i+1}}</th>
+            <td>{{dato.nombre}}</td>
+            <td>{{dato.estado}}</td>
+            <td><button class="btn btn-primary" type="submit"(click)="editarOferta(dato.codigo)" >Editar</button></td>
+            <td><button class="btn btn-primary" type="submit"(click)="eliminarOferta(dato.codigo)" >Eliminar</button></td>
+          </tr>
+        </tbody>
+    </table>  
+</div>

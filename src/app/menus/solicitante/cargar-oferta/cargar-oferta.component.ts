@@ -12,12 +12,15 @@ import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 export class CargarOfertaComponent implements OnInit{
   codigo !: number;
   oferta !: Ofertas;
+  cargar !: boolean;
 
   constructor(private router:Router,
      private route: ActivatedRoute,
      private solicitanteService:SolicitanteService){}
 
 ngOnInit() {
+    this.cargar=false;
+
     this.route.params.subscribe(params => {
       const valorRecibido = params['codigo'];
       this.codigo = valorRecibido;
@@ -30,6 +33,7 @@ ngOnInit() {
         console.log("Cargar oferta")
         this.oferta = list;
         console.log(this.oferta);
+        this.cargar=true;
       }
     });
   }

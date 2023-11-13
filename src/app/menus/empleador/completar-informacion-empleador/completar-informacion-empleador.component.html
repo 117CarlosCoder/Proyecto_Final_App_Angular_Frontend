@@ -1,0 +1,37 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="h-auto d-flex flex-column justify-content-center align-items-center p-3">
+  <form [formGroup]="infoForm" class=" border w-75 rounded-top p-4 " (ngSubmit)="enviarInformacion()">
+<h3>Mision</h3>
+      <div class="form-floating w-75 mt-5 mb-5">
+          <textarea class="form-control" 
+              [class.is-invalid]="infoForm.controls['mision'].invalid && infoForm.controls['mision'].touched"
+              id="floatingTextarea1" style="height: 150px" formControlName="mision"></textarea>
+          <label for="floatingTextarea1">Escribe Aqui</label>
+          <div
+            *ngIf="infoForm.controls['mision'].invalid && (infoForm.controls['mision'].dirty || infoForm.controls['mision'].touched)"
+            class="invalid-feedback">
+            <div>
+              Por favor escribe la mision 
+            </div>
+      </div>
+      </div>
+
+<h3>Vision</h3>
+    <div class="form-floating w-75 mt-5">
+        <textarea class="form-control" 
+            [class.is-invalid]="infoForm.controls['vision'].invalid && infoForm.controls['vision'].touched"
+            id="floatingTextarea2" style="height: 150px" formControlName="vision"></textarea>
+        <label for="floatingTextarea2">Escribe Aqui</label>
+        <div
+          *ngIf="infoForm.controls['vision'].invalid && (infoForm.controls['vision'].dirty || infoForm.controls['vision'].touched)"
+          class="invalid-feedback">
+          <div>
+            Por favor escribe la vision 
+          </div>
+    </div>
+    </div>
+<div class="d-flex w-75 justify-content-end align-items-end">
+    <button class="btn btn-primary mt-5 mb-5" type="submit" >Siguiente</button>
+</div>
+  </form>
+</div>  

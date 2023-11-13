@@ -7,5 +7,6 @@ export interface Entrevista {
     hora: Time,
     ubicacion: String,
     estado: String,
-    notas: String
+    notas: String,
+    codigoOferta:number
 }

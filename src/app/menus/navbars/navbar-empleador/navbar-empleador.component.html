@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg bg-primary ">
+    <div class="container-fluid">
+      <a class="navbar-brand">Completar Informacion</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <a class="nav-link " (click)="cambiarPagina('gestion')" [ngClass]="{ 'disabled': completarInfo }" >Gestion</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="cambiarPagina('postular')" [ngClass]="{ 'disabled': completarInfo }" >Revision de postulaciones</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="cambiarPagina('entrevista')" [ngClass]="{ 'disabled': completarInfo }">Revision de entrevistas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="cambiarPagina('reportes')" [ngClass]="{ 'disabled': completarInfo }" >Reportes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"(click)="close()" >Cerrar Sesion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>

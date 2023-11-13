@@ -1,0 +1,209 @@
+<app-navbar-admin></app-navbar-admin>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+    <div class="d-flex flex-column justify-content-center align-items-start">
+        <form [formGroup]="formreporte1">
+        <h1>Ofertas con postulacion retirada</h1>
+        <div class="d-flex flex-row w-100 justify-content-around mb-3">
+            <div class=" form-group ">
+                <label for="fechaA" class="form-label">Desde</label>
+                <input type="text"
+                    placeholder="Fecha"
+                    class="form-control "
+                    bsDatepicker
+                    [class.is-invalid]="formreporte1.controls['fechaA'].invalid && formreporte1.controls['fechaA'].touched"
+                    id="fechaA"  name = "fechaA" formControlName="fechaA"
+                >
+                <div
+                        *ngIf="formreporte1.controls['fechaA'].invalid && (formreporte1.controls['fechaA'].dirty || formreporte1.controls['fechaA'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                            Por favor ingrese la fecha 
+                        </div>
+                    </div>
+            </div>
+            <div class=" form-group ">
+                <label for="fechaB" class="form-label">Hasta</label>
+                <input type="text"
+                    placeholder="Fecha"
+                    class="form-control "
+                    bsDatepicker
+                    [class.is-invalid]="formreporte1.controls['fechaB'].invalid && formreporte1.controls['fechaB'].touched"
+                    id="fechaB"  name = "fechaB" formControlName="fechaB"
+                >
+                <div
+                        *ngIf="formreporte1.controls['fechaB'].invalid && (formreporte1.controls['fechaB'].dirty || formreporte1.controls['fechaB'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                            Por favor ingrese la fecha 
+                        </div>
+                    </div>
+            </div>
+            
+        </div>
+        
+        
+        <div class="d-flex flex-row w-100 justify-content-between align-items-center">
+            <button class="btn btn-primary w-25 mb-3" type="submit">cargar</button>
+            <button class="btn btn-primary w-25 mb-3" type="submit">Descarga</button>
+        </div>
+        <table class="table table-primary mb-5" >
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Oferta</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+          
+        <form [formGroup]="formreporte2">
+          <h1>Ofertas en fase de entrevista</h1>
+          <div class="d-flex flex-row w-100 justify-content-around mb-3">
+            <div class=" form-group ">
+                <label for="fechaA" class="form-label">Desde</label>
+                <input type="text"
+                    placeholder="Fecha"
+                    class="form-control "
+                    bsDatepicker
+                    [class.is-invalid]="formreporte2.controls['fechaA'].invalid && formreporte2.controls['fechaA'].touched"
+                    id="fechaA"  name = "fechaA" formControlName="fechaA"
+                >
+                <div
+                        *ngIf="formreporte2.controls['fechaA'].invalid && (formreporte2.controls['fechaA'].dirty || formreporte2.controls['fechaA'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                            Por favor ingrese la fecha 
+                        </div>
+                    </div>
+            </div>
+            <div class=" form-group ">
+                <label for="fechaB" class="form-label">Hasta</label>
+                <input type="text"
+                    placeholder="Fecha"
+                    class="form-control "
+                    bsDatepicker
+                    [class.is-invalid]="formreporte2.controls['fechaB'].invalid && formreporte2.controls['fechaB'].touched"
+                    id="fechaB"  name = "fechaB" formControlName="fechaB"
+                >
+                <div
+                        *ngIf="formreporte2.controls['fechaB'].invalid && (formreporte2.controls['fechaB'].dirty || formreporte2.controls['fechaB'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                            Por favor ingrese la fecha 
+                        </div>
+                    </div>
+            </div>
+            
+        </div>
+          <div class="d-flex flex-row w-100 justify-content-between align-items-center">
+            <button class="btn btn-primary w-25 mb-3" type="submit">cargar</button>  
+            <button class="btn btn-primary w-25 mb-3" type="submit">Descarga</button>
+          </div>
+          <table class="table table-primary mb-5" >
+              <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Oferta</th>
+                    <th scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody >
+                <tr>
+                  <th></th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+        </table>  
+    </form>
+    <form [formGroup]="formreporte3">
+      <h1>Ofertas en fase Seleccion</h1>
+      <div class="d-flex flex-row w-100 justify-content-around mb-3">
+        <div class=" form-group ">
+            <label for="fechaA" class="form-label">Desde</label>
+            <input type="text"
+                placeholder="Fecha"
+                class="form-control "
+                bsDatepicker
+                [class.is-invalid]="formreporte3.controls['fechaA'].invalid && formreporte3.controls['fechaA'].touched"
+                id="fechaA"  name = "fechaA" formControlName="fechaA"
+            >
+            <div
+                    *ngIf="formreporte3.controls['fechaA'].invalid && (formreporte3.controls['fechaA'].dirty || formreporte3.controls['fechaA'].touched)"
+                    class="invalid-feedback">
+                    <div>
+                        Por favor ingrese la fecha 
+                    </div>
+                </div>
+        </div>
+        <div class=" form-group ">
+            <label for="fechaB" class="form-label">Hasta</label>
+            <input type="text"
+                placeholder="Fecha"
+                class="form-control "
+                bsDatepicker
+                [class.is-invalid]="formreporte3.controls['fechaB'].invalid && formreporte3.controls['fechaB'].touched"
+                id="fechaB"  name = "fechaB" formControlName="fechaB"
+            >
+            <div
+                    *ngIf="formreporte3.controls['fechaB'].invalid && (formreporte3.controls['fechaB'].dirty || formreporte3.controls['fechaB'].touched)"
+                    class="invalid-feedback">
+                    <div>
+                        Por favor ingrese la fecha 
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+        <div class="d-flex flex-column w-100 justify-content-end align-items-end">
+            <button class="btn btn-primary w-25 mb-3" type="submit">Descarga</button>
+        </div>
+        <table class="table table-primary mb-5" >
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Oferta</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        </div>
+
+        <h1>Ofertas aplicadas sin obtener empleo</h1>
+        <div class="d-flex flex-column w-100 justify-content-end align-items-end">
+            <button class="btn btn-primary w-25 mb-3" type="submit">Descarga</button>
+        </div>
+        <table class="table table-primary mb-5" >
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Oferta</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+</div>

@@ -8,6 +8,9 @@ import { Mensaje } from "src/entities/Mesaje";
 import { Tarjeta } from "src/entities/Tarjeta";
 import { Postulacion } from "src/entities/Postulacion";
 import { Entrevista } from "src/entities/Entrevista";
+import { EntrevistaN } from "src/entities/EntrevistaN";
+import { OfertaCostos } from "src/entities/OfertaCostos";
+import { EntrevistaFecha } from "src/entities/EntrevistaFecha";
 
 @Injectable({
     providedIn: 'root'
@@ -35,13 +38,24 @@ export class SolicitanteService {
         return this.httpClient.get<Postulacion[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-postulaciones");
     }
 
+    public descargarOfertasCostos() {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded//v1/employer-reports-servlet/ofertas-costos", { responseType: 'blob' });
+    }
+
+    public listarOfertasCostos(): Observable<OfertaCostos[]> {
+        return this.httpClient.get<OfertaCostos[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/ofertas-costos");
+    }
+
+    public listarEntrevistaFecha(fecha : Date): Observable<EntrevistaFecha[]> {
+        return this.httpClient.get<EntrevistaFecha[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-fechaEntrevista?fecha=" + fecha);
+    }
 
     public listarOferta(codigo:String): Observable<Ofertas> {
         return this.httpClient.get<Ofertas>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-postulacion?codigo="+codigo);
     }
 
-    public listaEntrevista(): Observable<Entrevista[]> {
-        return this.httpClient.get<Entrevista[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-interview-servlet/listar-entrevistas");
+    public listaEntrevista(): Observable<EntrevistaN[]> {
+        return this.httpClient.get<EntrevistaN[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-interview-servlet/listar-entrevistas");
     }
 
     public elminarPostulacion(codigo:number) {

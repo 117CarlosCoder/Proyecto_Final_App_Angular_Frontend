@@ -1,0 +1,39 @@
+<app-navbar-admin></app-navbar-admin>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
+    <form class=" border w-75 mb-5 rounded-top p-4 " [formGroup]="form" *ngIf="carga" >
+        <h2>Categoria : {{listarCategoria.nombre}}  Editar</h2>
+        <h5 class="mt-5">Categoria</h5>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" 
+              [class.is-invalid]="form.controls['nombre'].invalid && form.controls['nombre'].touched"
+              id="nombre" placeholder="Categoria" name="nombre" formControlName="nombre">
+              <div
+                *ngIf="form.controls['nombre'].invalid && (form.controls['nombre'].dirty || form.controls['nombre'].touched)"
+                class="invalid-feedback">
+                <div>
+                  Por favor ingrese el nombre de la oferta
+                </div>
+              </div>
+            <label for="nombre">Categoria</label>
+          </div>
+
+        <h5 class="mt-5">Descripcion</h5>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" 
+              [class.is-invalid]="form.controls['descripcion'].invalid && form.controls['descripcion'].touched"
+              id="descripcion" placeholder="Descripcion" name="descripcion" formControlName="descripcion">
+              <div
+                *ngIf="form.controls['descripcion'].invalid && (form.controls['descripcion'].dirty || form.controls['descripcion'].touched)"
+                class="invalid-feedback">
+                <div>
+                  Por favor ingrese el nombre de la oferta
+                </div>
+              </div>
+            <label for="descripcion">Descripcion</label>
+          </div>
+          <div class="d-flex flex-row w-100 justify-content-between">
+            <button class="btn btn-primary" type="submit" (click)="cancelar()" >Cancelar</button>
+                <button class="btn btn-primary" type="submit" (click)="editarCategoria()" >Editar</button>
+          </div>
+    </form>
+</div>

@@ -3,5 +3,6 @@ export interface Postulacion {
     codigoOferta: number,
     usuario:number,
     estado: String,
-    nombre: String
+    nombre: String,
+    empresa:String
 }
