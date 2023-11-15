@@ -16,6 +16,7 @@ import { EntrevistaFinal } from 'src/entities/EntrevistaFinal';
 import { OfertaCostos } from 'src/entities/OfertaCostos';
 import { Estados } from 'src/entities/Estados';
 import { EntrevistaFecha } from 'src/entities/EntrevistaFecha';
+import { FechasOferta } from 'src/entities/FechasOferta';
 
 @Injectable({
     providedIn: 'root'
@@ -65,9 +66,16 @@ export class EmpleadorService {
     }
 
     public descargarOfertasCostos() {
-        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded//v1/employer-reports-servlet/ofertas-costos", { responseType: 'blob' });
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-servlet/ofertas-costos", { responseType: 'blob' });
+    }
+
+    public descargarEntrevistaFecha(fecha:String, estado:String) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-servlet/entrevista-fecha-especifica?fecha="+fecha+"&estado="+estado, { responseType: 'blob' });
     }
     
+    public descargarEntrevistaEstado(fechaA:String,fechaB:String, estado:String) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-servlet/entrevista-fecha-estado?fechaA="+fechaA+"&fechaB="+fechaB+"&estado="+estado, { responseType: 'blob' });
+    }
 
     public listarEstados(): Observable<Estados[]> {
         return this.httpClient.get<Estados[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-estados");
@@ -75,6 +83,10 @@ export class EmpleadorService {
 
     public listarOfertasCostos(): Observable<OfertaCostos[]> {
         return this.httpClient.get<OfertaCostos[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/ofertas-costos");
+    }
+
+    public listarEstadosOferta(): Observable<Estados[]> {
+        return this.httpClient.get<Estados[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-estados-oferta");
     }
 
     public listarCategorias(): Observable<Categoria[]> {
@@ -91,6 +103,10 @@ export class EmpleadorService {
 
     public listarEntrevistaFecha(fecha : String,estado:String): Observable<EntrevistaFecha[]> {
         return this.httpClient.get<EntrevistaFecha[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-fechaEntrevista?fecha=" + fecha+"&estado="+ estado);
+    }
+
+    public listarOfertaFecha(fechaA : String,fechaB : String,estado:String): Observable<Ofertas[]> {
+        return this.httpClient.get<Ofertas[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-fecha-Oferta?fechaA=" + fechaA+"&fechaB="+ fechaB+"&estado="+estado);
     }
 
     public finalizarEntrevista(entrevista : EntrevistaFinal): Observable<EntrevistaFinal> {

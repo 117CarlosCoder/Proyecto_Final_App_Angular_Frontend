@@ -52,7 +52,7 @@ export class CrearOfertaComponent implements OnInit {
       nombre: [null, [Validators.required]],
       descripcion: [null, [Validators.required]],
       categoria: [null, [Validators.required]],
-      estado:  ["SELECCION"],
+      estado:  ["ACTIVA"],
       fechaPublicacion: [this.todayWithPipe],
       fechaLimite: [null, [Validators.required]],
       salario: [null, [Validators.required]],

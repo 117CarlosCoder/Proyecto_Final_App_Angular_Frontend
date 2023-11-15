@@ -11,6 +11,9 @@ import { Entrevista } from "src/entities/Entrevista";
 import { EntrevistaN } from "src/entities/EntrevistaN";
 import { OfertaCostos } from "src/entities/OfertaCostos";
 import { EntrevistaFecha } from "src/entities/EntrevistaFecha";
+import { EntrevistaInfo } from "src/entities/EntrevistaInfo";
+import { FechasOferta } from "src/entities/FechasOferta";
+import { RegistroRetirada } from "src/entities/RegistroRetirada";
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +27,10 @@ export class SolicitanteService {
 
     public completarInformacion(informacion: Informacion): Observable<Informacion> {
         return this.httpClient.post<Informacion>(this.API_URL+"/completar-informacion", informacion);
+    }
+
+    public crearRegitroRetirada(registro: RegistroRetirada) {
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/resgistrar-retirada-postulacion", registro);
     }
 
     public listarCategorias(): Observable<Categoria[]> {
@@ -54,6 +61,18 @@ export class SolicitanteService {
         return this.httpClient.get<Ofertas>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-postulacion?codigo="+codigo);
     }
 
+    public listarOfertaFecha(fechaA : String,fechaB : String,estado:String): Observable<Ofertas[]> {
+        return this.httpClient.get<Ofertas[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-changer-servlet/ofertas-fecha?fechaA=" +fechaA+"&fechaB="+ fechaB+"&estado="+estado);
+    }
+
+    public listarEntrevistasInfo(): Observable<EntrevistaInfo[]> {
+        return this.httpClient.get<EntrevistaInfo[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-changer-servlet/listar-entrevistas-info");
+    }   
+
+    public listarPostulacionesRetiradas(fechaA:String,fechaB: String): Observable<RegistroRetirada[]> {
+        return this.httpClient.get<RegistroRetirada[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded//v1/applicant-reports-changer-servlet/listar-postulaciones-retiradas?fechaA="+fechaA+"&fechaB="+fechaB);
+    }   
+
     public listaEntrevista(): Observable<EntrevistaN[]> {
         return this.httpClient.get<EntrevistaN[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-interview-servlet/listar-entrevistas");
     }
@@ -69,6 +88,22 @@ export class SolicitanteService {
     public enviaTarjeta(tarjeta : Tarjeta):Observable<Tarjeta>{
         return this.httpClient.post<Tarjeta>(this.API_URL+"/completar-informacion-tarjeta",tarjeta);    
     } 
+
+    public descargarOfertasSinEmpleo() {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-servlet/oferta-sin-obtener-empleo", { responseType: 'blob' });
+    }
+
+    public descargarOfertasFaseSeleccion(fechaA : String,fechaB : String,estado:String) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-servlet/oferta-fase-seleccion?fechaA=" +fechaA+"&fechaB="+ fechaB+"&estado="+estado, { responseType: 'blob' });
+    }
+
+    public descargarOfertasEntrevista(fechaA : String,fechaB : String,estado:String) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-servlet/oferta-fase-entrevista?fechaA=" +fechaA+"&fechaB="+ fechaB+"&estado="+estado, { responseType: 'blob' });
+    }
+
+    public descargarPostulacioneRetiradas(fechaA : String,fechaB : String) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-servlet/oferta-postulacion-retirada?fechaA=" +fechaA+"&fechaB="+ fechaB, { responseType: 'blob' });
+    }
 
     public elegirPagina(pagina:String){
     

@@ -2,7 +2,10 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Comision } from 'src/entities/Comision';
+import { RegistroComision } from 'src/entities/RegistroComision';
 import { AdminService } from 'src/services/administrador/AdminService';
+import { DatePipe } from '@angular/common';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-admin-comision',
@@ -14,6 +17,8 @@ export class AdminComisionComponent implements OnInit{
     listarComision!:Comision;
     carga!:boolean;
     comision!:Comision;
+    registroComision!:RegistroComision;
+    pipe = new DatePipe('en-US');
 
     constructor(private adminService:AdminService,
       private formBuilder : FormBuilder,
@@ -46,12 +51,23 @@ export class AdminComisionComponent implements OnInit{
         this.comision = this.form.value as Comision;
         console.log("Comision" + this.comision);
         console.log(this.comision)
+        this.registroComision = {
+            codigo:0,
+            comision:this.comision.cantidad,
+            fecha:format(Date.now(), 'yyyy-MM-dd')
+        }
         this.adminService.cambiarComision(this.comision).subscribe({
           next:(data:any)=>{
             this.limpiar();
+            this.adminService.registrarComision(this.registroComision).subscribe({
+              next:(data:any)=>{
+                console.log("Comision registrada");
+              }
+            });
             location.reload();
           }
         });
+        
       }
     }
     
