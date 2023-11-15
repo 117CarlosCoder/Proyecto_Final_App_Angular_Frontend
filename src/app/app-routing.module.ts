@@ -27,18 +27,36 @@ import { EditarCategoriaComponent } from './menus/administrador/editar-categoria
 import { CrearCategoriaComponent } from './menus/administrador/crear-categoria/crear-categoria.component';
 import { AdminComisionComponent } from './menus/administrador/admin-comision/admin-comision.component';
 import { AdminReportesComponent } from './menus/administrador/admin-reportes/admin-reportes.component';
+import { CrearUsuarioComponent } from './menus/general/crear-usuario/crear-usuario.component';
+import { RestablecerContrasenaComponent } from './menus/general/restablecer-contrasena/restablecer-contrasena.component';
+import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.component';
 
 
 const routes: Routes = [
   {
     path:"",
-    redirectTo: "/login",
+    redirectTo: "/cargar",
     pathMatch: "full"
+  },
+  {
+    path: "cargar",
+    title: "Cargar Datos",
+    component: CargarDatosComponent
   },
   {
     path: "login",
     title: "Iniciar Sesion",
     component: LoginComponent
+  },
+  {
+    path: "crear-usuario",
+    title: "Creacion Usuarios",
+    component: CrearUsuarioComponent
+  },
+  {
+    path: "restablecer-contrasena",
+    title: "Restablecer Contrasena",
+    component: RestablecerContrasenaComponent
   },
   {
     path: "solicitante-completar-informacion",

@@ -1,0 +1,21 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="h-75 w-100 d-flex flex-column justify-content-center align-items-center">
+    <h1>Bienvenido Por favor suba su archivo </h1>
+    <div class="card col-md-8">
+        <div class="card-header text-center" [hidden]="isLoading">Subir archivo</div>
+        <div class="card-body d-flex flex-column align-items-center">
+          <div class="form-group w-75">
+            <input type="file" class="form-control" [hidden]="isLoading" aria-label="file example" (change)="onFileSelected($event)" required>
+
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <h3 [hidden]="!isLoading" class="text-center">Cargando</h3>
+                <div class="spinner-border text-primary text-center" role="status" [hidden]="!isLoading">
+                    <span class="sr-only"></span>
+                  </div>
+                <div class="invalid-feedback">Por favor seleccione un archivo</div>
+              </div>
+            </div>
+          <button class="btn btn-primary mt-3 w-50"  (click)="uploadFile()" >Subir</button>
+        </div>
+      </div>
+</div>

@@ -43,6 +43,9 @@ import { EditarCategoriaComponent } from './menus/administrador/editar-categoria
 import { CrearCategoriaComponent } from './menus/administrador/crear-categoria/crear-categoria.component';
 import { AdminComisionComponent } from './menus/administrador/admin-comision/admin-comision.component';
 import { AdminReportesComponent } from './menus/administrador/admin-reportes/admin-reportes.component';
+import { CrearUsuarioComponent } from './menus/general/crear-usuario/crear-usuario.component';
+import { RestablecerContrasenaComponent } from './menus/general/restablecer-contrasena/restablecer-contrasena.component';
+import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.component';
 
 
 @NgModule({
@@ -80,7 +83,10 @@ import { AdminReportesComponent } from './menus/administrador/admin-reportes/adm
     EditarCategoriaComponent,
     CrearCategoriaComponent,
     AdminComisionComponent,
-    AdminReportesComponent
+    AdminReportesComponent,
+    CrearUsuarioComponent,
+    RestablecerContrasenaComponent,
+    CargarDatosComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,167 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
+    <div class=" border w-75 mb-5 rounded-top p-4 ">
+        <div  [formGroup]="form" >
+                <h5>Nombre (Empresa o Solicitante)</h5>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" 
+                      [class.is-invalid]="form.controls['nombre'].invalid && form.controls['nombre'].touched"
+                      id="nombre" placeholder="Oferta" name="nombre" formControlName="nombre">
+                      <div
+                        *ngIf="form.controls['nombre'].invalid && (form.controls['nombre'].dirty || form.controls['nombre'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                          Por favor ingrese el nombre 
+                        </div>
+                      </div>
+                    <label for="nombre">Nombre</label>
+                  </div>
+                <h5>Nombre de Usuario</h5>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" 
+                      [class.is-invalid]="form.controls['username'].invalid && form.controls['username'].touched"
+                      id="username" placeholder="username" name="username" formControlName="username">
+                      <div
+                        *ngIf="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                          Por favor ingrese nombre de usuario
+                        </div>
+                      </div>
+                    <label for="username">Nombre</label>
+                  </div>
+                  <h5>Rol</h5>
+                  <select class="form-select" aria-label="Default select example"
+                  id="rol" name="rol" formControlName="rol" >
+                    <option *ngFor="let dato of listarUsuario let i = index" value={{dato.rol}}>{{dato.rol}}</option>
+                  </select>
+                  <h5>Direccion</h5>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" 
+                          [class.is-invalid]="form.controls['direccion'].invalid && form.controls['direccion'].touched"
+                          id="direccion" placeholder="direccion" name="direccion" formControlName="direccion">
+                          <div
+                            *ngIf="form.controls['direccion'].invalid && (form.controls['direccion'].dirty || form.controls['direccion'].touched)"
+                            class="invalid-feedback">
+                            <div>
+                              Por favor ingrese la Direccion
+                            </div>
+                          </div>
+                        <label for="direccion">Direccion</label>
+                    </div>
+                    
+                <h5>Correo Electronico</h5>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" 
+                          [class.is-invalid]="form.controls['email'].invalid && form.controls['email'].touched"
+                          id="email" placeholder="email" name="email" formControlName="email">
+                          <div
+                            *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)"
+                            class="invalid-feedback">
+                            <div>
+                              Por favor ingrese la Correo
+                            </div>
+                          </div>
+                        <label for="email">Correo</label>
+                    </div>
+                <h5>Codigo Unico de Identificacion (CUI)</h5>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" 
+                      [class.is-invalid]="form.controls['cui'].invalid && form.controls['cui'].touched"
+                      id="cui" placeholder="cui" name="cui" formControlName="cui">
+                      <div
+                        *ngIf="form.controls['cui'].invalid && (form.controls['cui'].dirty || form.controls['cui'].touched)"
+                        class="invalid-feedback">
+                        <div>
+                          Por favor ingrese el su cui
+                        </div>
+                      </div>
+                    <label for="cui">CUI</label>
+                </div>
+                <h5 class="mt-3">Fecha de nacimiento</h5>
+                  <div class="row row-cols-3 g-4 mb-3">
+                    <div class=" form-group" >
+                        <input type="text"
+                            placeholder="Fecha"
+                            class="form-control "
+                            bsDatepicker
+                            
+                            [class.is-invalid]="form.controls['fechaNacimiento'].invalid && form.controls['fechaNacimiento'].touched"
+                            id="fechaNacimiento"  name = "fechaNacimiento" formControlName="fechaNacimiento"
+                        >
+                        <div
+                                *ngIf="form.controls['fechaNacimiento'].invalid && (form.controls['fechaNacimiento'].dirty || form.controls['fechaNacimiento'].touched)"
+                                class="invalid-feedback">
+                                <div>
+                                    Por favor ingrese la fecha 
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+        
+                      
+    
+            
+            
+    
+             
+          </div>
+
+        <div [formGroup]="form2">
+          <h5>Telefono</h5>
+                      <div class="form-floating mb-3" >
+                          <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
+                            [class.is-invalid]="form2.controls['telefono1'].invalid && form2.controls['telefono1'].touched"
+                            id="telefono1" placeholder="telefono1" name="telefono1" formControlName="telefono1">
+                            <div
+                              *ngIf="form2.controls['telefono1'].invalid && (form2.controls['telefono1'].dirty || form2.controls['telefono1'].touched)"
+                              class="invalid-feedback">
+                            <div>
+                              Por favor ingrese el telefono
+                            </div>
+                          </div>
+                            <label for="telefono1">Telefono</label>
+                        </div>
+
+                        <h5>Telefon2 (opcional)</h5>
+                        <div class="form-floating mb-3" >
+                            <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
+                              id="telefono2" placeholder="telefono2" name="telefono2" formControlName="telefono2">
+                            <label for="telefono2">Telefono</label>
+                          </div>
+
+                          <h5>Telefono3 (opcional)</h5>
+                      <div class="form-floating mb-3" >
+                          <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
+                            id="telefono3" placeholder="telefono3" name="telefono3" formControlName="telefono3">
+                          <label for="telefono3">Telefono</label>
+                        </div>
+
+                        <div class="d-flex flex-row w-100 justify-content-between mt-5">
+                          <button class="btn btn-primary h-25 mb-5" type="submit"  (click)="cancelar()">Cancelar</button>
+                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearUsuario(template)" >Crear</button>
+                      </div>
+                      
+                      <ng-template #template>
+                          <div class="modal-header">
+                              <h4 class="modal-title pull-left">Mensaje</h4>
+                              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                                <span aria-hidden="true" class="visually-hidden">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Verifique su correo, ahi esta su contraseña
+                            </div>
+                            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+                              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                                  OK  
+                              </button>
+                            </div>
+                            
+                      </ng-template> 
+                  
+        </div>
+        
+    </div>
+    
+</div>

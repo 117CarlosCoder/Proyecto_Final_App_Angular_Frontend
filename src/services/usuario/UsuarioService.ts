@@ -3,6 +3,8 @@ import { Usuario } from "../../entities/Usuario";
 import { HttpClient, HttpResponse } from "@angular/common/http"
 import { Observable } from "rxjs";
 import { Categoria } from "src/entities/Categoria";
+import { CrearUsuario } from "src/entities/CrearUsuario";
+import { Telefono } from "src/entities/Telefono";
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +18,31 @@ export class UsuarioService {
     public inciarSesion(usuario: Usuario){
         console.log('connectando con el BE: ' + usuario);
         return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response'});
+        
+    }
+
+
+    public crearUsuarioSolicitante(usuario: CrearUsuario){
+       
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-usuario-solicitante", usuario, {observe: 'response'});
+        
+    }
+
+    public crearUsuarioTelefonos( telefonos:Telefono){
+        
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-telefonos", telefonos, {observe: 'response'});
+        
+    }
+
+    public restablecerContraseña(email:String){
+        
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/restablecer-contrasena?email="+email,{body:''});
+        
+    }
+
+    public crearUsuarioEmpleador(usuario: CrearUsuario, ){
+        
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-usuario-empleador", usuario, {observe: 'response'});
         
     }
 
