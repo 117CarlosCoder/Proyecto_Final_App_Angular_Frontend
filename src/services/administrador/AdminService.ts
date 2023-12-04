@@ -23,8 +23,8 @@ export class AdminService {
     constructor(private httpClient: HttpClient) {
     }
 
-    public listarDashboard(): Observable<Dashboard> {
-        return this.httpClient.get<Dashboard>(this.API_URL+"/listar-dashboard");
+    public listarDashboard(options?: { headers?: HttpHeaders , withCredentials?: true} ): Observable<Dashboard> {
+        return this.httpClient.get<Dashboard>(this.API_URL+"/listar-dashboard", options);
     }
 
     public enviarOferta(oferta: Ofertas): Observable<Ofertas> {

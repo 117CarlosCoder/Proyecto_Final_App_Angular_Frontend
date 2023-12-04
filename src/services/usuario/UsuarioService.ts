@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Usuario } from "../../entities/Usuario";
-import { HttpClient, HttpResponse } from "@angular/common/http"
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http"
 import { Observable } from "rxjs";
 import { Categoria } from "src/entities/Categoria";
 import { CrearUsuario } from "src/entities/CrearUsuario";
@@ -15,9 +15,9 @@ export class UsuarioService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public inciarSesion(usuario: Usuario){
+    public inciarSesion(usuario: Usuario, options?: { headers?: HttpHeaders , withCredentials?: true}){
         console.log('connectando con el BE: ' + usuario);
-        return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response'});
+        return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response', ...options} );
         
     }
 

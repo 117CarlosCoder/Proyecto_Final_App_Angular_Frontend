@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { NavbarSolicitanteComponent } from '../navbars/navbar-solicitante/navbar-solicitante.component';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
+import { SessionService } from 'src/services/sesion/SessionService';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit{
     private usuarioService: UsuarioService,
     private navbar : NavbarSolicitanteComponent,
     private router: Router,
-    private sharedService: ActualizarNavbarService) {
+    private sharedService: ActualizarNavbarService,
+    private sessionService : SessionService) {
     this.login = false;
 
   }
@@ -51,6 +53,8 @@ export class LoginComponent implements OnInit{
               this.sharedService.updateCompletarInfo(true);
               console.log(response.status);
               this.rol = data.rol;
+              
+
               this.limpiar();
               this.router.navigate([this.usuarioService.comprobarUsuario(this.rol)]);
             }
@@ -58,6 +62,9 @@ export class LoginComponent implements OnInit{
               console.log(response.status);
               this.rol = data.rol;
               console.log(this.rol);
+
+              console.log(data.idSession)
+              this.sessionService.setSessionIdInCookie(data.idSession);
               this.sharedService.updateCompletarInfo(true);
               this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
             }
