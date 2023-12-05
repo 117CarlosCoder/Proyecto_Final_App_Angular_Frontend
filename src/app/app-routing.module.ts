@@ -30,6 +30,7 @@ import { AdminReportesComponent } from './menus/administrador/admin-reportes/adm
 import { CrearUsuarioComponent } from './menus/general/crear-usuario/crear-usuario.component';
 import { RestablecerContrasenaComponent } from './menus/general/restablecer-contrasena/restablecer-contrasena.component';
 import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.component';
+import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
 
 
 const routes: Routes = [
@@ -191,6 +192,12 @@ const routes: Routes = [
     path: "admin-reportes",
     title: "Admin Reportes",
     component: AdminReportesComponent
+  }
+  ,
+  {
+    path: "admin-usuarios",
+    title: "Admin Gestionar Usuarios",
+    component: AdminUsuariosComponent
   }
 ];
 

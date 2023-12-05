@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Usuario } from 'src/entities/Usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class SessionService {
     return this.http.post('/login', { username, password });
   }
 
-  setSessionIdInCookie(sessionId: string): void {
+  setSessionIdInCookie(sessionId: Usuario): void {
     // Configurar la cookie con el identificador de sesión
     document.cookie = `sessionId=${sessionId}`;
   }

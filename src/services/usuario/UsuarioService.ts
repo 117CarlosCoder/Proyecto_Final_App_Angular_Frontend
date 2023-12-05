@@ -6,6 +6,7 @@ import { Categoria } from "src/entities/Categoria";
 import { CrearUsuario } from "src/entities/CrearUsuario";
 import { Telefono } from "src/entities/Telefono";
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class UsuarioService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public inciarSesion(usuario: Usuario, options?: { headers?: HttpHeaders , withCredentials?: true}){
+    public inciarSesion(usuario: Usuario, options?: { headers?: HttpHeaders }){
         console.log('connectando con el BE: ' + usuario);
         return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response', ...options} );
         

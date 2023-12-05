@@ -9,12 +9,13 @@
     </div>
     <div class="card-body d-flex flex-column text-center justify-content-evenly align-items-center">
         <h5>Empleadores</h5> 
-        <div class="d-flex flex-row justify-content-around align-items-center mb-5">
+        <div class="d-flex flex-row justify-content-around align-items-center ">
             <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-person-badge-fill" viewBox="0 0 16 16">
                 <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
             </svg>
             <h2>{{vistaDashboard.cantidad_empleadores}}</h2>
         </div>
+        <button class="btn btn-primary mb-5" type="submit" (click)="gestionarUsuarios()">Gestionar</button>
         <h5>Solicitantes</h5>
         <div class="d-flex flex-row justify-content-around align-items-center ">
             <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-person-badge-fill" viewBox="0 0 16 16">
@@ -22,7 +23,7 @@
             </svg>
             <h2>{{vistaDashboard.cantidad_solicitantes}}</h2>
         </div>
-        
+        <button class="btn btn-primary mb-5" type="submit" (click)="gestionarUsuarios()" >Gestionar</button>  
     </div>
   </div>
 <div class="card w-50">

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Usuario } from '../../entities/Usuario';
 import { UsuarioService } from '../../services/usuario/UsuarioService';
 import { Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NavbarSolicitanteComponent } from '../navbars/navbar-solicitante/navbar-solicitante.component';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
 import { SessionService } from 'src/services/sesion/SessionService';
@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit{
   submit(): void {
     if (this.usuarioForm.valid) {
       this.usuario = this.usuarioForm.value as Usuario;
-
-      this.usuarioService.inciarSesion(this.usuario).subscribe({
-        next: ( response: HttpResponse<any>)=>{
+      console.log(this.usuario.password)
+      this.usuarioService.inciarSesion(this.usuario,{headers : new HttpHeaders().set('X-Angular-Session-Id', this.sessionService.getSessionIdFromCookie())}).subscribe({
+        next: ( response: HttpResponse<any>)=>{     
             const data = response.body;
             if(response.status === 202){
               this.sharedService.updateCompletarInfo(true);
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit{
               console.log(this.rol);
 
               console.log(data.idSession)
-              this.sessionService.setSessionIdInCookie(data.idSession);
+              this.sessionService.setSessionIdInCookie(this.usuario);
               this.sharedService.updateCompletarInfo(true);
               this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
             }
