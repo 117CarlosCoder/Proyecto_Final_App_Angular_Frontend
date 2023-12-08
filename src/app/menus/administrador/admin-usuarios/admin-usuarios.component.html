@@ -1,8 +1,8 @@
 <app-navbar-admin></app-navbar-admin>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
-    <h1>Usuarios</h1>  
+    <h1>{{rol}}</h1>  
     <div class="d-flex w-100 justify-content-end aling-content-center">
-        <button class="btn btn-primary mt-3 mb-3 w-25 justify-self-center" type="submit">Crear Usuario</button>
+        <button class="btn btn-primary mt-3 mb-3 w-25 justify-self-center" type="submit" (click)="crearUsuario()">Crear {{rol}}</button>
     </div>
     
   <table class="table table-primary" >
@@ -10,16 +10,27 @@
         <tr>
           <th scope="col">No</th>
           <th scope="col">Usuario</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Username</th>
+          <th scope="col">Contrasena</th>
           <th scope="col">Editar</th>
-          <th scope="col">Eliminarr</th>
+          <th scope="col">Eliminar</th>
+          <th scope="col">Suspender</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngFor="let dato of listarUsuarios let i = index" >
         <tr>
-          <th></th>
-          <td></td>
-          <td ><button class="btn btn-primary" type="submit" >Editar</button></td>
-          <td ><button class="btn btn-primary" type="submit" >Eliminar</button></td>
+          <th>{{i+1}}</th>
+          <td>{{dato.nombre}}</td>
+          <td>{{dato.email}}</td>
+          <td>{{dato.username}}</td>
+          <td>{{dato.password}}</td>
+          <td ><button class="btn btn-primary" type="submit" (click)="editarUsuario(dato.codigo)">Editar</button></td>
+          <td ><button class="btn btn-primary" type="submit" (click)="eliminarUsuario(dato.username)">Eliminar</button></td>
+          <td ><div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="suspension{{i+1}}">
+            <label class="form-check-label" for="suspension{{i+1}}">Suspension</label>
+          </div></td>
         </tr>
       </tbody>
   </table>

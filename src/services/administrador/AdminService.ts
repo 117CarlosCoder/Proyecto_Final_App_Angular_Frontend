@@ -10,6 +10,9 @@ import { TopEmpleadores } from 'src/entities/TopEmpleadores';
 import { CantidadTotal } from 'src/entities/CantidadTotal';
 import { IngresoTotal } from 'src/entities/IngresoTotal';
 import { RegistroComision } from 'src/entities/RegistroComision';
+import { CrearUsuario } from 'src/entities/CrearUsuario';
+import { UsuarioT } from 'src/entities/UsuarioT';
+import { NumTelefono } from 'src/entities/NumTelefono';
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +28,18 @@ export class AdminService {
 
     public listarDashboard(options?: { headers?: HttpHeaders , withCredentials?: true} ): Observable<Dashboard> {
         return this.httpClient.get<Dashboard>(this.API_URL+"/listar-dashboard", options);
+    }
+
+    public listarUsuarios(rol:String): Observable<UsuarioT[]> {
+        return this.httpClient.get<UsuarioT[]>(this.API_URL+"/listar-usuarios?rol="+rol);
+    }
+
+    public listarUsuario(codigo:number): Observable<UsuarioT> {
+        return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario?codigo="+codigo);
+    }
+
+    public listarTelefonos(codigo:number): Observable<NumTelefono[]> {
+        return this.httpClient.get<NumTelefono[]>(this.API_URL+"/listar-telefonos?codigo="+codigo);
     }
 
     public enviarOferta(oferta: Ofertas): Observable<Ofertas> {
@@ -82,6 +97,32 @@ export class AdminService {
 
     public crearCategoria(categoria : Categoria): Observable<Categoria> {
         return this.httpClient.post<Categoria>(this.API_URL+"/gestionar-categorias-crear",categoria);
+    }
+
+    public crearUsuario(usuario : CrearUsuario){
+        return this.httpClient.post(this.API_URL+"/crear-usuarios",usuario,{observe: 'response'});
+    }
+
+    public crearTelefonos(telefonos : NumTelefono[]){
+        return this.httpClient.post(this.API_URL+"/crear-telefonos",telefonos,{observe: 'response'});
+    }
+
+    public actualizarUsuario(usuario : CrearUsuario){
+        return this.httpClient.put(this.API_URL+"/actualizar-usuario",usuario,{observe: 'response'});
+    }
+
+    public actualizarTelefono( telefonos:NumTelefono[]){
+        
+        return this.httpClient.put(this.API_URL+"/actualizar-telefonos", telefonos);
+        
+    }
+
+    public eliminarUsuario(username : String){
+        return this.httpClient.delete(this.API_URL+"/eliminar-usuario?username="+username);
+    }
+
+    public eliminarCategoria(codigo : number){
+        return this.httpClient.delete(this.API_URL+"/eliminar-categoria?codigo="+codigo);
     }
 
     public descargarRegistroComision() {

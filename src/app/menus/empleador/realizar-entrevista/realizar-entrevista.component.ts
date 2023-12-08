@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Entrevista } from 'src/entities/Entrevista';
 import { EntrevistaFinal } from 'src/entities/EntrevistaFinal';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';

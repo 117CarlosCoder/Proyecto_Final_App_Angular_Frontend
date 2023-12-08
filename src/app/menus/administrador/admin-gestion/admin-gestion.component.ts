@@ -29,6 +29,20 @@ export class AdminGestionComponent implements OnInit{
     this.router.navigate(['editar-categoria', {codigo:codigo}]);
   }
 
+  eliminarCategoria(codigo:number){
+    this.adminService.eliminarCategoria(codigo).subscribe({
+      next: () => {
+        console.log("categoria eliminada")
+        this.adminService.listarCategorias().subscribe({
+          next: (list: Categoria[]) => {
+            this.listarCategoria = list;
+            this.carga = true;
+          }
+        });
+      }
+    });
+  }
+
   crearCategoria(){
     this.router.navigate(['crear-categoria']);
   }

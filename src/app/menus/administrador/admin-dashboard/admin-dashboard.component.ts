@@ -32,8 +32,8 @@ export class AdminDashboardComponent implements OnInit{
 
   }
 
-  gestionarUsuarios(){
-    this.router.navigate(['admin-usuarios']);
+  gestionarUsuarios(rol:String){
+    this.router.navigate(['admin-usuarios',{rol:rol}]);
   }
 
 }

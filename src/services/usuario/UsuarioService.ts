@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { Categoria } from "src/entities/Categoria";
 import { CrearUsuario } from "src/entities/CrearUsuario";
 import { Telefono } from "src/entities/Telefono";
+import { NumTelefono } from "src/entities/NumTelefono";
 
 
 @Injectable({
@@ -32,6 +33,12 @@ export class UsuarioService {
     public crearUsuarioTelefonos( telefonos:Telefono){
         
         return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-telefonos", telefonos, {observe: 'response'});
+        
+    }
+
+    public actualizarTelefono( telefonos:NumTelefono[]){
+        
+        return this.httpClient.put("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/actualizar-telefonos", telefonos, {observe: 'response'});
         
     }
 

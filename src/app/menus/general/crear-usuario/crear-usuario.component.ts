@@ -7,7 +7,6 @@ import { Rol } from 'src/entities/Rol';
 import { UsuarioService } from 'src/services/usuario/UsuarioService';
 import { HttpResponse } from '@angular/common/http';
 import { Telefono } from 'src/entities/Telefono';
-import { te } from 'date-fns/locale';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -56,6 +55,7 @@ export class CrearUsuarioComponent implements OnInit{
           email: [null, [Validators.required]],
           cui:[null, [Validators.required]],
           fechaNacimiento: [null, [Validators.required]]
+          
         });
 
        
@@ -100,6 +100,7 @@ export class CrearUsuarioComponent implements OnInit{
         }
 
         if (this.usario.rol == 'Empleador') {
+          this.usario.fechaFundacion = this.usario.fechaNacimiento;
           console.log("Oferta" + this.usario.nombre);
           console.log(this.usario)
           this.usuarioService.crearUsuarioEmpleador(this.usario).subscribe({

@@ -12,6 +12,7 @@
           <th scope="col">Categoria</th>
           <th scope="col">Descripcion</th>
           <th scope="col">Editar</th>
+          <th scope="col">Eliminar</th>
         </tr>
       </thead>
       <tbody *ngFor="let dato of listarCategoria let i = index" >
@@ -20,6 +21,7 @@
           <td>{{dato.nombre}}</td>
           <td>{{dato.descripcion}}</td>
           <td ><button class="btn btn-primary" type="submit"(click)="editarCategoria(dato.codigo)" >Editar</button></td>
+          <td ><button class="btn btn-primary" type="submit"  (click)="eliminarCategoria(dato.codigo)">Eliminar</button></td>
         </tr>
       </tbody>
   </table>

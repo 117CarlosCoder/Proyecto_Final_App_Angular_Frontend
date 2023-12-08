@@ -31,6 +31,8 @@ import { CrearUsuarioComponent } from './menus/general/crear-usuario/crear-usuar
 import { RestablecerContrasenaComponent } from './menus/general/restablecer-contrasena/restablecer-contrasena.component';
 import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.component';
 import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
+import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-usuario/admin-crear-usuario.component';
+import { AdminEditarUsuarioComponent } from './menus/administrador/admin-editar-usuario/admin-editar-usuario.component';
 
 
 const routes: Routes = [
@@ -198,6 +200,18 @@ const routes: Routes = [
     path: "admin-usuarios",
     title: "Admin Gestionar Usuarios",
     component: AdminUsuariosComponent
+  }
+  ,
+  {
+    path: "admin-crear-usuarios",
+    title: "Admin Crear Usuarios",
+    component: AdminCrearUsuarioComponent
+  }
+  ,
+  {
+    path: "admin-editar-usuarios",
+    title: "Admin Editar Usuarios",
+    component: AdminEditarUsuarioComponent
   }
 ];
 

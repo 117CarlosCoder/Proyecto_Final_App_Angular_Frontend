@@ -47,6 +47,9 @@ import { CrearUsuarioComponent } from './menus/general/crear-usuario/crear-usuar
 import { RestablecerContrasenaComponent } from './menus/general/restablecer-contrasena/restablecer-contrasena.component';
 import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.component';
 import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
+import { AdminEditarUsuarioComponent } from './menus/administrador/admin-editar-usuario/admin-editar-usuario.component';
+import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-usuario/admin-crear-usuario.component';
+
 
 @NgModule({
   declarations: [
@@ -87,7 +90,9 @@ import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/adm
     AdminUsuariosComponent,
     CrearUsuarioComponent,
     RestablecerContrasenaComponent,
-    CargarDatosComponent
+    CargarDatosComponent,
+    AdminEditarUsuarioComponent,
+    AdminCrearUsuarioComponent
   ],
   imports: [
     BrowserModule,
