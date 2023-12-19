@@ -7,7 +7,7 @@
                 Suba su curriculum en pdf porfavor
             </div>
             <div class="mb-5">
-                <input type="file" class="form-control" aria-label="file example" required 
+                <input  type="file"  (change)="subirArchivo($event)" class="form-control" aria-label="file example" required 
                 id="curriculum" name="curriculum" formControlName="curriculum">
                 <div class="invalid-feedback">Ingrese algun archivo</div>
             </div>

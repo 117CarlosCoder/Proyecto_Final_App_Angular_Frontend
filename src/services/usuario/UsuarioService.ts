@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Usuario } from "../../entities/Usuario";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http"
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { Categoria } from "src/entities/Categoria";
 import { CrearUsuario } from "src/entities/CrearUsuario";
 import { Telefono } from "src/entities/Telefono";
@@ -17,11 +17,29 @@ export class UsuarioService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public inciarSesion(usuario: Usuario, options?: { headers?: HttpHeaders }){
+    public inciarSesion(usuario: Usuario){
         console.log('connectando con el BE: ' + usuario);
-        return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response', ...options} );
+        this.setCredenciales(usuario.username,usuario.password);
+        return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response'} );
         
     }
+
+    setCredenciales(username: string, password: string): void {
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
+    }
+
+    getCredenciales(){
+        const username = localStorage.getItem('username');
+        const password = localStorage.getItem('password');
+    
+        const headers = {
+                'Authorization': 'Basic ' + btoa(username + ':' + password)
+        };
+
+        return headers;
+      }
+    
 
 
     public crearUsuarioSolicitante(usuario: CrearUsuario){

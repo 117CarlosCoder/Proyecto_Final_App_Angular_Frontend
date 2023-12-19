@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-primary ">
     <div class="container-fluid">
-      <a class="navbar-brand">{{nombreVistaPagina}}</a>
+      <a class="navbar-brand">Solicitante</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -18,6 +18,9 @@
           <li class="nav-item">
             <a class="nav-link" (click)="cambiarPagina('reportes')" [ngClass]="{ 'disabled': completarInfo }">Reportes</a>
           </li>
+          <li class="nav-item">
+          <a class="nav-link" (click)="cambiarPagina('perfil')" [ngClass]="{ 'disabled': completarInfo }">Perfil</a>
+        </li>
           <li class="nav-item">
             <a class="nav-link" (click)="close()">Cerrar Sesion</a>
           </li>

@@ -1,7 +1,7 @@
 <app-navbar-admin></app-navbar-admin>
-<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center border border-black rounded p-4">
     <h1>Comision</h1>
-    <div class="card w-50" *ngIf="carga">
+    <div class="card w-100" *ngIf="carga">
         <h5 class="card-header">Cambiar Comision</h5>
         <div class="card-body">
             <div class="border rounded p-3 ">
@@ -9,7 +9,7 @@
             </div>
         <h5 class="mt-3">Nuevo valor</h5>
         <div class="form-floating mb-3" [formGroup]="form" (ngSubmit)="cambiarComision()">
-            <input type="number" class="form-control" 
+            <input type="number" class="form-control" min="1"
               [class.is-invalid]="form.controls['cantidad'].invalid && form.controls['cantidad'].touched"
               id="cantidad" placeholder="Cantidad" name="cantidad" formControlName="cantidad">
               <div

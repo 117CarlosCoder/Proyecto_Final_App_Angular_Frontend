@@ -3,14 +3,12 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { moment } from 'ngx-bootstrap/chronos/testing/chain';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CrearUsuario } from 'src/entities/CrearUsuario';
 import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { AdminService } from 'src/services/administrador/AdminService';
-import { UsuarioService } from 'src/services/usuario/UsuarioService';
 
 
 @Component({
@@ -37,7 +35,6 @@ export class AdminEditarUsuarioComponent {
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
-    private usuarioService:UsuarioService,
     private modalService: BsModalService,
     private adminService: AdminService,
     private route: ActivatedRoute,
@@ -68,7 +65,6 @@ export class AdminEditarUsuarioComponent {
           if(this.FechaNString?.toString()){
             this.FechaN = new Date(this.FechaNString.toString());
           }
-          
         }
         if(this.usuario.fechaFundacion != null  ){
           this.FechaFString = this.pipe.transform(this.usuario.fechaFundacion.toString(), 'yyyy-MM-dd');
@@ -265,7 +261,9 @@ export class AdminEditarUsuarioComponent {
 
   
 
-  cancelar(){}
+  cancelar(){
+      this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+  }
 
   limpiar(): void {
     this.form.reset({});

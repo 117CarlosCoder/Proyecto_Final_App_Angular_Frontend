@@ -11,6 +11,7 @@ import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 export class SolicitanteCargarOfertaInfoComponent {
   codigo !: number;
   oferta !: Ofertas;
+  valor !: boolean;
 
   constructor(private router:Router,
      private route: ActivatedRoute,
@@ -23,8 +24,17 @@ ngOnInit() {
       console.log(this.codigo)
     });
 
+    this.route.params.subscribe(params => {
+      const valorRecibido = params['valor'];
+      if (valorRecibido) {
+        this.valor = valorRecibido;
+        console.log(this.valor)
+      }
+      
+    });
+
     console.log(this.codigo)
-    this.solicitanteService.listarOferta(this.codigo.toString()).subscribe({
+    this.solicitanteService.listarOferta(this.codigo.toString(), this.valor).subscribe({
       next: (list: Ofertas) => {
         console.log("Cargar oferta")
         this.oferta = list;

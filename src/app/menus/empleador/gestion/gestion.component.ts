@@ -4,6 +4,8 @@ import { Ofertas } from 'src/entities/Ofertas';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { Router } from '@angular/router';
 import { Codigo } from 'src/entities/Codigo';
+import { OfertasDate } from 'src/entities/OfertasDate';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-gestion',
@@ -12,8 +14,10 @@ import { Codigo } from 'src/entities/Codigo';
 })
 export class GestionComponent {
   form!:FormGroup;
-  listarOfetas!:Ofertas[];
+  listarOfetas!:OfertasDate[];
   codigoFinal!: Codigo;
+  Fecha!: string | null;
+  pipe = new DatePipe('en-US');
 
   constructor( private empleadorService : EmpleadorService,
     private formBuilder: FormBuilder,
@@ -23,9 +27,28 @@ export class GestionComponent {
 
   ngOnInit(){
     this.empleadorService.listarOfertas().subscribe({
-      next: (list: Ofertas[]) => {
+      next: (list: OfertasDate[]) => {
         console.log("Cargar Ofertas")
         this.listarOfetas = list;
+        list.forEach(element => {
+          if(element.fechaPublicacion!=null){
+            this.Fecha = this.pipe.transform(element.fechaPublicacion.toString(), 'yyyy-MM-dd');
+
+            console.log(this.Fecha?.toString());
+            if(this.Fecha){
+              element.fechaPublicacion = this.Fecha;
+            }
+          }
+
+          if(element.fechaLimite!=null){
+            this.Fecha = this.pipe.transform(element.fechaLimite.toString(), 'yyyy-MM-dd');
+
+            console.log(this.Fecha?.toString());
+            if(this.Fecha){
+              element.fechaLimite = this.Fecha;
+            }
+          }
+        });
         console.log(this.listarOfetas);
       }
     });
@@ -51,7 +74,7 @@ export class GestionComponent {
       next:(value: Ofertas) => {
           console.log("Eliminado");
           this.empleadorService.listarOfertas().subscribe({
-            next: (list: Ofertas[]) => {
+            next: (list: OfertasDate[]) => {
                 console.log("Cargar ofertas");
                 this.listarOfetas = list;
                 console.log(this.listarOfetas);

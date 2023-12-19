@@ -1,0 +1,31 @@
+<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center">
+    <h2>{{titulo}}</h2>
+    <form class="d-flex flex-column justify-content-center align-items-center w-100" role="search" (ngSubmit)="buscarEmpresa()"  [formGroup]="form" >
+        <input class="form-control me-2 mt-3" type="search" placeholder="Buscar Empresa" aria-label="Search"  id="nombre" placeholder="Buscar Oferta" name="nombre" formControlName="nombre" >
+        <button class="btn btn-outline-primary mt-3 w-25" type="submit"  >Buscar</button>
+        <br>
+        <div class="w-100 d-flex flex-row justify-content-between mt-3 border border-primary rounded p-4">
+            <p class="fs-3" >Filtros</p>
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example" 
+            id="categoria" placeholder="categoria" name="categoria" formControlName="categoria" >
+                <option selected>Elige categoria</option>
+                <option *ngFor="let dato of listacategorias let i = index" value={{dato.codigo}}>{{dato.nombre}}</option>
+            </select>  
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="modalidad" placeholder="modalidad" name="modalidad" formControlName="modalidad" >
+                <option selected>Elige modalidad</option>
+                <option *ngFor="let dato of listaModalidades let i = index" value={{dato.nombre}}>{{dato.nombre}}</option>
+            </select>
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="ubicacion" placeholder="ubicacion" name="ubicacion" formControlName="ubicacion" >
+                <option selected>Elige ubicacion</option>
+                <option *ngFor="let dato of listaUbicaciones let i = index" value={{dato.ubicacion}}>{{dato.ubicacion}}</option>
+            </select>  
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="salario" placeholder="salario" name="salario" formControlName="salario" >
+                <option selected>Elige salario</option>
+                <option *ngFor="let dato of listaSalarios let i = index" value={{dato.salario}}>{{dato.salario}}</option>
+            </select> 
+        </div>
+    </form>
+</div>

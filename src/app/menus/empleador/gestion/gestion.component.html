@@ -46,6 +46,9 @@
           <tr>
             <th scope="col">No</th>
             <th scope="col">Oferta</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Fecha Publicacion</th>
+            <th scope="col">Fecha Limite</th>
             <th scope="col">Estado</th>
             <th scope="col">Editar</th>
             <th scope="col">Eliminar</th>
@@ -55,6 +58,9 @@
           <tr>
             <th>{{i+1}}</th>
             <td>{{dato.nombre}}</td>
+            <td>{{dato.categoria}}</td>
+            <td>{{dato.fechaPublicacion}}</td>
+            <td>{{dato.fechaLimite}}</td>
             <td>{{dato.estado}}</td>
             <td><button class="btn btn-primary" type="submit"(click)="editarOferta(dato.codigo)" >Editar</button></td>
             <td><button class="btn btn-primary" type="submit"(click)="eliminarOferta(dato.codigo)" >Eliminar</button></td>

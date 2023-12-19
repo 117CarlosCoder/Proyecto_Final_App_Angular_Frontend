@@ -1,6 +1,6 @@
 <app-navbar-admin></app-navbar-admin>
 <div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
-    <div class=" border w-75 mb-5 rounded-top p-4 ">
+    <div class=" border border-black w-75 mb-5 rounded p-4 ">
         <div  [formGroup]="form" >
                 <h5>Nombre</h5>
                 <div class="form-floating mb-3">
@@ -57,7 +57,7 @@
                             </div>
                           </div>
                         <label for="direccion">Direccion</label>
-                    </div>
+                    </div>border
                     
                 <h5>Correo Electronico</h5>
                     <div class="form-floating mb-3">
@@ -151,7 +151,7 @@
                         </div>
 
                         <div class="d-flex flex-row w-100 justify-content-between mt-5">
-                          <button class="btn btn-primary h-25 mb-5" type="submit"  (click)="cancelar()">Cancelar</button>
+                          <button class="btn btn-danger h-25 mb-5" type="submit"  (click)="cancelar()">Cancelar</button>
                           <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearUsuario(template)" >Crear</button>
                       </div>
                       

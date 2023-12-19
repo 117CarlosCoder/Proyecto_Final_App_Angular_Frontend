@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -16,7 +16,7 @@ import { PostulacionesComponent } from './menus/solicitante/postulaciones/postul
 import { EntrevistasComponent } from './menus/solicitante/entrevistas/entrevistas.component';
 import { CargarOfertaComponent } from './menus/solicitante/cargar-oferta/cargar-oferta.component';
 import { AplicarEmpleoComponent } from './menus/solicitante/aplicar-empleo/aplicar-empleo.component';
-import { CargarInformacionTarjetaComponent } from './menus/solicitante/cargar-informacion-tarjeta/cargar-informacion-tarjeta.component';
+import { CargarInformacionTarjetaComponent } from './menus/empleador/cargar-informacion-tarjeta/cargar-informacion-tarjeta.component';
 import { BsDatepickerModule,BsDatepickerConfig } from 'ngx-bootstrap/datepicker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -49,7 +49,12 @@ import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.
 import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
 import { AdminEditarUsuarioComponent } from './menus/administrador/admin-editar-usuario/admin-editar-usuario.component';
 import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-usuario/admin-crear-usuario.component';
-
+import { SugerenciaOfertasComponent } from './menus/solicitante/sugerencia-ofertas/sugerencia-ofertas.component';
+import { BuscadorOfertaComponent } from './menus/solicitante/buscador-oferta/buscador-oferta.component';
+import { PerfilUsuarioComponent } from './menus/general/perfil-usuario/perfil-usuario.component';
+import { PerfilAdminComponent } from './menus/administrador/perfil-admin/perfil-admin.component';
+import { PerfilSolicitanteComponent } from './menus/solicitante/perfil-solicitante/perfil-solicitante.component';
+import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/perfil-empleador.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,14 @@ import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-us
     RestablecerContrasenaComponent,
     CargarDatosComponent,
     AdminEditarUsuarioComponent,
-    AdminCrearUsuarioComponent
+    AdminCrearUsuarioComponent,
+    SugerenciaOfertasComponent,
+    BuscadorOfertaComponent,
+    PerfilUsuarioComponent,
+    PerfilAdminComponent,
+    PerfilSolicitanteComponent,
+    PerfilEmpleadorComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -103,7 +115,8 @@ import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-us
     BsDatepickerModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    FormsModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

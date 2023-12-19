@@ -4,19 +4,17 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ofertas } from 'src/entities/Ofertas';
 import { Categoria } from 'src/entities/Categoria';
-import { Modalidad } from 'src/entities/Modalidad';
-import { Codigo } from 'src/entities/Codigo';
-import { Postulacion } from 'src/entities/Postulacion';
+import { Modalidad } from 'src/entities/Modalidad'; 
 import { Postulante } from 'src/entities/Postulante';
 import { DatosPostulante } from 'src/entities/DatosPostulante';
 import { DatosEntrevista } from 'src/entities/DatosEntrevista';
-import { Entrevista } from 'src/entities/Entrevista';
 import { EntrevistaInfo } from 'src/entities/EntrevistaInfo';
 import { EntrevistaFinal } from 'src/entities/EntrevistaFinal';
 import { OfertaCostos } from 'src/entities/OfertaCostos';
 import { Estados } from 'src/entities/Estados';
 import { EntrevistaFecha } from 'src/entities/EntrevistaFecha';
-import { FechasOferta } from 'src/entities/FechasOferta';
+import { Tarjeta } from 'src/entities/Tarjeta';
+import { OfertasDate } from 'src/entities/OfertasDate';
 
 @Injectable({
     providedIn: 'root'
@@ -36,6 +34,10 @@ export class EmpleadorService {
         return this.httpClient.post<Ofertas>(this.API_URL+"/crear-oferta", oferta);
     }
 
+    public enviaTarjeta(tarjeta : Tarjeta):Observable<Tarjeta>{
+        return this.httpClient.post<Tarjeta>(this.API_URL+"/completar-informacion-tarjeta",tarjeta);    
+    } 
+
     public eliminarOferta(codigo: number){
         return this.httpClient.delete<Ofertas>(this.API_URL+"/eliminar-oferta?codigo="+codigo);
     }
@@ -45,20 +47,28 @@ export class EmpleadorService {
         return this.httpClient.put<Ofertas>(this.API_URL+"/actualizar-oferta", oferta);
     }
 
-    public listarOfertas(): Observable<Ofertas[]> {
-        return this.httpClient.get<Ofertas[]>(this.API_URL + "/cargar-ofertas");
+    public listarOfertas(): Observable<OfertasDate[]> {
+        return this.httpClient.get<OfertasDate[]>(this.API_URL + "/cargar-ofertas");
+    }
+
+    public listarOfertasPostulacion(): Observable<OfertasDate[]> {
+        return this.httpClient.get<OfertasDate[]>(this.API_URL + "/cargar-ofertas-postulantes");
     }
 
     public listarOferta(codigo:number): Observable<Ofertas> {
         return this.httpClient.get<Ofertas>(this.API_URL + "/listar-oferta?codigo="+codigo);
     }
 
-    public listarPostulantes(codigo:number): Observable<Postulante[]> {
+    public listarPostulantes(codigo:number ): Observable<Postulante[]> {
         return this.httpClient.post<Postulante[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-postulantes?codigo="+codigo,null);
     }
 
-    public listarPostulante(codigo:number): Observable<DatosPostulante> {
-        return this.httpClient.post<DatosPostulante>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/obtener-postulante?codigo="+codigo,null);
+    public listarPostulante(codigo:number, oferta:number): Observable<DatosPostulante> {
+        return this.httpClient.post<DatosPostulante>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/obtener-postulante?codigo="+codigo+"&oferta="+oferta ,null);
+    }
+
+    public listarPdf(codigo:number) {
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-interview-servlet/listar-curriculum?codigo="+codigo,{ responseType: "arraybuffer" });
     }
 
     public generarEntrevista( datosEntrevista:DatosEntrevista): Observable<DatosEntrevista> {
@@ -113,6 +123,10 @@ export class EmpleadorService {
         return this.httpClient.put<EntrevistaFinal>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/finalizar-entrevista",entrevista);
     }
 
+    public contratar(entrevista : EntrevistaFinal): Observable<EntrevistaFinal> {
+        return this.httpClient.put<EntrevistaFinal>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/contratar",entrevista);
+    }
+
 
     public elegirPagina(pagina:String){
     
@@ -133,6 +147,9 @@ export class EmpleadorService {
         }
         if (pagina == 'entrevista') {
             return 'revisar-entrevistas';
+        }
+        if (pagina == 'perfil') {
+            return 'empleador-editar-perfil';
         }
         return 'solicitante-aplicar-ofeta';
     }

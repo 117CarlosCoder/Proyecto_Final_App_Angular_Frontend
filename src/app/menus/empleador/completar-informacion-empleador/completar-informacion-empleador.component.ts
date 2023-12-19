@@ -32,7 +32,7 @@ export class CompletarInformacionEmpleadorComponent {
           this.empleadorService.completarInformacion(this.info).subscribe({
             next:(data:any)=>{
               this.limpiar();
-              this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
+              this.router.navigate(['empleador-completar-tarjeta']);
             }
           });
       }

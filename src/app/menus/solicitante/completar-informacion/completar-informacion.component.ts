@@ -6,6 +6,7 @@ import { Informacion } from 'src/entities/Informacion';
 import { Router } from '@angular/router';
 import { NavbarSolicitanteComponent } from 'src/app/navbars/navbar-solicitante/navbar-solicitante.component';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-completar-informacion',
@@ -20,7 +21,9 @@ export class CompletarInformacionComponent{
 
   
 
-  constructor(private solicitanteService: SolicitanteService, private formBuilder: FormBuilder, private router : Router, private navbar: NavbarSolicitanteComponent, private sharedService : ActualizarNavbarService) {
+  constructor(private solicitanteService: SolicitanteService, private formBuilder: FormBuilder, private router : Router, private navbar: NavbarSolicitanteComponent, 
+    private sharedService : ActualizarNavbarService,
+    private http: HttpClient) {
     this.form = this.formBuilder.group({
       curriculum: [null, Validators.required],
       categorias: this.formBuilder.array([], [Validators.required])
@@ -54,13 +57,37 @@ export class CompletarInformacionComponent{
     }
   }
 
+  async subirArchivo(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+    
+    const file: File = event.target.files[0];
+    console.log(file)
+    console.log(file.type)
+    const nombreArchivo = file.name;
+    const datos = await file.arrayBuffer();
+
+    const blob = new Blob([datos], { type: file.type });
+
+  
+    console.log('post')
+
+    this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/', blob).subscribe({
+      next: (data:any) => {
+        console.log("se envio")
+      }
+    });
+
+    console.log(blob)
+  }
+  }
+
   
   submit(): void {
     this.informacionCompleta = this.form.value as Informacion;
       this.solicitanteService.completarInformacion(this.informacionCompleta).subscribe({
         next: (data:any) => {
           this.sharedService.updateCompletarInfo(false);
-          this.router.navigate([this.solicitanteService.elegirPagina("completar")]);
+          this.router.navigate([this.solicitanteService.elegirPagina("aplicar")]);
         },
         error: (error: any) => {
           console.log("error" + error);

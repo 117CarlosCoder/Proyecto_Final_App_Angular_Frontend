@@ -8,6 +8,7 @@
           <th scope="col">No</th>
           <th scope="col">Oferta</th>
           <th scope="col">usuario</th>
+          <th scope="col">Fecha</th>
           <th scope="col">Hora</th>
           <th scope="col">Estado</th>
           <th scope="col">Seleccionar</th>
@@ -18,9 +19,10 @@
           <th>{{i+1}}</th>
           <td>{{dato.nombreOferta}}</td>
           <td>{{dato.nombre}}</td>
+          <td>{{dato.fecha}}</td>
           <td>{{dato.hora}}</td>
           <td>{{dato.estado}}</td>
-          <td ><button class="btn btn-primary" type="submit"(click)="seleccionarEntrevista(dato.codigo, dato.usuario)" *ngIf="dato.estado == 'PENDIENTE'">Seleccionar</button></td>
+          <td ><button class="btn btn-primary" type="submit"(click)="seleccionarEntrevista(dato.codigo, dato.usuario, dato.codigoOferta)" *ngIf="dato.estado == 'PENDIENTE'">Seleccionar</button></td>
         </tr>
       </tbody>
   </table>

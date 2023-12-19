@@ -1,6 +1,6 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
-    <h1>Ofertas</h1>
+    <h1>Candidatos Oferta  {{listarPostulantes[0].nombre}}</h1>
 <table class="table table-primary" >
     <thead>
       <tr>
@@ -15,7 +15,7 @@
         <th>{{i+1}}</th>
         <td>{{dato.nombreUsuario}}</td>
         <td>{{dato.estado}}</td>
-        <td><button class="btn btn-primary" type="submit"(click)="seleccionarPostulante(dato.usuario)" >Seleccionar</button></td>
+        <td><button class="btn btn-primary" type="submit"(click)="seleccionarPostulante(dato.usuario, dato.codigoOferta)" >Seleccionar</button></td>
       </tr>
     </tbody>
 </table>

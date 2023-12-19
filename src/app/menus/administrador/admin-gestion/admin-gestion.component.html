@@ -1,11 +1,11 @@
 <app-navbar-admin></app-navbar-admin>
-<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center border border-black rounded p-4">
     <h1>Categorias</h1>  
     <div class="d-flex w-100 justify-content-end aling-content-center">
         <button class="btn btn-primary mt-3 mb-3 w-25 justify-self-center" type="submit"(click)="crearCategoria()" >Crear Categoria</button>
     </div>
     
-  <table class="table table-primary" >
+  <table class="table table-primary  " >
       <thead>
         <tr>
           <th scope="col">No</th>
@@ -21,7 +21,7 @@
           <td>{{dato.nombre}}</td>
           <td>{{dato.descripcion}}</td>
           <td ><button class="btn btn-primary" type="submit"(click)="editarCategoria(dato.codigo)" >Editar</button></td>
-          <td ><button class="btn btn-primary" type="submit"  (click)="eliminarCategoria(dato.codigo)">Eliminar</button></td>
+          <td ><button class="btn btn-danger" type="submit"  (click)="eliminarCategoria(dato.codigo)">Eliminar</button></td>
         </tr>
       </tbody>
   </table>

@@ -59,4 +59,8 @@ export class AdminUsuariosComponent implements OnInit{
     });
   }
 
+  cancelar(){
+    this.router.navigate(['admin-dashboard']);
+  }
+
 }

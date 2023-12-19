@@ -41,11 +41,12 @@ export class AplicarEmpleoComponent implements OnInit{
 
   enviarMensaje(template: TemplateRef<any>){
     if (this.mensajeForm.valid) {
-      this.modalRef = this.modalService.show(template);
+      
         this.mensajeUsuario = this.mensajeForm.value as Mensaje;
         console.log(this.mensajeUsuario)
         this.solicitanteService.enviaMensaje(this.mensajeUsuario).subscribe({
           next:(data:any)=>{
+            this.modalRef = this.modalService.show(template);
             this.limpiar();
             this.router.navigate([this.solicitanteService.elegirPagina('aplicar')]);
           }

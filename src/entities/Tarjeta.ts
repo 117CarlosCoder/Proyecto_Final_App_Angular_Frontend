@@ -2,5 +2,6 @@ export interface Tarjeta {
     titular: String,
     numero: String,
     codigoSeguridad: String,
-    fechaExpiracion: String
+    fechaExpiracion: String,
+    cantidad: number
 }

@@ -1,52 +1,62 @@
 <app-navbar-solicitante></app-navbar-solicitante>
+
 <div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center">
-    <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-primary" type="submit">Search</button>
+    <h2>{{titulo}}</h2>
+    <form class="d-flex flex-column justify-content-center align-items-center w-100" role="search" (ngSubmit)="buscarEmpresa()"  [formGroup]="form" >
+        <input class="form-control me-2 mt-3" type="search" placeholder="Buscar Empresa" aria-label="Search"  id="nombre" placeholder="Buscar Oferta" name="nombre" formControlName="nombre" >
+        <button class="btn btn-outline-primary mt-3 w-25" type="submit"  >Buscar</button>
+        <br>
+        <div class="w-100 d-flex flex-row justify-content-between mt-3 border border-primary rounded p-4">
+            <p class="fs-3" >Filtros</p>
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example" 
+            id="categoria" placeholder="categoria" name="categoria" formControlName="categoria" >
+                <option selected>Elige categoria</option>
+                <option *ngFor="let dato of listacategorias let i = index" value={{dato.codigo}}>{{dato.nombre}}</option>
+            </select>  
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="modalidad" placeholder="modalidad" name="modalidad" formControlName="modalidad" >
+                <option selected>Elige modalidad</option>
+                <option *ngFor="let dato of listaModalidades let i = index" value={{dato.nombre}}>{{dato.nombre}}</option>
+            </select>
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="ubicacion" placeholder="ubicacion" name="ubicacion" formControlName="ubicacion" >
+                <option selected>Elige ubicacion</option>
+                <option *ngFor="let dato of listaUbicaciones let i = index" value={{dato.ubicacion}}>{{dato.ubicacion}}</option>
+            </select>  
+            <select class="form-select form-select-sm w-auto border border-primary" aria-label="Small select example"
+            id="salario" placeholder="salario" name="salario" formControlName="salario" >
+                <option selected>Elige salario</option>
+                <option *ngFor="let dato of listaSalarios let i = index" value={{dato.salario}}>{{dato.salario}}</option>
+            </select> 
+        </div>
     </form>
-    <div class="w-100 d-flex flex-row justify-content-around mt-3">
-        <select class="form-select form-select-sm w-auto" aria-label="Small select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>  
-        <select class="form-select form-select-sm w-auto" aria-label="Small select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
-        <select class="form-select form-select-sm w-auto" aria-label="Small select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>  
-        <select class="form-select form-select-sm w-auto" aria-label="Small select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>  
-    </div>
-    
 </div>
-<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center">        
-    <div class="container">
-        <div class="row row-cols-2 g-2 ">
-            <div class="card mb-3 ms-2" *ngFor="let dato of listaOfertas let i = index" style="max-width: 540px;">
-                <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-fluid rounded-start" alt="Empresa">
+
+
+<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center p-0 ">     
+    <div class="d-flex justify-content-evenly align-items-center    mb-5 w-100">
+        <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="todasOferta()">Todas las Ofertas</button>
+        <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="sugerencias()">Sugerencias</button>
+    </div>   
+    <div class="container p-0 d-flex">
+        <div class="row row-cols-2 g-2 justify-content-between w-100">
+            <div class="card mb-3 ms-2 border border-primary border-4 rounded p-0" *ngFor="let dato of listaOfertas let i = index" style="max-width: 540px;">
+                <div class="row g-0 h-100">
+                <div class="col-md-4 ">
+                    <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-fluid rounded-start h-100 " alt="Empresa">
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                    <h5 class="card-title"><a (click)="masInformacion(dato.codigo)">Empresa {{dato.empresa}}</a></h5>
-                    <p class="card-text">Puesto {{dato.nombre}}</p>
-                    <p class="card-text">Salario {{dato.salario}} </p> 
-                    <h5 class="card-title">Descripcion de Oferta</h5>
-                    <p class="card-text">{{dato.descripcion}}</p>
+                <div class="col-md-8 ">
+                    <div class="card-body ">
+                    <h2 class="card-title"><a (click)="masInformacion(dato.codigo)"> {{dato.empresa}}</a></h2>
+                    
+                    <div class="card text-bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body">
+                            <h3 class="card-text">{{dato.nombre}}</h3>
+                        </div>
+                    </div>    
+                        <h5 class="card-text">Modalidad: {{dato.modalidad}}</h5>
+                      <h5 class="card-text">Salario :  {{dato.salario}} </h5>
+                      <h5 class="card-text">Descripcion : {{dato.descripcion}}</h5>
                     <button type="button" class="btn btn-info" (click)="masInformacion(dato.codigo)">Mas Informacion</button>
                     </div>
                 </div>

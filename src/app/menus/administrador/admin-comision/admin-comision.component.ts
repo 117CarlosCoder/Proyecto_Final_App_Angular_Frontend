@@ -25,7 +25,7 @@ export class AdminComisionComponent implements OnInit{
       private router :Router){}
 
     ngOnInit(): void {
-
+      console.log("Comision" + this.comision);
       this.form = this.formBuilder.group({
         cantidad: [null, [Validators.required]]
       }); 
@@ -50,7 +50,7 @@ export class AdminComisionComponent implements OnInit{
         //this.modalRef = this.modalService.show(template);
         this.comision = this.form.value as Comision;
         console.log("Comision" + this.comision);
-        console.log(this.comision)
+        console.log(this.comision.cantidad)
         this.registroComision = {
             codigo:0,
             comision:this.comision.cantidad,
@@ -64,7 +64,7 @@ export class AdminComisionComponent implements OnInit{
                 console.log("Comision registrada");
               }
             });
-            location.reload();
+             location.reload();
           }
         });
         

@@ -25,6 +25,9 @@ export class PostulantesOfertaComponent {
       console.log(this.codigo)
     });
 
+    
+
+
     this.empleadorService.listarPostulantes(this.codigo).subscribe({
       next: (list: Postulante[]) => {
           console.log("Cargar Ofertas")
@@ -34,7 +37,7 @@ export class PostulantesOfertaComponent {
     });
   }
 
-  seleccionarPostulante(codigo:number){
-    this.router.navigate(['datos-postulantes',{codigo:codigo}]);
+  seleccionarPostulante(codigo:number, oferta:number){
+    this.router.navigate(['datos-postulantes',{codigo:codigo, oferta:oferta}]);
   }
 }

@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit{
     if (this.usuarioForm.valid) {
       this.usuario = this.usuarioForm.value as Usuario;
       console.log(this.usuario.password)
-      this.usuarioService.inciarSesion(this.usuario,{headers : new HttpHeaders().set('X-Angular-Session-Id', this.sessionService.getSessionIdFromCookie())}).subscribe({
+      this.usuarioService.inciarSesion(this.usuario).subscribe({
         next: ( response: HttpResponse<any>)=>{     
             const data = response.body;
             if(response.status === 202){

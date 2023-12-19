@@ -7,7 +7,7 @@ import { PostulacionesComponent } from './menus/solicitante/postulaciones/postul
 import { EntrevistasComponent } from './menus/solicitante/entrevistas/entrevistas.component';
 import { CargarOfertaComponent } from './menus/solicitante/cargar-oferta/cargar-oferta.component';
 import { AplicarEmpleoComponent } from './menus/solicitante/aplicar-empleo/aplicar-empleo.component';
-import { CargarInformacionTarjetaComponent } from './menus/solicitante/cargar-informacion-tarjeta/cargar-informacion-tarjeta.component';
+import { CargarInformacionTarjetaComponent } from './menus/empleador/cargar-informacion-tarjeta/cargar-informacion-tarjeta.component';
 import { SolicitanteCargarOfertaInfoComponent } from './menus/solicitante/solicitante-cargar-oferta-info/solicitante-cargar-oferta-info.component';
 import { ReportesComponent } from './menus/solicitante/reportes/reportes.component';
 import { CompletarInformacionEmpleadorComponent } from './menus/empleador/completar-informacion-empleador/completar-informacion-empleador.component';
@@ -33,6 +33,10 @@ import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.
 import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
 import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-usuario/admin-crear-usuario.component';
 import { AdminEditarUsuarioComponent } from './menus/administrador/admin-editar-usuario/admin-editar-usuario.component';
+import { PerfilUsuarioComponent } from './menus/general/perfil-usuario/perfil-usuario.component';
+import { PerfilAdminComponent } from './menus/administrador/perfil-admin/perfil-admin.component';
+import { PerfilSolicitanteComponent } from './menus/solicitante/perfil-solicitante/perfil-solicitante.component';
+import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/perfil-empleador.component';
 
 
 const routes: Routes = [
@@ -72,7 +76,7 @@ const routes: Routes = [
     component: CompletarInformacionEmpleadorComponent
   },
   {
-    path: "solicitante-completar-tarjeta",
+    path: "empleador-completar-tarjeta",
     title: "Completar Informacion",
     component: CargarInformacionTarjetaComponent
   },
@@ -212,6 +216,33 @@ const routes: Routes = [
     path: "admin-editar-usuarios",
     title: "Admin Editar Usuarios",
     component: AdminEditarUsuarioComponent
+  },
+  {
+    path: "admin-editar-perfil",
+    title: "Admin Editar Perfil",
+    component: PerfilAdminComponent
+  },
+  {
+    path: "admin-editar-perfil",
+    title: "Admin Editar Perfil",
+    component: PerfilAdminComponent
+  }
+  ,
+  {
+    path: "admin-editar-perfil",
+    title: "Admin Editar Perfil",
+    component: PerfilAdminComponent
+  },
+  {
+    path: "solicitante-editar-perfil",
+    title: "Solcitante Editar Perfil",
+    component: PerfilSolicitanteComponent
+  }
+  ,
+  {
+    path: "empleador-editar-perfil",
+    title: "Empleador Editar Perfil",
+    component: PerfilEmpleadorComponent
   }
 ];
 

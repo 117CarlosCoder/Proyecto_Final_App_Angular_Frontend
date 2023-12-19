@@ -44,12 +44,13 @@ export class GenerarEntrevistaComponent implements OnInit{
 
   generarEntrevista(template: TemplateRef<any>){
     if (this.form.valid) {
-      this.modalRef = this.modalService.show(template);
+      
       this.datosEntrevista = this.form.value as DatosEntrevista;
       console.log("Oferta" + this.datosEntrevista);
-      console.log(this.datosEntrevista)
+      console.log(this.datosEntrevista);
       this.empleadorService.generarEntrevista(this.datosEntrevista).subscribe({
         next:(data:any)=>{
+          this.modalRef = this.modalService.show(template);
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('postular')]);
         }

@@ -21,13 +21,6 @@ export class NavbarAdminComponent {
     private sharedService : ActualizarNavbarService,
     private adminService : AdminService) {}
 
-  ngOnInit(): void {
-    this.sharedService.completarInfo$.subscribe((value) => {
-      this.completarInfo = value;
-    }); 
-    this.nombreVistaPagina = this.solicitanteService.nombrePagina('completar');
-  }
-
   cambiarPagina(pagina : String){
     this.nombreVistaPagina = this.adminService.nombrePagina(pagina);
     this.siguientePagina = this.adminService.elegirPagina(pagina);

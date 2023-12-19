@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, filter } from "rxjs";
 import { Informacion } from "src/entities/Informacion";
 import { Categoria } from "src/entities/Categoria";
 import { HttpClient } from "@angular/common/http";
@@ -14,6 +14,9 @@ import { EntrevistaFecha } from "src/entities/EntrevistaFecha";
 import { EntrevistaInfo } from "src/entities/EntrevistaInfo";
 import { FechasOferta } from "src/entities/FechasOferta";
 import { RegistroRetirada } from "src/entities/RegistroRetirada";
+import { Salario } from "src/entities/Salario";
+import { Ubicacion } from "src/entities/Ubicacion";
+import { Filtros } from "src/entities/Filtros";
 
 @Injectable({
     providedIn: 'root'
@@ -41,8 +44,29 @@ export class SolicitanteService {
         return this.httpClient.get<Ofertas[]>(this.API_URL + "/listar-ofertas");
     }
 
+    public listarOfertasSugerencia(): Observable<Ofertas[]> {
+        return this.httpClient.get<Ofertas[]>(this.API_URL + "/listar-ofertas-sugerencias");
+    }
+
+    public listarOfertasNombre(filtros: Filtros): Observable<Ofertas[]> {
+        return this.httpClient.post<Ofertas[]>(this.API_URL + "/buscar-empresa",filtros);
+    }
+
+    public listarOfertasFiltros(listaFiltros:Filtros): Observable<Ofertas[]> {
+        return this.httpClient.post<Ofertas[]>(this.API_URL + "/listar-ofertas-filtros", listaFiltros);
+    }
+
     public listarPostulaciones(): Observable<Postulacion[]> {
         return this.httpClient.get<Postulacion[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-postulaciones");
+    }
+
+
+    public listarSalarios(): Observable<Salario[]> {
+        return this.httpClient.get<Salario[]>(this.API_URL + "/listar-salarios");
+    }
+
+    public listarUbicaciones(): Observable<Ubicacion[]> {
+        return this.httpClient.get<Ubicacion[]>(this.API_URL + "/listar-ubicaciones");
     }
 
     public descargarOfertasCostos() {
@@ -57,8 +81,9 @@ export class SolicitanteService {
         return this.httpClient.get<EntrevistaFecha[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-reports-changer-servlet/listar-fechaEntrevista?fecha=" + fecha);
     }
 
-    public listarOferta(codigo:String): Observable<Ofertas> {
-        return this.httpClient.get<Ofertas>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-postulacion?codigo="+codigo);
+    public listarOferta(codigo:String, valor:boolean=true): Observable<Ofertas> {
+        console.log(valor)
+        return this.httpClient.get<Ofertas>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-postulacion?codigo="+codigo+"&valor="+valor);
     }
 
     public listarOfertaFecha(fechaA : String,fechaB : String,estado:String): Observable<Ofertas[]> {
@@ -122,7 +147,10 @@ export class SolicitanteService {
         if (pagina == 'reportes') {
             return 'solicitante-reportes';
         }
-        return 'solicitante-aplicar-ofeta';
+        if (pagina == 'perfil') {
+            return 'solicitante-editar-perfil';
+        }
+        return 'solicitante-aplicar-oferta';
     }
 
     public nombrePagina(pagina:String){

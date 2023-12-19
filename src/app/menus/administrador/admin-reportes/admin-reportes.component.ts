@@ -30,6 +30,7 @@ export class AdminReportesComponent implements OnInit{
   listarCategorias!:Categoria[];
   carga!:boolean;
   cargainforme2!:boolean;
+  valor:boolean=false;
 
   constructor(private formBuilder:FormBuilder,
     private adminService:AdminService){}
@@ -73,14 +74,40 @@ export class AdminReportesComponent implements OnInit{
         }
       });
 
+      this.adminService.listarCatidadTotal("","",0,this.valor).subscribe({
+        next:(list: CantidadTotal)=>{
+          
+
+          if(list){
+            console.log("Cargar ganancia total")
+            this.gananciaTotal = list;
+            console.log(this.gananciaTotal);
+            this.carga=true;
+          }
+          else{
+            this.formreporte3.reset({
+              
+            });
+            this.formreporte3 = this.formBuilder.group({
+              fechaA: [null, [Validators.required]],
+              fechaB: [null, [Validators.required]],
+              categoria: [null, [Validators.required]]
+            });
+          }
+          
+        }
+        
+      });
+
   }
 
   cambiarFechaEstadoCantidadTotal(){
     if (this.formreporte3.valid) {
+      this.valor = true;
       this.fechasCantidadTotal = this.formreporte3.value as FechaTotal;
       let fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
-      this.adminService.listarCatidadTotal(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria).subscribe({
+      this.adminService.listarCatidadTotal(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria, this.valor).subscribe({
         next:(list: CantidadTotal)=>{
           
 

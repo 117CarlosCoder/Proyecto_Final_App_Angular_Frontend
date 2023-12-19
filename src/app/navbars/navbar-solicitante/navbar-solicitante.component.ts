@@ -29,6 +29,7 @@ export class NavbarSolicitanteComponent {
   }
 
   cambiarPagina(pagina : String){
+    console.log(pagina)
     this.nombreVistaPagina = this.solicitanteService.nombrePagina(pagina);
     this.siguientePagina = this.solicitanteService.elegirPagina(pagina);
     console.log(this.siguientePagina)

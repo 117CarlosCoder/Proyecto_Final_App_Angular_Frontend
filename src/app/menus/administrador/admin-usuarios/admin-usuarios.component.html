@@ -1,8 +1,9 @@
 <app-navbar-admin></app-navbar-admin>
-<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center border border-black rounded p-4">
     <h1>{{rol}}</h1>  
-    <div class="d-flex w-100 justify-content-end aling-content-center">
-        <button class="btn btn-primary mt-3 mb-3 w-25 justify-self-center" type="submit" (click)="crearUsuario()">Crear {{rol}}</button>
+    <div class="d-flex w-100 justify-content-between aling-content-center">
+      <button class="btn btn-danger w-25 mt-3 mb-3" type="submit"  (click)="cancelar()">Cancelar</button>
+      <button class="btn btn-primary mt-3 mb-3 w-25 " type="submit" (click)="crearUsuario()">Crear {{rol}}</button>
     </div>
     
   <table class="table table-primary" >
@@ -26,7 +27,7 @@
           <td>{{dato.username}}</td>
           <td>{{dato.password}}</td>
           <td ><button class="btn btn-primary" type="submit" (click)="editarUsuario(dato.codigo)">Editar</button></td>
-          <td ><button class="btn btn-primary" type="submit" (click)="eliminarUsuario(dato.username)">Eliminar</button></td>
+          <td ><button class="btn btn-danger" type="submit" (click)="eliminarUsuario(dato.username)">Eliminar</button></td>
           <td ><div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="suspension{{i+1}}">
             <label class="form-check-label" for="suspension{{i+1}}">Suspension</label>
@@ -34,4 +35,5 @@
         </tr>
       </tbody>
   </table>
+  
   </div>

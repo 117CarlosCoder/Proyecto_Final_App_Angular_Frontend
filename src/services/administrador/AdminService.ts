@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Info } from 'src/entities/Info';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { Ofertas } from 'src/entities/Ofertas';
 import { Categoria } from 'src/entities/Categoria';
 import { Dashboard } from 'src/entities/Dashboar';
@@ -13,6 +13,7 @@ import { RegistroComision } from 'src/entities/RegistroComision';
 import { CrearUsuario } from 'src/entities/CrearUsuario';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { NumTelefono } from 'src/entities/NumTelefono';
+import { UsuarioService } from '../usuario/UsuarioService';
 
 @Injectable({
     providedIn: 'root'
@@ -23,11 +24,13 @@ export class AdminService {
     readonly API_URL_REPORTS = "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-report-changer-servlet";
     readonly API_URL_REPORTS_PDF = "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-reports-servlet/";
 
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient,
+        private usuarioService: UsuarioService) {
     }
 
-    public listarDashboard(options?: { headers?: HttpHeaders , withCredentials?: true} ): Observable<Dashboard> {
-        return this.httpClient.get<Dashboard>(this.API_URL+"/listar-dashboard", options);
+    public listarDashboard(): Observable<Dashboard> {
+        const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get<Dashboard>(this.API_URL + '/listar-dashboard', {headers});
     }
 
     public listarUsuarios(rol:String): Observable<UsuarioT[]> {
@@ -38,8 +41,16 @@ export class AdminService {
         return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario?codigo="+codigo);
     }
 
+    public listarUsuarioEspecifico(): Observable<UsuarioT> {
+        return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario-especifico");
+    }
+
     public listarTelefonos(codigo:number): Observable<NumTelefono[]> {
         return this.httpClient.get<NumTelefono[]>(this.API_URL+"/listar-telefonos?codigo="+codigo);
+    }
+
+    public listarTelefonosEspecifico(): Observable<NumTelefono[]> {
+        return this.httpClient.get<NumTelefono[]>(this.API_URL+"//listar-telefonos-usuario-especifico");
     }
 
     public enviarOferta(oferta: Ofertas): Observable<Ofertas> {
@@ -71,8 +82,8 @@ export class AdminService {
         return this.httpClient.get<TopEmpleadores[]>(this.API_URL_REPORTS + "/listar-top-empleadores");
     }
 
-    public listarCatidadTotal(fechaA:String,fechaB:String,categoria:number): Observable<CantidadTotal> {
-        return this.httpClient.get<CantidadTotal>(this.API_URL_REPORTS + "/listar-cantidad-total?fechaA="+fechaA+"&fechaB="+fechaB+"&categoria="+categoria);
+    public listarCatidadTotal(fechaA:String,fechaB:String,categoria:number, valor:boolean): Observable<CantidadTotal> {
+        return this.httpClient.get<CantidadTotal>(this.API_URL_REPORTS + "/listar-cantidad-total?fechaA="+fechaA+"&fechaB="+fechaB+"&categoria="+categoria+"&valor="+valor);
     }
 
     public listarIngresoTotal(fechaA:String,fechaB:String): Observable<IngresoTotal[]> {
@@ -154,6 +165,9 @@ export class AdminService {
         }
         if (pagina == 'reportes') {
             return 'admin-reportes';
+        }
+        if (pagina == 'perfil') {
+            return 'admin-editar-perfil';
         }
         return 'admin-dashboard';
     }

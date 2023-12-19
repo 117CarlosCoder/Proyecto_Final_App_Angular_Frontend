@@ -15,6 +15,7 @@ export class RealizarEntrevistaComponent implements OnInit {
   form!:FormGroup;
   codigo!:number;
   usuario!:number;
+  oferta!:number;
   finalizarInfoEntrevista!:EntrevistaFinal;
   modalRef?: BsModalRef;
  
@@ -34,12 +35,16 @@ export class RealizarEntrevistaComponent implements OnInit {
       const valorUsuario = params['usuario'];
       this.usuario = valorUsuario;
       console.log(this.usuario)
+      const valorOferta = params['oferta'];
+      this.oferta = valorOferta;
+      console.log(this.oferta)
     });
 
     this.form = this.formBuilder.group({
       codigo: [this.codigo],
       usuario: [this.usuario],
-      notas: [null, [Validators.required]]
+      notas: [null, [Validators.required]],
+      codigoOferta: [this.oferta],
     });
   }
 
@@ -52,6 +57,24 @@ export class RealizarEntrevistaComponent implements OnInit {
         next:(data:any)=>{
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('entrevista')]);
+        }
+      });
+    }
+  }
+
+  contratar(template: TemplateRef<any>){
+    if (this.form.valid) {
+      this.modalRef = this.modalService.show(template);
+      this.finalizarInfoEntrevista = this.form.value as EntrevistaFinal;
+      console.log(this.finalizarInfoEntrevista)
+      this.empleadorService.finalizarEntrevista(this.finalizarInfoEntrevista).subscribe({
+        next:(data:any)=>{
+          this.empleadorService.contratar(this.finalizarInfoEntrevista).subscribe({
+            next:(data:any)=>{
+              this.limpiar();
+              this.router.navigate([this.empleadorService.elegirPagina('entrevista')]);
+            }
+          });
         }
       });
     }

@@ -4,6 +4,7 @@ import { Tarjeta } from 'src/entities/Tarjeta';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class CargarInformacionTarjetaComponent implements OnInit{
   tarjeta !: Tarjeta;
   
   constructor(private formBuilder: FormBuilder,
-     private solicitanteService: SolicitanteService,
+     private empleadorService: EmpleadorService,
      private router : Router,
      private modalService: BsModalService){
   }
@@ -27,7 +28,8 @@ export class CargarInformacionTarjetaComponent implements OnInit{
       titular: [null, [Validators.required]],
       numero: [null, [Validators.required]],
       codigoSeguridad: [null, [Validators.required]],
-      fechaExpiracion: [null, [Validators.required]]
+      fechaExpiracion: [null, [Validators.required]],
+      cantidad : [null, [Validators.required]]
     });
   }
 
@@ -36,10 +38,10 @@ export class CargarInformacionTarjetaComponent implements OnInit{
       this.modalRef = this.modalService.show(template);
       this.tarjeta = this.form.value as Tarjeta;
       console.log(this.tarjeta)
-      this.solicitanteService.enviaTarjeta(this.tarjeta).subscribe({
+      this.empleadorService.enviaTarjeta(this.tarjeta).subscribe({
         next:(data:any)=>{
           this.limpiar();
-          this.router.navigate([this.solicitanteService.elegirPagina('aplicar')]);
+          this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
         }
       });
   }

@@ -29,7 +29,7 @@ export class EntrevistasComponent {
 
 
   masInformacion(codigo: number){
-    this.router.navigate(['solicitante-cargar-oferta-info',{codigo:codigo}]);
+    this.router.navigate(['solicitante-cargar-oferta-info',{codigo:codigo,valor:false}]);
   }
 
 }

@@ -21,7 +21,7 @@ export class AdminDashboardComponent implements OnInit{
   ngOnInit(): void {
     this.carga = false;
     
-    this.adminService.listarDashboard({headers : new HttpHeaders().set('X-Angular-Session-Id', this.sessionService.getSessionIdFromCookie())}).subscribe({
+    this.adminService.listarDashboard().subscribe({
       next: (list: Dashboard) => {
         this.vistaDashboard = list;
         this.carga = true;

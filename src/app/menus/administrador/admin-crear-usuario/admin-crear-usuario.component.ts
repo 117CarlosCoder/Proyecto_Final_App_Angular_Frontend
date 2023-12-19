@@ -89,7 +89,9 @@ export class AdminCrearUsuarioComponent implements OnInit{
 
   
 
-  cancelar(){}
+  cancelar(){
+    this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+  }
 
   limpiar(): void {
     this.form.reset({});
