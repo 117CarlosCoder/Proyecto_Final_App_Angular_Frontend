@@ -1,7 +1,6 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { CrearUsuario } from 'src/entities/CrearUsuario';
-import { Usuario } from 'src/entities/Usuario';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { AdminService } from 'src/services/administrador/AdminService';
 
@@ -27,10 +26,22 @@ export class AdminUsuariosComponent implements OnInit{
     });
 
     this.adminService.listarUsuarios(this.rol).subscribe({
-      next: (list: UsuarioT[]) => {
-        this.listarUsuarios = list;
-        console.log(this.listarUsuarios)
+      next: (response: HttpResponse<UsuarioT[]>) => {
+        var list:UsuarioT[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarUsuarios = list;
+            console.log(this.listarUsuarios)
+          }
         
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }
@@ -46,15 +57,30 @@ export class AdminUsuariosComponent implements OnInit{
 
   eliminarUsuario(username:String){
     this.adminService.eliminarUsuario(username).subscribe({
-      next:() => {
+      next:(response: HttpResponse<any>) => {
         console.log("Eliminado");
         this.adminService.listarUsuarios(this.rol).subscribe({
-          next: (list: UsuarioT[]) => {
-            this.listarUsuarios = list;
-            console.log(this.listarUsuarios)
+          next: (response: HttpResponse<UsuarioT[]>) => {
+            if(response.status === 406){
+              this.router.navigate(['**']);
+            }
+            var list:UsuarioT[] | null= null; 
+              if (response.body) {
+                list = response.body;
+                this.listarUsuarios = list;
+                console.log(this.listarUsuarios)
+              }
+            
             
           }
         });
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
     });
   }

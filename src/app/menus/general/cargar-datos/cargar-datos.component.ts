@@ -12,7 +12,11 @@ export class CargarDatosComponent {
   isLoading = false;
 
   constructor(private httpClient: HttpClient,
-    private router:Router) {}
+    private router:Router) {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+      localStorage.setItem('rol', 'Invitado');
+    }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];

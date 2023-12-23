@@ -56,23 +56,32 @@ export class AdminEditarUsuarioComponent {
 
 
     this.adminService.listarUsuario(this.codigo).subscribe({
-      next: (list: UsuarioT) => {
-        this.usuario = list;
+      next: (response: HttpResponse<UsuarioT>) => {
+        var list: UsuarioT | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.usuario = list;
         console.log(this.usuario);
+        console.log(this.usuario.fechaFundacion);
+        console.log(this.usuario.fechaFundacion);
         if(this.usuario.fechaNacimiento!=null){
           this.FechaNString = this.pipe.transform(this.usuario.fechaNacimiento.toString(), 'yyyy/MM/dd');
-          console.log(this.FechaN);
+          console.log(this.FechaNString);
           if(this.FechaNString?.toString()){
             this.FechaN = new Date(this.FechaNString.toString());
+            console.log(this.FechaN);
           }
         }
         if(this.usuario.fechaFundacion != null  ){
-          this.FechaFString = this.pipe.transform(this.usuario.fechaFundacion.toString(), 'yyyy-MM-dd');
-          console.log(this.FechaF)
+          this.FechaFString = this.pipe.transform(this.usuario.fechaFundacion.toString(), 'yyyy/MM/dd');
+          console.log(this.FechaFString)
           if(this.FechaFString?.toString()){
-            this.FechaN = new Date(this.FechaFString.toString());
+            this.FechaF = new Date(this.FechaFString.toString());
+            console.log(this.FechaF);
           }
         }
+        console.log("fecha fundacion "+this.FechaF);
+        console.log("fecha Nacimineto "+this.FechaN);
         this.form = this.formBuilder.group({
           codigo:[this.usuario.codigo],
           nombre: [this.usuario.nombre, [Validators.required]],
@@ -86,6 +95,15 @@ export class AdminEditarUsuarioComponent {
           rol:[this.usuario.rol]
         });
       }
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
+        }
+        
     });
 
 
@@ -105,26 +123,37 @@ export class AdminEditarUsuarioComponent {
 
 
     this.adminService.listarTelefonos(this.codigo).subscribe({
-      next: (list: NumTelefono[]) => {
-        this.listaTelefonos = list;
-        console.log(this.listaTelefonos);
-        var numero1;
-        var numero2;
-        var numero3;
-        if (list[0]!=undefined) {
-          numero1= list[0].numero;
+      next: (response: HttpResponse<NumTelefono[]>) => {
+        var list: NumTelefono[] | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.listaTelefonos = list;
+          console.log(this.listaTelefonos);
+          var numero1;
+          var numero2;
+          var numero3;
+          if (list[0]!=undefined) {
+            numero1= list[0].numero;
+          }
+          if (list[1]!=undefined) {
+            numero2= list[1].numero;
+          }
+          if (list[2]!=undefined) {
+            numero3= list[2].numero;
+          }
+          this.form2 = this.formBuilder.group({
+            telefono1: [numero1,[Validators.required]],
+            telefono2: [numero2],
+            telefono3: [numero3]
+          });
         }
-        if (list[1]!=undefined) {
-          numero2= list[1].numero;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
         }
-        if (list[2]!=undefined) {
-          numero3= list[2].numero;
-        }
-        this.form2 = this.formBuilder.group({
-          telefono1: [numero1,[Validators.required]],
-          telefono2: [numero2],
-          telefono3: [numero3]
-        });
       }
     });
 
@@ -153,15 +182,6 @@ export class AdminEditarUsuarioComponent {
       if (this.listaTelefonos[2]!=null) {
         this.listaTelefonos[2].numero = this.telefonos.telefono3;
       }
-
-
-
-      
-
-      
-
-    
-     
       
       console.log(this.listaTelefonos)
       console.log(this.listTelefono)
@@ -201,8 +221,11 @@ export class AdminEditarUsuarioComponent {
             }
               if (this.listaTelefonos[0] == null && this.telefonos.telefono1 ) {
               this.adminService.crearTelefonos(this.listTelefono).subscribe({
-                next:(data:any)=>{
-                  this.listTelefono =[];
+                next:(response: HttpResponse<any>)=>{
+                  if(response.status === 406){
+                    this.router.navigate(['**']);
+                  }
+                    this.listTelefono =[];
                     console.log("Telefonos creados")
                 }
               }); 
@@ -223,8 +246,11 @@ export class AdminEditarUsuarioComponent {
               }
               if (this.listaTelefonos[1] == null && this.telefonos.telefono2  ) {
                 this.adminService.crearTelefonos(this.listTelefono).subscribe({
-                  next:(data:any)=>{
-                    this.listTelefono =[];
+                  next:(response: HttpResponse<any>)=>{
+                    if(response.status === 406){
+                      this.router.navigate(['**']);
+                    }
+                      this.listTelefono =[];
                       console.log("Telefonos creados")
                   }
                 }); 
@@ -242,7 +268,10 @@ export class AdminEditarUsuarioComponent {
               }
               if ( this.listaTelefonos[2] == null && this.telefonos.telefono3 ) {
                 this.adminService.crearTelefonos(this.listTelefono).subscribe({
-                  next:(data:any)=>{
+                  next:(response: HttpResponse<any>)=>{
+                    if(response.status === 406){
+                      this.router.navigate(['**']);
+                    }
                     this.listTelefono =[];
                       console.log("Telefonos creados")
                   }
@@ -252,6 +281,13 @@ export class AdminEditarUsuarioComponent {
               this.limpiar();
               this.router.navigate(['admin-usuarios',{rol:this.rol}]);
             
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
         });
       

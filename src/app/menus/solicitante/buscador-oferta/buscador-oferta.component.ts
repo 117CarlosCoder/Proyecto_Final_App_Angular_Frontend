@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -38,24 +39,57 @@ export class BuscadorOfertaComponent implements OnInit {
     this.solicitanteService.listarCategorias().subscribe({
       next: (list: Categoria[]) => {
         this.listacategorias = list;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.solicitanteService.listarSalarios().subscribe({
       next: (list: Salario[]) => {
         this.listaSalarios = list;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.solicitanteService.listarUbicaciones().subscribe({
       next: (list: Ubicacion[]) => {
         this.listaUbicaciones = list;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarModalidades().subscribe({
-      next: (list: Modalidad[])=> {
-        this.listaModalidades = list;
+      next: (response: HttpResponse<Modalidad[]>)=> {
+        var list: Modalidad[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaModalidades = list;
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
@@ -89,6 +123,13 @@ export class BuscadorOfertaComponent implements OnInit {
         console.log("Cargar ofertas")
         this.listaOfertas = list;
         console.log(this.listaOfertas);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

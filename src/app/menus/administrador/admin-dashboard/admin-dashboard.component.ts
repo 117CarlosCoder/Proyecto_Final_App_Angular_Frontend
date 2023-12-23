@@ -1,9 +1,8 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dashboard } from 'src/entities/Dashboar';
 import { AdminService } from 'src/services/administrador/AdminService';
-import { SessionService } from 'src/services/sesion/SessionService';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,17 +14,30 @@ export class AdminDashboardComponent implements OnInit{
   carga!:boolean;
 
   constructor(private adminService:AdminService,
-    private sessionService : SessionService,
     private router : Router){}
 
   ngOnInit(): void {
     this.carga = false;
     
     this.adminService.listarDashboard().subscribe({
-      next: (list: Dashboard) => {
-        this.vistaDashboard = list;
-        this.carga = true;
+      next: (response: HttpResponse<Dashboard>) => {
+        console.log(response.status)
         
+        var list: Dashboard | null = null; 
+          if (response.body) {
+            list = response.body;
+            this.vistaDashboard = list;
+            this.carga = true;
+          }
+        
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     },
     );

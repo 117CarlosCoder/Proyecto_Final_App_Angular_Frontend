@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EntrevistaFinal } from 'src/entities/EntrevistaFinal';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -54,9 +55,16 @@ export class RealizarEntrevistaComponent implements OnInit {
       this.finalizarInfoEntrevista = this.form.value as EntrevistaFinal;
       console.log(this.finalizarInfoEntrevista)
       this.empleadorService.finalizarEntrevista(this.finalizarInfoEntrevista).subscribe({
-        next:(data:any)=>{
+        next:(response: HttpResponse<any>)=>{
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('entrevista')]);
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }
@@ -73,8 +81,22 @@ export class RealizarEntrevistaComponent implements OnInit {
             next:(data:any)=>{
               this.limpiar();
               this.router.navigate([this.empleadorService.elegirPagina('entrevista')]);
+            },
+            error: (error) => {
+              if(error.status === 406){
+                this.router.navigate(['**']);
+              }else {
+                console.error('Error en la solicitud:', error);
+              }
             }
           });
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

@@ -49,6 +49,13 @@ export class AplicarEmpleoComponent implements OnInit{
             this.modalRef = this.modalService.show(template);
             this.limpiar();
             this.router.navigate([this.solicitanteService.elegirPagina('aplicar')]);
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
+            }
           }
         });
     }

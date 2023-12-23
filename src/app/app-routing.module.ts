@@ -33,10 +33,12 @@ import { CargarDatosComponent } from './menus/general/cargar-datos/cargar-datos.
 import { AdminUsuariosComponent } from './menus/administrador/admin-usuarios/admin-usuarios.component';
 import { AdminCrearUsuarioComponent } from './menus/administrador/admin-crear-usuario/admin-crear-usuario.component';
 import { AdminEditarUsuarioComponent } from './menus/administrador/admin-editar-usuario/admin-editar-usuario.component';
-import { PerfilUsuarioComponent } from './menus/general/perfil-usuario/perfil-usuario.component';
 import { PerfilAdminComponent } from './menus/administrador/perfil-admin/perfil-admin.component';
 import { PerfilSolicitanteComponent } from './menus/solicitante/perfil-solicitante/perfil-solicitante.component';
 import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/perfil-empleador.component';
+import { hasRole } from './auth/auth.guard';
+import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
+import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
 
 
 const routes: Routes = [
@@ -48,201 +50,250 @@ const routes: Routes = [
   {
     path: "cargar",
     title: "Cargar Datos",
-    component: CargarDatosComponent
+    component: CargarDatosComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {
     path: "login",
     title: "Iniciar Sesion",
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {
     path: "crear-usuario",
     title: "Creacion Usuarios",
-    component: CrearUsuarioComponent
+    component: CrearUsuarioComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {
     path: "restablecer-contrasena",
     title: "Restablecer Contrasena",
-    component: RestablecerContrasenaComponent
+    component: RestablecerContrasenaComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {
     path: "solicitante-completar-informacion",
     title: "Completar Informacion",
-    component: CompletarInformacionComponent
+    component: CompletarInformacionComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "empleador-completar-informacion",
     title: "Completar Informacion",
-    component: CompletarInformacionEmpleadorComponent
+    component: CompletarInformacionEmpleadorComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "empleador-completar-tarjeta",
     title: "Completar Informacion",
-    component: CargarInformacionTarjetaComponent
+    component: CargarInformacionTarjetaComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "solicitante-aplicar-oferta",
     title: "Aplicar oferta",
-    component: AplicarOfertaComponent
+    component: AplicarOfertaComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "solicitante-cargar-oferta",
     title: "Cargar oferta",
-    component: CargarOfertaComponent
+    component: CargarOfertaComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "solicitante-cargar-oferta-info",
     title: "Cargar oferta",
-    component: SolicitanteCargarOfertaInfoComponent
+    component: SolicitanteCargarOfertaInfoComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "solicitante-aplicar-empleo",
     title: "Alpicar Empleo",
-    component: AplicarEmpleoComponent
+    component: AplicarEmpleoComponent,
+    canActivate: [hasRole(['Solicitante'])]
+
   },
   {
     path: "solicitante-postulaciones",
     title: "Postulaciones",
-    component: PostulacionesComponent
+    component: PostulacionesComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "solicitante-entrevistas",
     title: "Entrevistas",
-    component: EntrevistasComponent
+    component: EntrevistasComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "solicitante-reportes",
     title: "Reportes",
-    component: ReportesComponent
+    component: ReportesComponent,
+    canActivate: [hasRole(['Solicitante'])]
   },
   {
     path: "empleador-gestion",
     title: "Gestion",
-    component: GestionComponent
+    component: GestionComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "crear-oferta",
     title: "Crear oferta",
-    component: CrearOfertaComponent
+    component: CrearOfertaComponent,
+    canActivate: [hasRole(['Empleador'])]
   }
   ,
   {
     path: "actualizar-oferta",
     title: "Actualizar oferta",
-    component: ActualizarOfertaComponent
+    component: ActualizarOfertaComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "revisar-postulaciones",
     title: "Revision de Postulaciones",
-    component: RevisarPostulacionesComponent
+    component: RevisarPostulacionesComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "empleador-postulantes",
     title: "Revision de Postulantes",
-    component: PostulantesOfertaComponent
+    component: PostulantesOfertaComponent,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "datos-postulantes",
     title: "Datos de Postulantes",
-    component: DatosPostulanteComponent 
+    component: DatosPostulanteComponent ,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "generar-entrevista",
     title: "Generar Entrevista",
-    component: GenerarEntrevistaComponent 
+    component: GenerarEntrevistaComponent ,
+    canActivate: [hasRole(['Empleador'])]
   }
   ,
   {
     path: "revisar-entrevistas",
     title: "Revisar Entrevistas",
-    component: RevisionEntrevistasComponent 
+    component: RevisionEntrevistasComponent ,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "realizar-entrevista",
     title: "Realizar Entrevista",
-    component: RealizarEntrevistaComponent 
+    component: RealizarEntrevistaComponent ,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "empleador-reportes",
     title: "Reportes",
-    component: EmpleadorReportesComponent 
+    component: EmpleadorReportesComponent ,
+    canActivate: [hasRole(['Empleador'])]
   },
   {
     path: "admin-dashboard",
     title: "Admin Dashboard",
-    component: AdminDashboardComponent
+    component: AdminDashboardComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "admin-gestion",
     title: "Admin Gestion",
-    component: AdminGestionComponent
+    component: AdminGestionComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "editar-categoria",
     title: "Admin Editar Categoria",
-    component: EditarCategoriaComponent
+    component: EditarCategoriaComponent,
+    canActivate: [hasRole(['Administrador'])]
   }
   ,
   {
     path: "crear-categoria",
     title: "Admin Crear Categoria",
-    component: CrearCategoriaComponent
+    component: CrearCategoriaComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "cambiar-comision",
     title: "Admin Cambiar Comision",
-    component: AdminComisionComponent
+    component: AdminComisionComponent,
+    canActivate: [hasRole(['Administrador'])]
   }
   ,
   {
     path: "admin-reportes",
     title: "Admin Reportes",
-    component: AdminReportesComponent
-  }
+    component: AdminReportesComponent,
+    canActivate: [hasRole(['Administrador'])]  }
   ,
   {
     path: "admin-usuarios",
     title: "Admin Gestionar Usuarios",
-    component: AdminUsuariosComponent
+    component: AdminUsuariosComponent,
+    canActivate: [hasRole(['Administrador'])]
   }
   ,
   {
     path: "admin-crear-usuarios",
     title: "Admin Crear Usuarios",
-    component: AdminCrearUsuarioComponent
+    component: AdminCrearUsuarioComponent,
+    canActivate: [hasRole(['Administrador'])]
   }
   ,
   {
     path: "admin-editar-usuarios",
     title: "Admin Editar Usuarios",
-    component: AdminEditarUsuarioComponent
+    component: AdminEditarUsuarioComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "admin-editar-perfil",
     title: "Admin Editar Perfil",
-    component: PerfilAdminComponent
+    component: PerfilAdminComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "admin-editar-perfil",
     title: "Admin Editar Perfil",
-    component: PerfilAdminComponent
+    component: PerfilAdminComponent,
+    canActivate: [hasRole(['Administrador'])]
   }
   ,
   {
     path: "admin-editar-perfil",
     title: "Admin Editar Perfil",
-    component: PerfilAdminComponent
+    component: PerfilAdminComponent,
+    canActivate: [hasRole(['Administrador'])]
   },
   {
     path: "solicitante-editar-perfil",
     title: "Solcitante Editar Perfil",
-    component: PerfilSolicitanteComponent
+    component: PerfilSolicitanteComponent,
+    canActivate: [hasRole(['Solicitante'])]
   }
   ,
   {
     path: "empleador-editar-perfil",
     title: "Empleador Editar Perfil",
-    component: PerfilEmpleadorComponent
+    component: PerfilEmpleadorComponent,
+    canActivate: [hasRole(['Empleador'])]
+  },
+  {
+    path: "pagina-no-permitida",
+    title: "Pagina No Permitida",
+    component: PaginaNoPermitidaComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
+  },
+  { path: '**',
+    title: "Pagina Error",
+    component: PaginaErrorComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   }
 ];
 

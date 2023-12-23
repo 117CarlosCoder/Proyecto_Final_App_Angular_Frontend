@@ -1,18 +1,19 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center" [formGroup]="form">
     <h1>Gestion</h1>
-    <div class="row row-cols-3 g-4 mb-5">
-        <div class=" form-group" >
-            <label for="fechaInicial" class="form-label">Fecha Inicial</label>
+    <div class="row row-cols-3 g-4 mt-3 mb-5 border border-black rounded p-4">
+        <h3>Filtro de fechas</h3>
+        <div class=" form-group " >
+            <label for="fechaA" class="form-label">Fecha Inicial</label>
             <input type="text"
                 placeholder="Fecha"
                 class="form-control "
                 bsDatepicker
-                [class.is-invalid]="form.controls['fechaInicial'].invalid && form.controls['fechaInicial'].touched"
-                id="fechaInicial"  name = "fechaInicial" formControlName="fechaInicial"
+                [class.is-invalid]="form.controls['fechaA'].invalid && form.controls['fechaA'].touched"
+                id="fechaA"  name = "fechaA" formControlName="fechaA"
             >
             <div
-                    *ngIf="form.controls['fechaInicial'].invalid && (form.controls['fechaInicial'].dirty || form.controls['fechaInicial'].touched)"
+                    *ngIf="form.controls['fechaA'].invalid && (form.controls['fechaA'].dirty || form.controls['fechaA'].touched)"
                     class="invalid-feedback">
                     <div>
                         Por favor ingrese la fecha 
@@ -20,23 +21,23 @@
                 </div>
         </div>
         <div class=" form-group">
-            <label for="fechaFinal" class="form-label">Fecha Final</label>
+            <label for="fechaB" class="form-label">Fecha Final</label>
             <input type="text"
                 placeholder="Fecha"
                 class="form-control "
                 bsDatepicker
-                [class.is-invalid]="form.controls['fechaFinal'].invalid && form.controls['fechaFinal'].touched"
-                id="fechaFinal"  name = "fechaFinal" formControlName="fechaFinal"
+                [class.is-invalid]="form.controls['fechaB'].invalid && form.controls['fechaB'].touched"
+                id="fechaB"  name = "fechaB" formControlName="fechaB"
             >
             <div
-                    *ngIf="form.controls['fechaFinal'].invalid && (form.controls['fechaFinal'].dirty || form.controls['fechaFinal'].touched)"
+                    *ngIf="form.controls['fechaB'].invalid && (form.controls['fechaB'].dirty || form.controls['fechaB'].touched)"
                     class="invalid-feedback">
                     <div>
                         Por favor ingrese la fecha 
                     </div>
                 </div>
         </div>
-        <button class="btn btn-primary h-25" type="submit" >Cargar</button>
+        <button class="btn btn-primary h-25" type="submit" (click)="cargarOfertas()" >Cargar</button>
     </div>
 
     <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearOferta()" >Crear Oferta</button>

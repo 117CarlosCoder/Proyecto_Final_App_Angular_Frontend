@@ -7,6 +7,7 @@ import { Modalidad } from 'src/entities/Modalidad';
 import { Ofertas } from 'src/entities/Ofertas';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-crear-oferta',
@@ -37,14 +38,36 @@ export class CrearOfertaComponent implements OnInit {
     console.log(this.todayWithPipe)
 
     this.empleadorService.listarCategorias().subscribe({
-      next: (list: Categoria[]) => {
-        this.listacategorias = list;
+      next: (response: HttpResponse<Categoria[]>) => {
+        var list: Categoria[]| null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listacategorias = list;
+          }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarModalidades().subscribe({
-      next: (list: Modalidad[])=> {
-        this.listaModalidades = list;
+      next: (response: HttpResponse<Modalidad[]>)=> {
+        var list: Modalidad[]| null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaModalidades = list;
+          }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
@@ -71,9 +94,18 @@ export class CrearOfertaComponent implements OnInit {
       this.oferta = this.form.value as Ofertas;
       console.log(this.oferta)
       this.empleadorService.enviarOferta(this.oferta).subscribe({
-        next:(data:any)=>{
-          this.limpiar();
-          this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
+        next:(response: HttpResponse<Ofertas>)=>{
+          if (response.body) {
+            this.limpiar();
+            this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
+          }
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

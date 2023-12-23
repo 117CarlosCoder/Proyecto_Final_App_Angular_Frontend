@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Postulacion } from 'src/entities/Postulacion';
@@ -12,12 +13,14 @@ import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 export class PostulantesOfertaComponent {
   listarPostulantes!:Postulante[];
   codigo!:number;
+  cargar:boolean = false;
 
   constructor(private empleadorService : EmpleadorService,
     private router : Router,
     private route : ActivatedRoute){}
 
   ngOnInit(): void {
+    this.cargar =false;
    
     this.route.params.subscribe(params => {
       const valorRecibido = params['codigo'];
@@ -29,10 +32,23 @@ export class PostulantesOfertaComponent {
 
 
     this.empleadorService.listarPostulantes(this.codigo).subscribe({
-      next: (list: Postulante[]) => {
+      next: (response: HttpResponse<Postulante[]>) => {
+          this.cargar= true;
           console.log("Cargar Ofertas")
-          this.listarPostulantes = list;
-          console.log(this.listarPostulantes);
+          var list: Postulante[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarPostulantes = list;
+            console.log(this.listarPostulantes);
+          }
+          
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

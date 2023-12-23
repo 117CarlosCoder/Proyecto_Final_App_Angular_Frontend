@@ -37,6 +37,13 @@ export class CompletarInformacionComponent{
     this.solicitanteService.listarCategorias().subscribe({
       next: (list: Categoria[]) => {
         this.listacategorias = list;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
   });
 
@@ -74,6 +81,13 @@ export class CompletarInformacionComponent{
     this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/', blob).subscribe({
       next: (data:any) => {
         console.log("se envio")
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 

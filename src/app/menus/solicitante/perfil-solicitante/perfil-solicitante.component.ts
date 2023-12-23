@@ -10,6 +10,8 @@ import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { AdminService } from 'src/services/administrador/AdminService';
+import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
+import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
 
 @Component({
   selector: 'app-perfil-solicitante',
@@ -24,7 +26,7 @@ export class PerfilSolicitanteComponent {
   modalRef?:BsModalRef;
   telefonos!:Telefono;
   listaTelefonos!:NumTelefono[];
-  listTelefono:NumTelefono[]=[];
+  listTelefono:TelefonoUsuario[]=[];
   codigo!:number;
   rol!:String;
   FechaNString!: String|null;
@@ -37,11 +39,11 @@ export class PerfilSolicitanteComponent {
   constructor (private formBuilder : FormBuilder,
     private router:Router,
     private modalService: BsModalService,
-    private adminService: AdminService
+    private solicitanteService: SolicitanteService
  ){}
 
  ngOnInit(): void {
-  this.adminService.listarUsuarioEspecifico().subscribe({
+  this.solicitanteService.listarUsuarioEspecifico().subscribe({
     next: (list: UsuarioT) => {
       this.usuario = list;
       console.log(this.usuario);
@@ -72,6 +74,13 @@ export class PerfilSolicitanteComponent {
         fechaNacimiento: [this.FechaN],
         rol:[this.usuario.rol]
       });
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
   });
 
@@ -89,7 +98,7 @@ export class PerfilSolicitanteComponent {
   });
 
 
-  this.adminService.listarTelefonosEspecifico().subscribe({
+  this.solicitanteService.listarTelefonosEspecifico().subscribe({
     next: (list: NumTelefono[]) => {
       this.listaTelefonos = list;
       console.log(this.listaTelefonos);
@@ -110,6 +119,13 @@ export class PerfilSolicitanteComponent {
         telefono2: [numero2],
         telefono3: [numero3]
       });
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
   });
 
@@ -156,23 +172,29 @@ export class PerfilSolicitanteComponent {
       console.log("Nombre " + this.usario.nombre);
       console.log(this.usario)
     
-      this.adminService.actualizarUsuario(this.usario).subscribe({
+      this.solicitanteService.actualizarUsuario(this.usario).subscribe({
         
         next: ( response: HttpResponse<any>)=>{
           const data = response.body;
           if (this.listaTelefonos && (this.listaTelefonos[0] != null ) || (this.listaTelefonos[1] != null ) || (this.listaTelefonos[2] != null )){
-            this.adminService.actualizarTelefono(this.listaTelefonos).subscribe({
+            this.solicitanteService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
                   console.log("Telefonos actualizados")
+              },
+              error: (error) => {
+                if(error.status === 406){
+                  this.router.navigate(['**']);
+                }else {
+                  console.error('Error en la solicitud:', error);
+                }
               }
             });
           }
           if (this.listaTelefonos[0] == null && this.telefonos.telefono1  ) {
     
-            const telefonoObtenido1:NumTelefono = {
-            codigo: 1,
-            codigoUsuario: this.codigo,
-            numero: this.telefonos.telefono1
+            const telefonoObtenido1:TelefonoUsuario = {
+              username: this.usario.username,
+              numero: this.telefonos.telefono1
             }
     
             console.log(telefonoObtenido1)
@@ -183,19 +205,25 @@ export class PerfilSolicitanteComponent {
             
           }
             if (this.listaTelefonos[0] == null && this.telefonos.telefono1 ) {
-            this.adminService.crearTelefonos(this.listTelefono).subscribe({
+            this.solicitanteService.crearTelefonosUsuario(this.listTelefono).subscribe({
               next:(data:any)=>{
                 this.listTelefono =[];
                   console.log("Telefonos creados")
+              },
+              error: (error) => {
+                if(error.status === 406){
+                  this.router.navigate(['**']);
+                }else {
+                  console.error('Error en la solicitud:', error);
+                }
               }
             }); 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2) {
               this.listTelefono =[];
-              const telefonoObtenido2:NumTelefono = {
-                codigo: 2,
-                codigoUsuario: this.codigo,
-                numero: this.telefonos.telefono2
+              const telefonoObtenido2:TelefonoUsuario = {
+                username: this.usario.username,
+                numero: this.telefonos.telefono1
                 }
         
                 if (telefonoObtenido2) {
@@ -205,7 +233,7 @@ export class PerfilSolicitanteComponent {
                 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2  ) {
-              this.adminService.crearTelefonos(this.listTelefono).subscribe({
+              this.solicitanteService.crearTelefonosUsuario(this.listTelefono).subscribe({
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
@@ -215,19 +243,25 @@ export class PerfilSolicitanteComponent {
         
             if (this.listaTelefonos[2] == null && this.telefonos.telefono3) {
               this.listTelefono =[];
-              const telefonoObtenido3:NumTelefono = {
-                codigo: 3,
-                codigoUsuario: this.codigo,
-                numero: this.telefonos.telefono3
+              const telefonoObtenido3:TelefonoUsuario = {
+                username: this.usario.username,
+                numero: this.telefonos.telefono1
                 }
         
                 this.listTelefono.push(telefonoObtenido3);
             }
             if ( this.listaTelefonos[2] == null && this.telefonos.telefono3 ) {
-              this.adminService.crearTelefonos(this.listTelefono).subscribe({
+              this.solicitanteService.crearTelefonosUsuario(this.listTelefono).subscribe({
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                },
+                error: (error) => {
+                  if(error.status === 406){
+                    this.router.navigate(['**']);
+                  }else {
+                    console.error('Error en la solicitud:', error);
+                  }
                 }
               }); 
               }
@@ -235,6 +269,13 @@ export class PerfilSolicitanteComponent {
             this.limpiar();
             this.router.navigate(['solicitante-aplicar-oferta']);
           
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
       });
     

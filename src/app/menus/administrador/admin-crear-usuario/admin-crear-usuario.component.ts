@@ -23,7 +23,6 @@ export class AdminCrearUsuarioComponent implements OnInit{
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
-    private usuarioService:UsuarioService,
     private modalService: BsModalService,
     private adminService: AdminService,
     private route: ActivatedRoute){}
@@ -59,28 +58,31 @@ export class AdminCrearUsuarioComponent implements OnInit{
     if (this.form.valid) {
       this.telefonos = this.form2.value as Telefono;
       this.usario = this.form.value as CrearUsuario;
+
       if(this.usario.rol == 'Empleador'){
-      this.usario.fechaFundacion = this.usario.fechaNacimiento;
-      this.usario.fechaNacimiento = '';
+        this.usario.fechaFundacion = this.usario.fechaNacimiento;
+        this.usario.fechaNacimiento = '';
       }
         console.log("Nombre " + this.usario.nombre);
         console.log(this.usario)
       
-        this.adminService.crearUsuario(this.usario).subscribe({
+        this.adminService.crearUsuario(this.usario, this.telefonos).subscribe({
           
           next: ( response: HttpResponse<any>)=>{
             const data = response.body;
-            if(response.status === 201){
-              this.usuarioService.crearUsuarioTelefonos(this.telefonos).subscribe({
-                next:(data:any)=>{
-                    console.log("Telefonos creados")
-                }
-              });
+            console.log(this.telefonos);
               this.modalRef = this.modalService.show(template);
               this.limpiar();
               this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+          
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
             }
-        }
+          }
         });
       
       

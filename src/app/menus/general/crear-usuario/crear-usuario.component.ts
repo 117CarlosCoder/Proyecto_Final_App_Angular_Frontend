@@ -27,7 +27,7 @@ export class CrearUsuarioComponent implements OnInit{
       private usuarioService:UsuarioService,
       private router : Router,
       private modalService: BsModalService){
-      
+        localStorage.setItem('rol', 'Invitado');
     }
 
     ngOnInit(): void {

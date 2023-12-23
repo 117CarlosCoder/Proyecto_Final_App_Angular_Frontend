@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatosEntrevista } from 'src/entities/DatosEntrevista';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-generar-entrevista',
@@ -16,6 +17,7 @@ export class GenerarEntrevistaComponent implements OnInit{
   minutesPlaceholder = 'mm';
   datosEntrevista !: DatosEntrevista;
   codigo!:number;
+  oferta!:number;
   modalRef?: BsModalRef;
 
   constructor(private formBuilder : FormBuilder,
@@ -35,6 +37,13 @@ export class GenerarEntrevistaComponent implements OnInit{
       console.log(this.codigo)
     });
 
+    this.route.params.subscribe(params => {
+      const valorRecibido = params['oferta'];
+      this.oferta = valorRecibido;
+      console.log("Oferta");
+      console.log(this.oferta)
+    });
+
     this.form = this.formBuilder.group({
       fecha: [null, [Validators.required]],
       ubicacion: [null, [Validators.required]],
@@ -48,11 +57,18 @@ export class GenerarEntrevistaComponent implements OnInit{
       this.datosEntrevista = this.form.value as DatosEntrevista;
       console.log("Oferta" + this.datosEntrevista);
       console.log(this.datosEntrevista);
-      this.empleadorService.generarEntrevista(this.datosEntrevista).subscribe({
-        next:(data:any)=>{
+      this.empleadorService.generarEntrevista(this.datosEntrevista, this.codigo, this.oferta).subscribe({
+        next:(response: HttpResponse<any>)=>{
           this.modalRef = this.modalService.show(template);
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('postular')]);
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

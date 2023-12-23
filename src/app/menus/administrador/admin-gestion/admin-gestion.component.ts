@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Categoria } from 'src/entities/Categoria';
@@ -18,9 +19,21 @@ export class AdminGestionComponent implements OnInit{
   ngOnInit(): void {
     this.carga=false;
     this.adminService.listarCategorias().subscribe({
-      next: (list: Categoria[]) => {
-        this.listarCategoria = list;
-        this.carga = true;
+      next: (response: HttpResponse<Categoria[]>) => {
+        var list: Categoria[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarCategoria = list;
+            this.carga = true;
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }
@@ -31,14 +44,36 @@ export class AdminGestionComponent implements OnInit{
 
   eliminarCategoria(codigo:number){
     this.adminService.eliminarCategoria(codigo).subscribe({
-      next: () => {
+      next: (response: HttpResponse<any>) => {
         console.log("categoria eliminada")
         this.adminService.listarCategorias().subscribe({
-          next: (list: Categoria[]) => {
-            this.listarCategoria = list;
-            this.carga = true;
+          next: (response: HttpResponse<Categoria[]>) => {
+            if(response.status === 406){
+              this.router.navigate(['**']);
+            }
+            var list: Categoria[] | null= null; 
+              if (response.body) {
+                list = response.body;
+                this.listarCategoria = list;
+                this.carga = true;
+              }
+            
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
+            }
           }
         });
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

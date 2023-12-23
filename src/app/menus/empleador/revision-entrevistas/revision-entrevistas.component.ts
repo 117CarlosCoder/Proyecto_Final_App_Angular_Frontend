@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Entrevista } from 'src/entities/Entrevista';
@@ -25,20 +26,33 @@ export class RevisionEntrevistasComponent implements OnInit{
     ngOnInit(): void {
    
       this.empleadorService.listarEntrevistas().subscribe({
-        next: (list: EntrevistaInfo[]) => {
+        next: (response: HttpResponse<EntrevistaInfo[]>) => {
             console.log("Cargar Entrevistas")
-            list.forEach(element => {
-              if(element.fecha!=null){
-                this.Fecha = this.pipe.transform(element.fecha.toString(), 'yyyy-MM-dd');
-                console.log(this.Fecha?.toString());
-                if(this.Fecha?.toString()){
-                  element.fecha = this.Fecha?.toString()
+            var list: EntrevistaInfo[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              list.forEach(element => {
+                if(element.fecha!=null){
+                  this.Fecha = this.pipe.transform(element.fecha.toString(), 'yyyy-MM-dd');
+                  console.log(this.Fecha?.toString());
+                  if(this.Fecha?.toString()){
+                    element.fecha = this.Fecha?.toString()
+                  }
                 }
-              }
-            });
+              });
+              this.listarEntrevistas = list;
+              console.log(this.listarEntrevistas);
+            }
             
-            this.listarEntrevistas = list;
-            console.log(this.listarEntrevistas);
+            
+            
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

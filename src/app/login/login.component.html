@@ -25,7 +25,7 @@
     <div class="form-floating mb-3">
       <input type="password" class="form-control"
         [class.is-invalid]="usuarioForm.controls['password'].invalid && usuarioForm.controls['password'].touched"
-        id="password" placeholder="Password" name="password" formControlName="password">
+        id="password" placeholder="Password" name="password" formControlName="password" autocomplete="on">
         <div
           *ngIf="usuarioForm.controls['username'].invalid && (usuarioForm.controls['username'].dirty || usuarioForm.controls['username'].touched)"
           class="invalid-feedback">

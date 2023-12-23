@@ -41,8 +41,14 @@ export class PerfilUsuarioComponent {
 
  ngOnInit(): void {
   this.adminService.listarUsuarioEspecifico().subscribe({
-    next: (list: UsuarioT) => {
-      this.usuario = list;
+    next: (response: HttpResponse<UsuarioT> ) => {
+      if(response.status === 406){
+        this.router.navigate(['pagina-no-permitida']);
+      }
+      var list:UsuarioT | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.usuario = list;
       console.log(this.usuario);
       if(this.usuario.fechaNacimiento!=null){
         this.FechaNString = this.pipe.transform(this.usuario.fechaNacimiento.toString(), 'yyyy/MM/dd');
@@ -71,6 +77,8 @@ export class PerfilUsuarioComponent {
         fechaNacimiento: [this.FechaN],
         rol:[this.usuario.rol]
       });
+        }
+      
     }
   });
 
@@ -89,26 +97,38 @@ export class PerfilUsuarioComponent {
 
 
   this.adminService.listarTelefonosEspecifico().subscribe({
-    next: (list: NumTelefono[]) => {
-      this.listaTelefonos = list;
-      console.log(this.listaTelefonos);
-      var numero1;
-      var numero2;
-      var numero3;
-      if (list[0]!=undefined) {
-        numero1= list[0].numero;
+    next: (response: HttpResponse<NumTelefono[]>) => {
+      var list:NumTelefono[] | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.listaTelefonos = list;
+          console.log(this.listaTelefonos);
+          var numero1;
+          var numero2;
+          var numero3;
+          if (list[0]!=undefined) {
+            numero1= list[0].numero;
+          }
+          if (list[1]!=undefined) {
+            numero2= list[1].numero;
+          }
+          if (list[2]!=undefined) {
+            numero3= list[2].numero;
+          }
+          this.form2 = this.formBuilder.group({
+            telefono1: [numero1,[Validators.required]],
+            telefono2: [numero2],
+            telefono3: [numero3]
+          });
+        }
+      
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['pagina-no-permitida']);
+      }else {
+        console.error('Error en la solicitud:', error);
       }
-      if (list[1]!=undefined) {
-        numero2= list[1].numero;
-      }
-      if (list[2]!=undefined) {
-        numero3= list[2].numero;
-      }
-      this.form2 = this.formBuilder.group({
-        telefono1: [numero1,[Validators.required]],
-        telefono2: [numero2],
-        telefono3: [numero3]
-      });
     }
   });
 

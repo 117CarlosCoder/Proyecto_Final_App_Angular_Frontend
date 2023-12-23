@@ -57,6 +57,13 @@ export class ReportesComponent {
       console.log("Cargar ofertas Costos")
       this.entrevistasInfo = list;
       console.log(this.entrevistasInfo);
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
   }); 
 
@@ -84,6 +91,13 @@ elegirFechaPostulacionRetirada(){
             fechaA: [null, [Validators.required]],
             fechaB: [null, [Validators.required]]
           });
+        }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
         }
       }
     });
@@ -117,6 +131,13 @@ elegirFechaOfertasSeleccion(){
           });
         }
         
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   
@@ -150,6 +171,13 @@ elegirOfertasEntrevista(){
           });
         }
         
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   
@@ -187,6 +215,13 @@ descargarOfertasSinEmpleo(){
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+  },
+  error => {
+    if(error.status === 406){
+      this.router.navigate(['**']);
+    }else {
+      console.error('Error en la solicitud:', error);
+    }
   }
   ); 
 }
@@ -206,6 +241,13 @@ descargarOfertasFaseSeleccion(){
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+    error => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
     ); 
   }
@@ -226,6 +268,13 @@ descargarOfertaEntrevista(){
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+    error => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
     ); 
   }
@@ -246,6 +295,13 @@ descargarPostulacionesRetiradas(){
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+    error => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
     ); 
   }

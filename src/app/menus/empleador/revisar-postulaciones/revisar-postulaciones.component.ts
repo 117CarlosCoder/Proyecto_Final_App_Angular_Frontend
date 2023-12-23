@@ -1,10 +1,8 @@
 import { DatePipe } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Ofertas } from 'src/entities/Ofertas';
 import { OfertasDate } from 'src/entities/OfertasDate';
-import { Postulacion } from 'src/entities/Postulacion';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 
 @Component({
@@ -24,29 +22,40 @@ export class RevisarPostulacionesComponent implements OnInit{
   ngOnInit(): void {
    
     this.empleadorService.listarOfertasPostulacion().subscribe({
-      next: (list: OfertasDate[]) => {
+      next: (response: HttpResponse<OfertasDate[]>) => {
           console.log("Cargar Ofertas")
-          this.listaOferta = list;
-          list.forEach(element => {
-            if(element.fechaPublicacion!=null){
-              this.Fecha = this.pipe.transform(element.fechaPublicacion.toString(), 'yyyy-MM-dd');
+          var list: OfertasDate[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaOferta = list;
+            list.forEach(element => {
+              if(element.fechaPublicacion!=null){
+                this.Fecha = this.pipe.transform(element.fechaPublicacion.toString(), 'yyyy-MM-dd');
 
-              console.log(this.Fecha?.toString());
-              if(this.Fecha){
-                element.fechaPublicacion = this.Fecha;
+                console.log(this.Fecha?.toString());
+                if(this.Fecha){
+                  element.fechaPublicacion = this.Fecha;
+                }
               }
-            }
 
-            if(element.fechaLimite!=null){
-              this.Fecha = this.pipe.transform(element.fechaLimite.toString(), 'yyyy-MM-dd');
+              if(element.fechaLimite!=null){
+                this.Fecha = this.pipe.transform(element.fechaLimite.toString(), 'yyyy-MM-dd');
 
-              console.log(this.Fecha?.toString());
-              if(this.Fecha){
-                element.fechaLimite = this.Fecha;
+                console.log(this.Fecha?.toString());
+                if(this.Fecha){
+                  element.fechaLimite = this.Fecha;
+                }
               }
-            }
-          });
+            });
+          }
           console.log(this.listaOferta);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

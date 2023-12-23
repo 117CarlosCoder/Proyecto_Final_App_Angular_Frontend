@@ -3,11 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Usuario } from '../../entities/Usuario';
 import { UsuarioService } from '../../services/usuario/UsuarioService';
 import { Router } from '@angular/router';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { NavbarSolicitanteComponent } from '../navbars/navbar-solicitante/navbar-solicitante.component';
+import { HttpResponse } from '@angular/common/http';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
-import { SessionService } from 'src/services/sesion/SessionService';
-
 
 @Component({
   selector: 'app-login',
@@ -25,12 +22,11 @@ export class LoginComponent implements OnInit{
 
   constructor(private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
-    private navbar : NavbarSolicitanteComponent,
     private router: Router,
-    private sharedService: ActualizarNavbarService,
-    private sessionService : SessionService) {
+    private sharedService: ActualizarNavbarService) {
     this.login = false;
-
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
   }
 
 
@@ -62,11 +58,13 @@ export class LoginComponent implements OnInit{
               console.log(response.status);
               this.rol = data.rol;
               console.log(this.rol);
-
-              console.log(data.idSession)
-              this.sessionService.setSessionIdInCookie(this.usuario);
+              localStorage.setItem('rol', this.rol.toString())
+              console.log(localStorage.getItem('rol'))
               this.sharedService.updateCompletarInfo(true);
-              this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
+              setTimeout(() => {
+                this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
+              }, 1000); 
+              
             }
         },
         error: (error: any) => {

@@ -10,6 +10,7 @@ import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { AdminService } from 'src/services/administrador/AdminService';
+import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
 @Component({
   selector: 'app-perfil-admin',
   templateUrl: './perfil-admin.component.html',
@@ -24,7 +25,7 @@ export class PerfilAdminComponent {
   modalRef?:BsModalRef;
   telefonos!:Telefono;
   listaTelefonos!:NumTelefono[];
-  listTelefono:NumTelefono[]=[];
+  listTelefono:TelefonoUsuario[]=[];
   codigo!:number;
   rol!:String;
   FechaNString!: String|null;
@@ -42,8 +43,11 @@ export class PerfilAdminComponent {
 
  ngOnInit(): void {
   this.adminService.listarUsuarioEspecifico().subscribe({
-    next: (list: UsuarioT) => {
-      this.usuario = list;
+    next: (response: HttpResponse<UsuarioT>) => {
+      var list:UsuarioT | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.usuario = list;
       console.log(this.usuario);
       if(this.usuario.fechaNacimiento!=null){
         this.FechaNString = this.pipe.transform(this.usuario.fechaNacimiento.toString(), 'yyyy/MM/dd');
@@ -72,6 +76,15 @@ export class PerfilAdminComponent {
         fechaNacimiento: [this.FechaN],
         rol:[this.usuario.rol]
       });
+        }
+      
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
     }
   });
 
@@ -90,26 +103,38 @@ export class PerfilAdminComponent {
 
 
   this.adminService.listarTelefonosEspecifico().subscribe({
-    next: (list: NumTelefono[]) => {
-      this.listaTelefonos = list;
-      console.log(this.listaTelefonos);
-      var numero1;
-      var numero2;
-      var numero3;
-      if (list[0]!=undefined) {
-        numero1= list[0].numero;
+    next: (response: HttpResponse<NumTelefono[]> ) => {
+      var list:NumTelefono[] | null= null; 
+        if (response.body) {
+          list = response.body;
+          this.listaTelefonos = list;
+          console.log(this.listaTelefonos);
+          var numero1;
+          var numero2;
+          var numero3;
+          if (list[0]!=undefined) {
+            numero1= list[0].numero;
+          }
+          if (list[1]!=undefined) {
+            numero2= list[1].numero;
+          }
+          if (list[2]!=undefined) {
+            numero3= list[2].numero;
+          }
+          this.form2 = this.formBuilder.group({
+            telefono1: [numero1,[Validators.required]],
+            telefono2: [numero2],
+            telefono3: [numero3]
+          });
+        }
+      
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
       }
-      if (list[1]!=undefined) {
-        numero2= list[1].numero;
-      }
-      if (list[2]!=undefined) {
-        numero3= list[2].numero;
-      }
-      this.form2 = this.formBuilder.group({
-        telefono1: [numero1,[Validators.required]],
-        telefono2: [numero2],
-        telefono3: [numero3]
-      });
     }
   });
 
@@ -169,10 +194,9 @@ export class PerfilAdminComponent {
           }
           if (this.listaTelefonos[0] == null && this.telefonos.telefono1  ) {
     
-            const telefonoObtenido1:NumTelefono = {
-            codigo: 1,
-            codigoUsuario: this.codigo,
-            numero: this.telefonos.telefono1
+            const telefonoObtenido1:TelefonoUsuario = {
+              username: this.usario.username,
+              numero: this.telefonos.telefono1
             }
     
             console.log(telefonoObtenido1)
@@ -183,8 +207,11 @@ export class PerfilAdminComponent {
             
           }
             if (this.listaTelefonos[0] == null && this.telefonos.telefono1 ) {
-            this.adminService.crearTelefonos(this.listTelefono).subscribe({
-              next:(data:any)=>{
+            this.adminService.crearTelefonosUsuario(this.listTelefono).subscribe({
+              next:(response: HttpResponse<any>)=>{
+                if(response.status === 406){
+                  this.router.navigate(['**']);
+                }
                 this.listTelefono =[];
                   console.log("Telefonos creados")
               }
@@ -192,9 +219,8 @@ export class PerfilAdminComponent {
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2) {
               this.listTelefono =[];
-              const telefonoObtenido2:NumTelefono = {
-                codigo: 2,
-                codigoUsuario: this.codigo,
+              const telefonoObtenido2:TelefonoUsuario = {
+                username: this.usario.username,
                 numero: this.telefonos.telefono2
                 }
         
@@ -205,8 +231,11 @@ export class PerfilAdminComponent {
                 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2  ) {
-              this.adminService.crearTelefonos(this.listTelefono).subscribe({
-                next:(data:any)=>{
+              this.adminService.crearTelefonosUsuario(this.listTelefono).subscribe({
+                next:(response: HttpResponse<any>)=>{
+                  if(response.status === 406){
+                    this.router.navigate(['**']);
+                  }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
                 }
@@ -215,17 +244,19 @@ export class PerfilAdminComponent {
         
             if (this.listaTelefonos[2] == null && this.telefonos.telefono3) {
               this.listTelefono =[];
-              const telefonoObtenido3:NumTelefono = {
-                codigo: 3,
-                codigoUsuario: this.codigo,
+              const telefonoObtenido3:TelefonoUsuario = {
+                username: this.usario.username,
                 numero: this.telefonos.telefono3
                 }
         
                 this.listTelefono.push(telefonoObtenido3);
             }
             if ( this.listaTelefonos[2] == null && this.telefonos.telefono3 ) {
-              this.adminService.crearTelefonos(this.listTelefono).subscribe({
-                next:(data:any)=>{
+              this.adminService.crearTelefonosUsuario(this.listTelefono).subscribe({
+                next:(response: HttpResponse<any>)=>{
+                  if(response.status === 406){
+                    this.router.navigate(['**']);
+                  }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
                 }
@@ -235,6 +266,13 @@ export class PerfilAdminComponent {
             this.limpiar();
             this.router.navigate(['admin-dashboard']);
           
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
       });
     

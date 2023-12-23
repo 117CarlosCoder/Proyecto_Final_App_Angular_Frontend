@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Info } from 'src/entities/Info';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { Router } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-completar-informacion-empleador',
@@ -30,9 +31,16 @@ export class CompletarInformacionEmpleadorComponent {
           this.info = this.infoForm.value as Info;
           console.log(this.info)
           this.empleadorService.completarInformacion(this.info).subscribe({
-            next:(data:any)=>{
+            next:(response: HttpResponse<Info>)=>{
               this.limpiar();
               this.router.navigate(['empleador-completar-tarjeta']);
+            },
+            error: (error) => {
+              if(error.status === 406){
+                this.router.navigate(['**']);
+              }else {
+                console.error('Error en la solicitud:', error);
+              }
             }
           });
       }

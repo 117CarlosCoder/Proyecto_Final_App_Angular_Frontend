@@ -19,7 +19,9 @@ export class RestablecerContrasenaComponent implements OnInit{
       private usuarioService:UsuarioService,
       private router:Router,
       private modalService: BsModalService){
-
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        localStorage.setItem('rol', 'Invitado');
     }
 
     ngOnInit(){

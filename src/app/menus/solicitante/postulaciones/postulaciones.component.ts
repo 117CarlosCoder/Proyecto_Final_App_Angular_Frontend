@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Postulacion } from 'src/entities/Postulacion';
 import { RegistroRetirada } from 'src/entities/RegistroRetirada';
 import { DatePipe } from '@angular/common';
@@ -17,7 +17,8 @@ export class PostulacionesComponent implements OnInit {
   todayWithPipe!: String|null;
   pipe = new DatePipe('en-US');
 
-  constructor(private solicitanteService: SolicitanteService){}
+  constructor(private solicitanteService: SolicitanteService, 
+    private router:Router){}
 
   ngOnInit(): void {
     this.solicitanteService.listarPostulaciones().subscribe({
@@ -25,6 +26,13 @@ export class PostulacionesComponent implements OnInit {
         console.log("Cargar ofertas")
         this.listarPostulantes = list;
         console.log(this.listarPostulantes);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     }); 
   }
@@ -48,6 +56,13 @@ export class PostulacionesComponent implements OnInit {
       next:(dato: any) => {
         
           console.log("Crer postulaciones")
+       },
+       error: (error) => {
+         if(error.status === 406){
+           this.router.navigate(['**']);
+         }else {
+           console.error('Error en la solicitud:', error);
+         }
        }
     });  
 
@@ -60,8 +75,22 @@ export class PostulacionesComponent implements OnInit {
                     console.log("Cargar ofertas");
                     this.listarPostulantes = list;
                     console.log(this.listarPostulantes);
+                },
+                error: (error) => {
+                  if(error.status === 406){
+                    this.router.navigate(['**']);
+                  }else {
+                    console.error('Error en la solicitud:', error);
+                  }
                 }
             });
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
+            }
           }
     });
 

@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,9 +32,16 @@ export class CrearCategoriaComponent implements OnInit{
       console.log("Categoria" + this.categoria);
       console.log(this.categoria)
       this.adminService.crearCategoria(this.categoria).subscribe({
-        next:(data:any)=>{
+        next:(response: HttpResponse<any>)=>{
           this.limpiar();
           this.router.navigate([this.adminService.elegirPagina('gestion')]);
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

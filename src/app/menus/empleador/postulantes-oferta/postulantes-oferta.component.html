@@ -1,6 +1,6 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
-    <h1>Candidatos Oferta  {{listarPostulantes[0].nombre}}</h1>
+    <h1 *ngIf="cargar" >Candidatos Oferta  {{listarPostulantes[0].nombre}}</h1>
 <table class="table table-primary" >
     <thead>
       <tr>

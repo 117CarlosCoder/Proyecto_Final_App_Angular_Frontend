@@ -21,7 +21,6 @@ export class UsuarioService {
         console.log('connectando con el BE: ' + usuario);
         this.setCredenciales(usuario.username,usuario.password);
         return this.httpClient.post<Usuario>(this.API_URL+"/sesion-servlet/", usuario, {observe: 'response'} );
-        
     }
 
     setCredenciales(username: string, password: string): void {
@@ -43,14 +42,14 @@ export class UsuarioService {
 
 
     public crearUsuarioSolicitante(usuario: CrearUsuario){
-       
-        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-usuario-solicitante", usuario, {observe: 'response'});
+        const headers = new HttpHeaders(this.getCredenciales());
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-usuario-solicitante", usuario, {observe: 'response', headers});
         
     }
 
     public crearUsuarioTelefonos( telefonos:Telefono){
-        
-        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-telefonos", telefonos, {observe: 'response'});
+        const headers = new HttpHeaders(this.getCredenciales());
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/user-servlet/crear-telefonos", telefonos, {observe: 'response', headers});
         
     }
 
@@ -99,7 +98,9 @@ export class UsuarioService {
         if (rol == "Empleador") {
             return '/empleador-gestion';
         }
-        return '';
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        return '/login';
     }
 
     public cerrarSesion(){

@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,15 +40,27 @@ export class EditarCategoriaComponent implements OnInit{
       });
       
       this.adminService.listarCategoria(this.codigo).subscribe({
-        next: (list: Categoria) => {
-          this.listarCategoria = list;
-          console.log(this.listarCategoria.nombre)
-          this.carga = true;
-          this.form = this.formBuilder.group({
-            codigo: [this.codigo, [Validators.required]],
-            nombre: [this.listarCategoria.nombre, [Validators.required]],
-            descripcion: [this.listarCategoria.descripcion, [Validators.required]],
-          }); 
+        next: (response: HttpResponse<Categoria>) => {
+          var list:Categoria| null= null; 
+            if (response.body) {
+              list = response.body;
+              this.listarCategoria = list;
+              console.log(this.listarCategoria.nombre)
+              this.carga = true;
+              this.form = this.formBuilder.group({
+              codigo: [this.codigo, [Validators.required]],
+              nombre: [this.listarCategoria.nombre, [Validators.required]],
+              descripcion: [this.listarCategoria.descripcion, [Validators.required]],
+              }); 
+            }
+          
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
 
@@ -61,9 +74,16 @@ export class EditarCategoriaComponent implements OnInit{
         console.log("Categoria" + this.categoria);
         console.log(this.categoria)
         this.adminService.editarCategoria(this.categoria).subscribe({
-          next:(data:any)=>{
+          next:(response: HttpResponse<any>)=>{
             this.limpiar();
             this.router.navigate([this.adminService.elegirPagina('gestion')]);
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
+            }
           }
         });
       }

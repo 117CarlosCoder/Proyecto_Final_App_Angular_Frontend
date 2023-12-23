@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { location } from 'ngx-bootstrap/utils/facade/browser';
 import { Ofertas } from 'src/entities/Ofertas';
 import { FechasOferta } from 'src/entities/FechasOferta';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-empleador-reportes',
@@ -48,26 +49,62 @@ export class EmpleadorReportesComponent implements OnInit {
     });
 
     this.empleadorService.listarEstados().subscribe({
-      next: (list: Estados[]) => {
+      next: (response: HttpResponse<Estados[]>) => {
         console.log("Cargar ofertas Costos")
-        this.listaEstado = list;
-        console.log(this.listaEstado);
+        var list: Estados[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaEstado = list;
+            console.log(this.listaEstado);
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarOfertasCostos().subscribe({
-      next: (list: OfertaCostos[]) => {
+      next: (response: HttpResponse<OfertaCostos[]>) => {
         console.log("Cargar ofertas Costos")
-        this.ofertaCostos = list;
-        console.log(this.ofertaCostos);
+        var list: OfertaCostos[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.ofertaCostos = list;
+            console.log(this.ofertaCostos);
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarEstadosOferta().subscribe({
-      next: (list: Estados[]) => {
+      next: (response: HttpResponse<Estados[]>) => {
         console.log("Cargar Estado Ofertas")
-        this.listarEstadoOfertas = list;
-        console.log(this.listarEstadoOfertas);
+        var list: Estados[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarEstadoOfertas = list;
+            console.log(this.listarEstadoOfertas);
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
@@ -90,24 +127,32 @@ export class EmpleadorReportesComponent implements OnInit {
       console.log("Fechas" + this.fechas.fechaA);
       console.log(fechaFormateada)
       this.empleadorService.listarEntrevistaFecha(fechaFormateada,this.fechas.estado).subscribe({
-        next:(list: EntrevistaFecha[])=>{
-          
-
-          if(list){
-            console.log("Cargar Entrevistas Fechas")
-            this.listarEntrevistaFecha = list;
-            console.log(this.listarEntrevistaFecha);
+        next:(response: HttpResponse<EntrevistaFecha[]>)=>{
+          var list: EntrevistaFecha[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            if(list){
+              console.log("Cargar Entrevistas Fechas")
+              this.listarEntrevistaFecha = list;
+              console.log(this.listarEntrevistaFecha);
+            }
+            else{
+              this.formreporte2.reset({
+                
+              });
+              this.formreporte2 = this.formBuilder.group({
+                fechaA: [null, [Validators.required]],
+                estado: [null, [Validators.required]]
+              });
+            }
           }
-          else{
-            this.formreporte2.reset({
-              
-            });
-            this.formreporte2 = this.formBuilder.group({
-              fechaA: [null, [Validators.required]],
-              estado: [null, [Validators.required]]
-            });
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
           }
-          
         }
         
       });
@@ -123,25 +168,33 @@ export class EmpleadorReportesComponent implements OnInit {
       console.log("Fechas" + this.fechaOferta.fechaA);
       console.log(fechaFormateada1)
       this.empleadorService.listarOfertaFecha(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe({
-        next:(list: Ofertas[])=>{
-          
-
-          if(list){
-            console.log("Cargar Oferta Fechas")
-            this.fechasOferta = list;
-            console.log(this.fechasOferta);
+        next:(response: HttpResponse<Ofertas[]>)=>{       
+          var list: Ofertas[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            if(list){
+              console.log("Cargar Oferta Fechas")
+              this.fechasOferta = list;
+              console.log(this.fechasOferta);
+            }
+            else{
+              this.formreporte1.reset({
+                
+              });
+              this.formreporte1 = this.formBuilder.group({
+                fechaA: [null, [Validators.required]],
+                fechaB: [null, [Validators.required]],
+                estado: [null, [Validators.required]]
+              });
+            }
           }
-          else{
-            this.formreporte1.reset({
-              
-            });
-            this.formreporte1 = this.formBuilder.group({
-              fechaA: [null, [Validators.required]],
-              fechaB: [null, [Validators.required]],
-              estado: [null, [Validators.required]]
-            });
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
           }
-          
         }
         
       });
@@ -149,16 +202,28 @@ export class EmpleadorReportesComponent implements OnInit {
   }
 
   descargarOfertaCostos(){
-    this.empleadorService.descargarOfertasCostos().subscribe(
-      response => {
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'OfertaCostos.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
+    this.empleadorService.descargarOfertasCostos().subscribe({
+      next:(response: HttpResponse<Blob>) => {
+        var list: Blob | null= null; 
+        if (response.body) {
+          list = response.body;
+          const url = window.URL.createObjectURL(list);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'OfertaCostos.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+        
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }}
     ); 
   }
 
@@ -168,16 +233,27 @@ export class EmpleadorReportesComponent implements OnInit {
       this.fechas = this.formreporte2.value as Fechas;
       let fechaFormateada = format(this.fechas.fechaA, 'yyyy-MM-dd');
 
-      this.empleadorService.descargarEntrevistaFecha(fechaFormateada,this.fechas.estado).subscribe(
-        response => {
-          const url = window.URL.createObjectURL(response);
+      this.empleadorService.descargarEntrevistaFecha(fechaFormateada,this.fechas.estado).subscribe({
+        next:(response: HttpResponse<Blob>) => {
+          var list: Blob | null= null; 
+        if (response.body) {
+          list = response.body;
+          const url = window.URL.createObjectURL(list);
           const a = document.createElement('a');
           a.href = url;
           a.download = 'EntrevisFechaEspecifica.pdf';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-      }
+        }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }}
       ); 
     }
   }
@@ -188,16 +264,25 @@ export class EmpleadorReportesComponent implements OnInit {
       this.fechaOferta = this.formreporte1.value as FechasOferta;
       let fechaFormateada1 = format(this.fechaOferta.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechaOferta.fechaB, 'yyyy-MM-dd');
-      this.empleadorService.descargarEntrevistaEstado(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe(
-        response => {
-          const url = window.URL.createObjectURL(response);
+      this.empleadorService.descargarEntrevistaEstado(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe({
+        next:(response: HttpResponse<Blob>) => {var list: Blob | null= null; 
+          if (response.body) {
+            list = response.body;
+          const url = window.URL.createObjectURL(list);
           const a = document.createElement('a');
           a.href = url;
           a.download = 'EntrevisFechaEstado.pdf';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-      }
+      }},
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }}
       ); 
     }
   }

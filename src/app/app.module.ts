@@ -55,6 +55,8 @@ import { PerfilUsuarioComponent } from './menus/general/perfil-usuario/perfil-us
 import { PerfilAdminComponent } from './menus/administrador/perfil-admin/perfil-admin.component';
 import { PerfilSolicitanteComponent } from './menus/solicitante/perfil-solicitante/perfil-solicitante.component';
 import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/perfil-empleador.component';
+import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
+import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +105,9 @@ import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/per
     PerfilUsuarioComponent,
     PerfilAdminComponent,
     PerfilSolicitanteComponent,
-    PerfilEmpleadorComponent
+    PerfilEmpleadorComponent,
+    PaginaNoPermitidaComponent,
+    PaginaErrorComponent
     
   ],
   imports: [

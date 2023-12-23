@@ -23,6 +23,13 @@ export class EntrevistasComponent {
         console.log("Cargar Entrevistas")
         this.listarEntrevistas = list;
         console.log(this.listarEntrevistas);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

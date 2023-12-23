@@ -7,6 +7,7 @@ import { Modalidad } from 'src/entities/Modalidad';
 import { Ofertas } from 'src/entities/Ofertas';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-actualizar-oferta',
@@ -59,26 +60,59 @@ export class ActualizarOfertaComponent {
     });*/
 
     this.empleadorService.listarOferta(this.codigo).subscribe({
-      next: (list: Ofertas) => {
-        this.listaOferta = list;
-        console.log(list);
-        this.today =new Date(this.listaOferta.fechaLimite);
-        console.log(this.listaOferta.modalidad)
-        this.ofertaCarga();
-        
-        
+      next: (response : HttpResponse<Ofertas>) => {
+        var list: Ofertas | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaOferta = list;
+            console.log(list);
+            this.today =new Date(this.listaOferta.fechaLimite);
+            console.log(this.listaOferta.modalidad)
+            this.ofertaCarga();
+          }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarCategorias().subscribe({
-      next: (list: Categoria[]) => {
-        this.listacategorias = list;
+      next: (response : HttpResponse<Categoria[]>) => {
+        var list: Categoria[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listacategorias = list;
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
     this.empleadorService.listarModalidades().subscribe({
-      next: (list: Modalidad[])=> {
-        this.listaModalidades = list;
+      next: (response : HttpResponse<Modalidad[]>)=> {
+        var list: Modalidad[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listaModalidades = list;
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
@@ -125,9 +159,16 @@ export class ActualizarOfertaComponent {
       console.log("Oferta" + this.oferta.nombre);
       console.log(this.oferta)
       this.empleadorService.actualizarOferta(this.oferta).subscribe({
-        next:(data:any)=>{
+        next:(response : HttpResponse<Ofertas>)=>{
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
     }

@@ -1,9 +1,8 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, RouteReuseStrategy, Router } from '@angular/router';
 import { DatosPostulante } from 'src/entities/DatosPostulante';
-import { Postulante } from 'src/entities/Postulante';
-import { UsuarioPdf } from 'src/entities/UsuarioPdf';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 
 
@@ -44,29 +43,47 @@ export class DatosPostulanteComponent implements OnInit {
     });
 
     this.empleadorService.listarPostulante(this.codigo, this.oferta).subscribe({
-      next: (dato: DatosPostulante) => {
+      next: (response: HttpResponse<DatosPostulante>) => {
         console.log("Cargar Postulante");
-        console.log(dato);
-        this.listarPostulante = dato;
-        this.carga= true;
+        var dato: DatosPostulante | null= null; 
+          if (response.body) {
+            dato = response.body;
+            console.log(dato);
+            this.listarPostulante = dato;
+            this.carga= true;
+          }
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
 
 
     this.empleadorService.listarPdf(this.codigo).subscribe(
       
-        (data) =>{
-          // Convierte los bytes a un Blob
-          const blob = new Blob([data], { type: 'application/pdf' });
-
-          // Crea una URL segura para el Blob
-          this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
-          console.log(data)
-          console.log(this.pdfUrl);
-          
+        (response: HttpResponse<ArrayBuffer>) =>{
+          var data: ArrayBuffer | null= null; 
+          if (response.body) {
+            data = response.body;
+            console.log(data);
+            const blob = new Blob([data], { type: 'application/pdf' });
+            this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+            console.log(data)
+            console.log(this.pdfUrl);
+          }     
         },
         (error) => {
           console.error('Error al obtener el PDF', error);
+         
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }
+        
         }
       
     );
@@ -76,7 +93,7 @@ export class DatosPostulanteComponent implements OnInit {
 
   pasarEntrevista(){
     console.log(this.listarPostulante.codigoOferta)
-    this.router.navigate(['generar-entrevista', {codigo:this.listarPostulante.codigoOferta}]);
+    this.router.navigate(['generar-entrevista', {codigo:this.listarPostulante.codigo, oferta:this.oferta}]);
   }
   
   cancelar(){

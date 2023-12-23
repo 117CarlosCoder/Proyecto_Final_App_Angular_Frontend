@@ -44,6 +44,13 @@ ngOnInit() {
         this.oferta = list;
         console.log(this.oferta);
         this.cargar=true;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
     });
   }

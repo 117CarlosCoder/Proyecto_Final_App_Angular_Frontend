@@ -6,6 +6,7 @@ import { RegistroComision } from 'src/entities/RegistroComision';
 import { AdminService } from 'src/services/administrador/AdminService';
 import { DatePipe } from '@angular/common';
 import { format } from 'date-fns';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-comision',
@@ -31,10 +32,22 @@ export class AdminComisionComponent implements OnInit{
       }); 
       this.carga=false;
       this.adminService.listarComision().subscribe({
-        next: (list: Comision) => {
-          this.listarComision = list;
-          this.carga = true;
+        next: (response: HttpResponse<Comision>) => {
+          var list: Comision | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarComision = list;
+            this.carga = true;
+          }
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
+        
       });
     }
 
@@ -57,7 +70,10 @@ export class AdminComisionComponent implements OnInit{
             fecha:format(Date.now(), 'yyyy-MM-dd')
         }
         this.adminService.cambiarComision(this.comision).subscribe({
-          next:(data:any)=>{
+          next:(response: HttpResponse<any>)=>{
+            if(response.status === 406){
+              this.router.navigate(['**']);
+            }
             this.limpiar();
             this.adminService.registrarComision(this.registroComision).subscribe({
               next:(data:any)=>{

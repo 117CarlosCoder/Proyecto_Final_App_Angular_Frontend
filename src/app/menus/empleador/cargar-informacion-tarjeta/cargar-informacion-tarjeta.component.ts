@@ -5,6 +5,7 @@ import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -39,9 +40,16 @@ export class CargarInformacionTarjetaComponent implements OnInit{
       this.tarjeta = this.form.value as Tarjeta;
       console.log(this.tarjeta)
       this.empleadorService.enviaTarjeta(this.tarjeta).subscribe({
-        next:(data:any)=>{
+        next:(response: HttpResponse<any>)=>{
           this.limpiar();
           this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
   }

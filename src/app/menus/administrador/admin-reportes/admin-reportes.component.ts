@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CantidadTotal } from 'src/entities/CantidadTotal';
-import { Fechas } from 'src/entities/Fechas';
-import { FechasOferta } from 'src/entities/FechasOferta';
 import { TopEmpleadores } from 'src/entities/TopEmpleadores';
 import { AdminService } from 'src/services/administrador/AdminService';
 import { format } from 'date-fns';
@@ -11,6 +9,8 @@ import { Categoria } from 'src/entities/Categoria';
 import { IngresoTotal } from 'src/entities/IngresoTotal';
 import { FechaIngresos } from 'src/entities/FechaIngresos';
 import { RegistroComision } from 'src/entities/RegistroComision';
+import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-reportes',
@@ -33,7 +33,8 @@ export class AdminReportesComponent implements OnInit{
   valor:boolean=false;
 
   constructor(private formBuilder:FormBuilder,
-    private adminService:AdminService){}
+    private adminService:AdminService,
+    private router:Router){}
 
   ngOnInit(): void {
     this.carga= false;
@@ -51,50 +52,94 @@ export class AdminReportesComponent implements OnInit{
 
 
       this.adminService.listarTopEmpleadores().subscribe({
-        next: (list: TopEmpleadores[]) => {
-          console.log("Cargar ofertas Costos")
-          this.listaEmpleadores = list;
-          console.log(this.listaEmpleadores);
+        next: (response: HttpResponse<TopEmpleadores[]>) => {
+          console.log("Cargar ofertas Costos");
+          var list:TopEmpleadores[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              this.listaEmpleadores = list;
+              console.log(this.listaEmpleadores);
+            }
+          
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
 
       this.adminService.listarCategorias().subscribe({
-        next: (list: Categoria[]) => {
+        next: (response: HttpResponse<Categoria[]>) => {
           console.log("Cargar ofertas Costos")
-          this.listarCategorias = list;
-          console.log(this.listarCategorias);
+          var list:Categoria[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              this.listarCategorias = list;
+              console.log(this.listarCategorias);
+            }
+          
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
 
       this.adminService.listarRegistroComision().subscribe({
-        next: (list: RegistroComision[]) => {
+        next: (response: HttpResponse<RegistroComision[]>) => {
           console.log("Cargar registro Comision")
-          this.listarRegistroComision = list;
-          console.log(this.listarRegistroComision);
+          var list:RegistroComision[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              this.listarRegistroComision = list;
+              console.log(this.listarRegistroComision);
+            }
+          
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
       });
 
       this.adminService.listarCatidadTotal("","",0,this.valor).subscribe({
-        next:(list: CantidadTotal)=>{
-          
-
-          if(list){
-            console.log("Cargar ganancia total")
-            this.gananciaTotal = list;
-            console.log(this.gananciaTotal);
-            this.carga=true;
+        next:(response: HttpResponse<CantidadTotal>)=>{
+          var list:CantidadTotal | null= null; 
+            if (response.body) {
+              list = response.body;
+              if(list){
+                console.log("Cargar ganancia total")
+                this.gananciaTotal = list;
+                console.log(this.gananciaTotal);
+                this.carga=true;
+              }
+              else{
+                this.formreporte3.reset({
+                  
+                });
+                this.formreporte3 = this.formBuilder.group({
+                  fechaA: [null, [Validators.required]],
+                  fechaB: [null, [Validators.required]],
+                  categoria: [null, [Validators.required]]
+                });
+              }
+            }
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
           }
-          else{
-            this.formreporte3.reset({
-              
-            });
-            this.formreporte3 = this.formBuilder.group({
-              fechaA: [null, [Validators.required]],
-              fechaB: [null, [Validators.required]],
-              categoria: [null, [Validators.required]]
-            });
-          }
-          
         }
         
       });
@@ -108,26 +153,37 @@ export class AdminReportesComponent implements OnInit{
       let fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
       this.adminService.listarCatidadTotal(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria, this.valor).subscribe({
-        next:(list: CantidadTotal)=>{
-          
+        next:(response: HttpResponse<CantidadTotal>)=>{
+          var list:CantidadTotal | null= null; 
+            if (response.body) {
+              list = response.body;
+              if(list){
+                console.log("Cargar ganancia total")
+                this.gananciaTotal = list;
+                console.log(this.gananciaTotal);
+                this.carga=true;
+              }
+              else{
+                this.formreporte3.reset({
+                  
+                });
+                this.formreporte3 = this.formBuilder.group({
+                  fechaA: [null, [Validators.required]],
+                  fechaB: [null, [Validators.required]],
+                  categoria: [null, [Validators.required]]
+                });
+              }
+            }
 
-          if(list){
-            console.log("Cargar ganancia total")
-            this.gananciaTotal = list;
-            console.log(this.gananciaTotal);
-            this.carga=true;
-          }
-          else{
-            this.formreporte3.reset({
-              
-            });
-            this.formreporte3 = this.formBuilder.group({
-              fechaA: [null, [Validators.required]],
-              fechaB: [null, [Validators.required]],
-              categoria: [null, [Validators.required]]
-            });
-          }
+         
           
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
         
       });
@@ -140,25 +196,36 @@ export class AdminReportesComponent implements OnInit{
       let fechaFormateada1 = format(this.fechaIngresosTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechaIngresosTotal.fechaB, 'yyyy-MM-dd');
       this.adminService.listarIngresoTotal(fechaFormateada1,fechaFormateada2).subscribe({
-        next:(list: IngresoTotal[])=>{
-          
+        next:(response: HttpResponse<IngresoTotal[]>)=>{
+          var list:IngresoTotal[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              if(list){
+                console.log("Cargar ingresos totales empleadores")
+                this.listarIngresosTotales = list;
+                console.log(this.listarIngresosTotales);
+                this.cargainforme2=true;
+              }
+              else{
+                this.formreporte2.reset({
+                  
+                });
+                this.formreporte2 = this.formBuilder.group({
+                  fechaA: [null, [Validators.required]],
+                  fechaB: [null, [Validators.required]]
+                });
+              }
+            }
 
-          if(list){
-            console.log("Cargar ingresos totales empleadores")
-            this.listarIngresosTotales = list;
-            console.log(this.listarIngresosTotales);
-            this.cargainforme2=true;
-          }
-          else{
-            this.formreporte2.reset({
-              
-            });
-            this.formreporte2 = this.formBuilder.group({
-              fechaA: [null, [Validators.required]],
-              fechaB: [null, [Validators.required]]
-            });
-          }
           
+          
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
         }
         
       });
@@ -166,29 +233,44 @@ export class AdminReportesComponent implements OnInit{
   }
 
   descargarHistorialComision(){
-    this.adminService.descargarRegistroComision().subscribe(
-      response => {
-        const url = window.URL.createObjectURL(response);
+    this.adminService.descargarRegistroComision().subscribe({
+      next:(response: HttpResponse<any>)=> {
+        const url = window.URL.createObjectURL(response.body);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'HistorialComision.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    }
-    ); 
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    }); 
   }
 
   descargarTopEmpleadores(){
-    this.adminService.descargarTopEmpleadores().subscribe(
-      response => {
-        const url = window.URL.createObjectURL(response);
+    this.adminService.descargarTopEmpleadores().subscribe({
+      next:(response: HttpResponse<any>) => {
+        const url = window.URL.createObjectURL(response.body);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'HistorialComision.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
     }
     ); 
   }
@@ -200,17 +282,24 @@ export class AdminReportesComponent implements OnInit{
       let fechaFormateada1 = format(this.fechaIngresosTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechaIngresosTotal.fechaB, 'yyyy-MM-dd');
 
-      this.adminService.descargarEmpleadoresIngresos(fechaFormateada1,fechaFormateada2).subscribe(
-        response => {
-          const url = window.URL.createObjectURL(response);
+      this.adminService.descargarEmpleadoresIngresos(fechaFormateada1,fechaFormateada2).subscribe({
+        next:(response: HttpResponse<any>) => {
+          const url = window.URL.createObjectURL(response.body);
           const a = document.createElement('a');
           a.href = url;
           a.download = 'EmpleadoresMasIngresos.pdf';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
-      ); 
+    }); 
     }
   }
 
@@ -221,16 +310,24 @@ export class AdminReportesComponent implements OnInit{
       let fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
 
-      this.adminService.descargarTotalIngresos(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria).subscribe(
-        response => {
-          const url = window.URL.createObjectURL(response);
+      this.adminService.descargarTotalIngresos(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria).subscribe({
+        next:(response: HttpResponse<any>) => {
+          const url = window.URL.createObjectURL(response.body);
           const a = document.createElement('a');
           a.href = url;
           a.download = 'TotalIngresos.pdf';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
       }
+    }
       ); 
     }
   }
