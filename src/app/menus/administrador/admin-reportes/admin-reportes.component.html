@@ -154,7 +154,7 @@
                 </div>
                 <select class="form-select mb-3 h-25 mt-3"  aria-label="Default select example" 
                 id="categoria" name="categoria" formControlName="categoria">
-                <option *ngFor="let dato of listarCategorias let i = index" value={{dato.codigo}}  >{{dato.nombre}}</option>
+                <option *ngFor="let dato of listarCategorias let i = index" value={{dato.codigo}} (change) = "cambioCategoria(dato.codigo)" >{{dato.nombre}}</option>
                 </select>
         </div>
         

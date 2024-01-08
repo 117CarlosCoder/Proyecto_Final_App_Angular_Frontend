@@ -8,6 +8,8 @@ export interface UsuarioT {
     cui :String,
     fechaFundacion:String,
     fechaNacimiento:String,
-    rol:String
+    curriculum:String,
+    rol:String ,
+    suspension: boolean
 
 }

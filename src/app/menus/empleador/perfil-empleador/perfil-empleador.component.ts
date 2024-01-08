@@ -9,10 +9,9 @@ import { CrearUsuario } from 'src/entities/CrearUsuario';
 import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
-import { AdminService } from 'src/services/administrador/AdminService';
 import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
-
+import { Tarjeta } from 'src/entities/Tarjeta';
 @Component({
   selector: 'app-perfil-empleador',
   templateUrl: './perfil-empleador.component.html',
@@ -20,12 +19,15 @@ import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 })
 export class PerfilEmpleadorComponent {
   form!:FormGroup;
+  today: Date = new Date();
+  formTarjeta!:FormGroup;
   form2!:FormGroup;
   usario!:CrearUsuario;
   modalRef?:BsModalRef;
   telefonos!:Telefono;
   listaTelefonos!:NumTelefono[];
   listTelefono:TelefonoUsuario[]=[];
+  tarjeta!:Tarjeta;
   codigo!:number;
   rol!:String;
   FechaNString!: String|null;
@@ -34,19 +36,51 @@ export class PerfilEmpleadorComponent {
   FechaF!:Date;
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
+  carga1 : boolean = false;
+  carga2 : boolean = false;
+  carga3 : boolean = false;
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
     private modalService: BsModalService,
-    private adminService: AdminService,
     private empleadorService: EmpleadorService
  ){}
 
  ngOnInit(): void {
+
+  this.form = this.formBuilder.group({
+    codigo:[],
+    nombre: [null, [Validators.required]],
+    direccion: [null, [Validators.required]],
+    username: [null, [Validators.required]],
+    password: [null, [Validators.required]],
+    email: [null, [Validators.required]],
+    cui:[null, [Validators.required]],
+    fechaFundacion: [],
+    fechaNacimiento: [],
+    rol:[]
+  });
+
+  this.form2 = this.formBuilder.group({
+    telefono1: [null, [Validators.required]],
+    telefono2: [],
+    telefono3: []
+  }); 
+
+  this.formTarjeta = this.formBuilder.group({
+    titular: [null, [Validators.required]],
+    numero: [null, [Validators.required]],
+    codigoSeguridad: [null, [Validators.required]],
+    fechaExpiracion: [null, [Validators.required]],
+    cantidad : [null, [Validators.required]]
+  });
+  
+  
   this.empleadorService.listarUsuarioEspecifico().subscribe({
     next: (response: HttpResponse<UsuarioT>) => {
       var list: UsuarioT | null= null; 
           if (response.body) {
+            
             list = response.body;
             this.usuario = list;
             console.log(this.usuario);
@@ -73,10 +107,11 @@ export class PerfilEmpleadorComponent {
               password: [this.usuario.password, [Validators.required]],
               email: [this.usuario.email, [Validators.required]],
               cui:[this.usuario.cui, [Validators.required]],
-              fechaFundacion: [this.FechaF],
-              fechaNacimiento: [this.FechaN],
+              fechaFundacion: [this.FechaN, [Validators.required]],
+              fechaNacimiento: [this.FechaN, [Validators.required]],
               rol:[this.usuario.rol]
             });
+            this.carga1 = true;
           }
       
     },
@@ -102,11 +137,11 @@ export class PerfilEmpleadorComponent {
     rol:[]
   });
 
-
   this.empleadorService.listarTelefonosEspecifico().subscribe({
     next: (response: HttpResponse<NumTelefono[]>) => {
       var list: NumTelefono[] | null= null; 
           if (response.body) {
+            
             list = response.body;
             this.listaTelefonos = list;
             console.log(this.listaTelefonos);
@@ -128,7 +163,7 @@ export class PerfilEmpleadorComponent {
               telefono3: [numero3]
             });
           }
-      
+          this.carga2=true;
     },
     error: (error) => {
       if(error.status === 406){
@@ -144,6 +179,40 @@ export class PerfilEmpleadorComponent {
     telefono2: [],
     telefono3: []
   }); 
+
+  this.empleadorService.listarTarjeta().subscribe({
+    next: (response: HttpResponse<Tarjeta>) => {
+      var tarjeta: Tarjeta | null= null; 
+          if (response.body) {
+            tarjeta = response.body;
+            this.tarjeta = tarjeta;
+            console.log(this.tarjeta)
+            this.today =new Date(this.tarjeta.fechaExpiracion);
+            console.log(this.today)
+            this.formTarjeta = this.formBuilder.group({
+              titular: [this.tarjeta.titular, [Validators.required]],
+              numero: [this.tarjeta.numero, [Validators.required]],
+              codigoSeguridad: [this.tarjeta.codigoSeguridad, [Validators.required]],
+              fechaExpiracion: [this.today, [Validators.required]],
+              cantidad : [this.tarjeta.cantidad, [Validators.required]]
+            });
+            this.carga3= true;
+          }
+          else{
+
+          }
+          
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    } 
+  });
+
+
  }
 
 
@@ -274,8 +343,6 @@ export class PerfilEmpleadorComponent {
               }); 
               }
             this.modalRef = this.modalService.show(template);
-            this.limpiar();
-            this.router.navigate(['empleador-gestion']);
           
       },
       error: (error) => {
@@ -289,6 +356,25 @@ export class PerfilEmpleadorComponent {
     
       
     
+  }
+}
+
+editarTarjeta(template: TemplateRef<any>){
+  if (this.formTarjeta.valid) {
+   
+    this.tarjeta = this.formTarjeta.value as Tarjeta;
+    this.empleadorService.actualizarTarjeta(this.tarjeta).subscribe({
+      next: (data: any) => {
+        this.modalRef = this.modalService.show(template);
+      }, 
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
   }
 }
 

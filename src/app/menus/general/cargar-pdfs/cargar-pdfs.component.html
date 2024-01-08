@@ -1,0 +1,22 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="h-75 w-100 d-flex flex-column justify-content-center align-items-center">
+    <h1>Suba los curriculums de cada usuario </h1>
+    <div class="card col-md-8">
+        <div class="card-header text-center" >Usuarios</div>
+        
+        <div class="card-body d-flex flex-column align-items-center">
+           
+          <div class="form-group w-75" *ngFor=" let dato of listaUsuarios">
+            <h2>Usuario: {{dato.username}}</h2>
+            <h5>Pdf : {{dato.curriculum}}</h5>
+            <input type="file" class="form-control" aria-label="file example" (change)="onFileChange($event, dato)" required>
+
+            <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+                <div class="invalid-feedback">Por favor seleccione un archivo</div>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-3  mb-3 w-50" (click)="cargarPdf()">Subir</button>
+        </div>
+      </div>
+</div>
+

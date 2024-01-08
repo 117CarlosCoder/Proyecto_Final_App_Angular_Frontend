@@ -1,7 +1,10 @@
 <app-navbar-empleador></app-navbar-empleador>
-<div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
-    <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
-        <div  [formGroup]="form" >
+<div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"   >
+    <div class=" border border-black w-75 mb-5 rounded-top p-4 " >
+      
+        <div  [formGroup]="form" *ngIf="carga1">
+          <h2 class="text-center">Usuario</h2>
+
                 <h5>Nombre</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
@@ -20,7 +23,7 @@
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
                       [class.is-invalid]="form.controls['username'].invalid && form.controls['username'].touched"
-                      id="username" placeholder="username" name="username" formControlName="username">
+                      id="username" placeholder="username" name="username" formControlName="username" autocomplete="on">
                       <div
                         *ngIf="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched)"
                         class="invalid-feedback">
@@ -44,12 +47,30 @@
                           </div>
                         <label for="direccion">Direccion</label>
                     </div>
+
+                    <h5>Fecha Fundacion</h5>
+                    <div class=" form-group">
+                      <input type="text"
+                          placeholder="Datepicker"
+                          class="form-control "
+                          bsDatepicker
+                          [class.is-invalid]="form.controls['fechaFundacion'].invalid && form.controls['fechaFundacion'].touched"
+                          id="fechaFundacion"  name = "fechaFundacion" formControlName="fechaFundacion"
+                      >
+                      <div
+                              *ngIf="form.controls['fechaFundacion'].invalid && (form.controls['fechaFundacion'].dirty || form.controls['fechaFundacion'].touched)"
+                              class="invalid-feedback">
+                              <div>
+                                  Por favor ingrese la fecha 
+                              </div>
+                          </div>
+                  </div>
                     
                 <h5>Correo Electronico</h5>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" 
                           [class.is-invalid]="form.controls['email'].invalid && form.controls['email'].touched"
-                          id="email" placeholder="email" name="email" formControlName="email">
+                          id="emailtxt" placeholder="email" name="email" formControlName="email" autocomplete="on">
                           <div
                             *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)"
                             class="invalid-feedback">
@@ -57,7 +78,7 @@
                               Por favor ingrese la Correo
                             </div>
                           </div>
-                        <label for="email">Correo</label>
+                        <label for="emailtxt">Correo</label>
                     </div>
                 <h5>Contraseña</h5>
                     <div class="form-floating mb-3">
@@ -127,19 +148,9 @@
                             </div>
                     </div>
                   </div>
-
-                  
-                  
-        
-                      
-    
-            
-            
-    
-             
           </div>
 
-        <div [formGroup]="form2">
+        <div [formGroup]="form2" *ngIf="carga2">
           <h5>Telefono</h5>
                       <div class="form-floating mb-3" >
                           <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
@@ -194,5 +205,112 @@
         </div>
         
     </div>
-    
+
+    <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
+      <div [formGroup]="formTarjeta" *ngIf="carga3">
+      <h3 class="text-center">Tarjeta de Credito</h3>
+          <div class="mb-3">
+            <label for="numero" class="form-label">Numero de la tarjeta</label>
+            <input type="text" class="form-control"
+              [class.is-invalid]="formTarjeta.controls['numero'].invalid && formTarjeta.controls['numero'].touched"
+              id="numero" aria-describedby="emailHelp" name = "numero" formControlName="numero" >
+              <div
+                  *ngIf="formTarjeta.controls['numero'].invalid && (formTarjeta.controls['numero'].dirty || formTarjeta.controls['numero'].touched)"
+                  class="invalid-feedback">
+                  <div>
+                      Por favor ingrese el numero de tarjeta 
+                  </div>
+              </div>
+          </div>
+          <div class="mb-3">
+            <label for="titular" class="form-label">Nombre</label>
+            <input type="text" class="form-control"
+            [class.is-invalid]="formTarjeta.controls['titular'].invalid && formTarjeta.controls['titular'].touched"
+            id="titular" aria-describedby="emailHelp" name = "titular" formControlName="titular" >
+            <div
+                *ngIf="formTarjeta.controls['titular'].invalid && (formTarjeta.controls['titular'].dirty || formTarjeta.controls['titular'].touched)"
+                class="invalid-feedback">
+                <div>
+                    Por favor ingrese el titular 
+                </div>
+            </div>
+          </div>
+
+          <div class="row row-cols-2 g-4">
+              
+                  
+              <div class=" form-group">
+                  <label for="fechaExpiracion" class="form-label">Fecha de Expiracion</label>
+                  <input type="text"
+                      placeholder="Datepicker"
+                      class="form-control "
+                      bsDatepicker
+                      [class.is-invalid]="formTarjeta.controls['fechaExpiracion'].invalid && formTarjeta.controls['fechaExpiracion'].touched"
+                      id="fechaExpiracion"  name = "fechaExpiracion" formControlName="fechaExpiracion"
+                  >
+                  <div
+                          *ngIf="formTarjeta.controls['fechaExpiracion'].invalid && (formTarjeta.controls['fechaExpiracion'].dirty || formTarjeta.controls['fechaExpiracion'].touched)"
+                          class="invalid-feedback">
+                          <div>
+                              Por favor ingrese la fecha 
+                          </div>
+                      </div>
+              </div>
+              <div>
+                  <label for="cvc" class="form-label">CVC</label>
+                  <div class="input-group date mb-3" id="codigoCVC">
+                      <input type="text" class="form-control"
+                      [class.is-invalid]="formTarjeta.controls['codigoSeguridad'].invalid && formTarjeta.controls['codigoSeguridad'].touched"
+                      id="cvc"  name = "cvc" formControlName="codigoSeguridad" >
+                      <div
+                          *ngIf="formTarjeta.controls['codigoSeguridad'].invalid && (formTarjeta.controls['codigoSeguridad'].dirty || formTarjeta.controls['codigoSeguridad'].touched)"
+                          class="invalid-feedback">
+                          <div>
+                              Por favor ingrese el codigo 
+                          </div>
+                      </div>
+                  </div>
+              </div>               
+          </div>
+          
+          <label for="cantidad" class="form-label">Cantidad</label>
+          <div class="form-floating mb-3">
+              <input type="number" class="form-control" min="1"
+                [class.is-invalid]="formTarjeta.controls['cantidad'].invalid && formTarjeta.controls['cantidad'].touched"
+                id="cantidad" placeholder="Cantidad" name="cantidad" formControlName="cantidad">
+                <div
+                  *ngIf="formTarjeta.controls['cantidad'].invalid && (formTarjeta.controls['cantidad'].dirty || formTarjeta.controls['cantidad'].touched)"
+                  class="invalid-feedback">
+                  <div>
+                    Por favor ingrese la cantidad
+                  </div>
+                </div>
+              <label for="cantidad">Cantidad</label>
+          </div>
+
+
+          <div class="d-flex justify-content-start w-100">
+              <button type="submit" class="btn btn-primary mt-3" (click)="editarTarjeta(template)" >Editar</button>
+          </div>
+
+          <ng-template #template>
+              <div class="modal-header">
+                  <h4 class="modal-title pull-left">Mensaje</h4>
+                  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Se ha Actualizado la informacion
+                </div>
+                <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+                  <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                      OK  
+                  </button>
+                </div>
+                
+          </ng-template>
+          
+      </div>
+    </div>
 </div>

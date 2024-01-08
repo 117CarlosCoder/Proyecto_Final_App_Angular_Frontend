@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UsuarioT } from 'src/entities/UsuarioT';
@@ -13,6 +13,7 @@ export class AdminUsuariosComponent implements OnInit{
   rol!:String;
   listarUsuarios!:UsuarioT[];
   listarUsuario!:UsuarioT;
+  checkboxState: boolean[] = [];
 
   constructor(private route:ActivatedRoute,
     private adminService: AdminService,
@@ -83,6 +84,24 @@ export class AdminUsuariosComponent implements OnInit{
       }
     }
     });
+  }
+
+  suspenderUsuario(username : String, event : any){
+    console.log(event.target.checked)
+    this.adminService.suspender(username,event.target.checked).
+    subscribe({
+      next:(data: any ) => {
+        console.log("usuario suspendido")
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+    });
+      
   }
 
   cancelar(){

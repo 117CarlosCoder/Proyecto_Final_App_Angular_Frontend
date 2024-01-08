@@ -39,10 +39,10 @@ export class NavbarSolicitanteComponent {
   close(): void {
       this.usuarioService.cerrarSesion().subscribe({
         next: (data:any) => {
+          this.usuarioService.removeCredenciales();
+          this.usuarioService.setRol('Invitado');
           this.router.navigate(['./login']);
-          localStorage.removeItem('username');
-          localStorage.removeItem('password');
-          localStorage.setItem('rol','Invitado');
+          
       },
       error: (error: any) => {
         console.log("error" + error);

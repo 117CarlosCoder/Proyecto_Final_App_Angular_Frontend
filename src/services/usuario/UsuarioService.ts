@@ -6,6 +6,8 @@ import { Categoria } from "src/entities/Categoria";
 import { CrearUsuario } from "src/entities/CrearUsuario";
 import { Telefono } from "src/entities/Telefono";
 import { NumTelefono } from "src/entities/NumTelefono";
+import { UsuarioT } from "src/entities/UsuarioT";
+import { UsuarioPdf } from "src/entities/UsuarioPdf";
 
 
 @Injectable({
@@ -29,16 +31,34 @@ export class UsuarioService {
     }
 
     getCredenciales(){
-        const username = localStorage.getItem('username');
-        const password = localStorage.getItem('password');
+        var username = localStorage.getItem('username');
+        var password = localStorage.getItem('password');
+
+        console.log('usuario : '+username)
     
-        const headers = {
+        var headers = {
                 'Authorization': 'Basic ' + btoa(username + ':' + password)
         };
 
+        console.log(headers);
+
         return headers;
-      }
+    }
     
+    removeCredenciales(): void {
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        localStorage.clear()
+    }
+
+    getCredentialUsername(){
+        return localStorage.getItem('username');
+    }
+
+    setRol(rol:string){
+        return localStorage.setItem('rol', rol);
+    }
+
 
 
     public crearUsuarioSolicitante(usuario: CrearUsuario){
@@ -71,8 +91,21 @@ export class UsuarioService {
         
     }
 
+    public cargarPdfs(usuario: UsuarioPdf[], ){
+        console.log("1 enviado : "  + usuario[0].pdf);
+        console.log("2 enviado : "  + usuario[1].pdf);
+        console.log("3 enviado : "  + usuario[2].pdf);
+        return this.httpClient.post("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/carga-servlet/cargar-pdfs", usuario, {observe: 'response'});
+        
+    }
+
+
     public listarCategorias(): Observable<Categoria[]> {
         return this.httpClient.get<Categoria[]>(this.API_URL + "/applicant-servlet/listar-ofertas");
+    }
+
+    public listarUsuariosPDF(): Observable<UsuarioT[]> {
+        return this.httpClient.get<UsuarioT[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/carga-servlet");
     }
 
     public comprobarUsuario(rol:String){

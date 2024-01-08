@@ -29,11 +29,11 @@ export class CargarDatosComponent {
       const formData: FormData = new FormData();
       formData.append('file', this.selectedFile);
 
-      this.httpClient.post('http://localhost:8080/Proyecto_Final_Servlet_war/v1/carga-servlet/', formData)
+      this.httpClient.post('http://localhost:8080/Proyecto_Final_Servlet_war/v1/carga-servlet/cargar-json', formData)
         .subscribe(response => {
           console.log('Archivo subido con éxito', response);
           this.isLoading = false;
-          this.router.navigate(['login']);
+          this.router.navigate(['cargar-pdf-usuario']);
         }, error => {
           console.error('Error al subir el archivo', error);
           this.isLoading = false;

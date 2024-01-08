@@ -25,12 +25,16 @@ export class LoginComponent implements OnInit{
     private router: Router,
     private sharedService: ActualizarNavbarService) {
     this.login = false;
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
+    usuarioService.removeCredenciales();
+    localStorage.setItem('rol','Invitado');
+    
+    
   }
 
 
   ngOnInit(): void {
+    this.usuarioService.removeCredenciales();
+    localStorage.setItem('rol','Invitado');
     this.sharedService.updateCompletarInfo(true);
     this.usuarioForm = this.formBuilder.group({
       username: [null, [Validators.required]],
@@ -39,28 +43,36 @@ export class LoginComponent implements OnInit{
   }
 
   submit(): void {
+   
     if (this.usuarioForm.valid) {
       this.usuario = this.usuarioForm.value as Usuario;
-      console.log(this.usuario.password)
+      
       this.usuarioService.inciarSesion(this.usuario).subscribe({
         next: ( response: HttpResponse<any>)=>{     
             const data = response.body;
-            if(response.status === 202){
+            console.log(this.usuarioService.getCredentialUsername())
+            if(response.status === 200){
               this.sharedService.updateCompletarInfo(true);
               console.log(response.status);
+              console.log(data)
+              console.log(data.rol)
               this.rol = data.rol;
               
-
+              localStorage.setItem('rol', this.rol.toString())
+              console.log(localStorage.getItem('rol'))
               this.limpiar();
+              setTimeout(() => {
               this.router.navigate([this.usuarioService.comprobarUsuario(this.rol)]);
+            }, 1000); 
             }
-            if(response.status === 200){
+            if(response.status === 202){
               console.log(response.status);
               this.rol = data.rol;
               console.log(this.rol);
               localStorage.setItem('rol', this.rol.toString())
               console.log(localStorage.getItem('rol'))
               this.sharedService.updateCompletarInfo(true);
+              
               setTimeout(() => {
                 this.router.navigate([this.usuarioService.paginaInicial(this.rol)]);
               }, 1000); 

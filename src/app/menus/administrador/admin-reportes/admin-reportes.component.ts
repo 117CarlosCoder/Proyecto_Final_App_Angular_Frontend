@@ -45,9 +45,9 @@ export class AdminReportesComponent implements OnInit{
         fechaB: [null, [Validators.required]]
       });
       this.formreporte3 = this.formBuilder.group({
-        fechaA: [null, [Validators.required]],
-        fechaB: [null, [Validators.required]],
-        categoria:[1, [Validators.required]]
+        fechaA: [null],
+        fechaB: [null],
+        categoria:[1]
       });
 
 
@@ -146,12 +146,17 @@ export class AdminReportesComponent implements OnInit{
 
   }
 
-  cambiarFechaEstadoCantidadTotal(){
+  cambioCategoria(categoria: number){
+    this.fechasCantidadTotal.categoria = categoria;
+  }
+
+  cambiarFechaEstadoCantidadTotal( ){
     if (this.formreporte3.valid) {
       this.valor = true;
       this.fechasCantidadTotal = this.formreporte3.value as FechaTotal;
       let fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
+      console.log(this.fechasCantidadTotal)
       this.adminService.listarCatidadTotal(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria, this.valor).subscribe({
         next:(response: HttpResponse<CantidadTotal>)=>{
           var list:CantidadTotal | null= null; 
@@ -306,10 +311,17 @@ export class AdminReportesComponent implements OnInit{
   descargarTotalIngresos(){
     if (this.formreporte3.valid) {
 
-      this.fechasCantidadTotal = this.formreporte3.value as FechaTotal;
-      let fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
-      let fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
+      let fechaFormateada1 = '';
+      let fechaFormateada2 = '';
 
+      this.fechasCantidadTotal = this.formreporte3.value as FechaTotal;
+      if (this.fechasCantidadTotal.fechaA != undefined ) {
+        fechaFormateada1 = format(this.fechasCantidadTotal.fechaA, 'yyyy-MM-dd');
+        fechaFormateada2 = format(this.fechasCantidadTotal.fechaB, 'yyyy-MM-dd');
+      }
+      
+
+      console.log(this.fechasCantidadTotal)
       this.adminService.descargarTotalIngresos(fechaFormateada1,fechaFormateada2,this.fechasCantidadTotal.categoria).subscribe({
         next:(response: HttpResponse<any>) => {
           const url = window.URL.createObjectURL(response.body);

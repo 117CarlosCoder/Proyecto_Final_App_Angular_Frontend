@@ -78,7 +78,7 @@ export class CompletarInformacionComponent{
   
     console.log('post')
 
-    this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/', blob).subscribe({
+    this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/guardar-pdf', blob).subscribe({
       next: (data:any) => {
         console.log("se envio")
       },

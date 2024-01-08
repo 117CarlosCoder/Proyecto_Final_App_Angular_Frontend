@@ -8,7 +8,7 @@ import { OfertasDate } from 'src/entities/OfertasDate';
 import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { format } from 'date-fns';
-import { FechasOferta } from 'src/entities/FechasOferta';
+import { CargarOfertasFechas } from 'src/entities/CargarOfertasFechas';
 
 @Component({
   selector: 'app-gestion',
@@ -21,8 +21,15 @@ export class GestionComponent {
   codigoFinal!: Codigo;
   Fecha!: string | null;
   pipe = new DatePipe('en-US');
-  FechaOFerta !: FechasOferta;
-
+  FechaOFerta !: CargarOfertasFechas;
+  listarFechas = [{
+    "nombre":'Fecha Publcacion',
+    "valor":'fechaPublicacion' 
+  }, 
+  {
+    "nombre":'Fecha Limite',
+    "valor":'fechaLimite'
+  }];
 
   constructor( private empleadorService : EmpleadorService,
     private formBuilder: FormBuilder,
@@ -72,7 +79,8 @@ export class GestionComponent {
 
     this.form = this.formBuilder.group({
       fechaA: [null, [Validators.required]],
-      fechaB: [null, [Validators.required]]
+      fechaB: [null, [Validators.required]],
+      fechaS: [null, [Validators.required]]
     });
   }
 
@@ -86,10 +94,11 @@ export class GestionComponent {
 
   cargarOfertas(){
     if (this.form.valid) {
-      this.FechaOFerta = this.form.value as FechasOferta;
+      this.FechaOFerta = this.form.value as CargarOfertasFechas;
+      console.log(this.FechaOFerta.fechaS)
       let fechaFormateada1 = format(this.FechaOFerta.fechaA, 'yyyy-MM-dd');
       let fechaFormateada2 = format(this.FechaOFerta.fechaB, 'yyyy-MM-dd');
-      this.empleadorService.listarOfertasFechas(fechaFormateada1,fechaFormateada2).subscribe({
+      this.empleadorService.listarOfertasFechas(fechaFormateada1,fechaFormateada2, this.FechaOFerta.fechaS).subscribe({
         next:(response: HttpResponse<OfertasDate[]>) => {
           var list: OfertasDate[] | null= null; 
           if (response.body) {
@@ -132,6 +141,25 @@ export class GestionComponent {
                 if (response.body) {
                   list = response.body; 
                   this.listarOfetas = list;
+                  list.forEach(element => {
+                    if(element.fechaPublicacion!=null){
+                      this.Fecha = this.pipe.transform(element.fechaPublicacion.toString(), 'yyyy-MM-dd');
+          
+                      console.log(this.Fecha?.toString());
+                      if(this.Fecha){
+                        element.fechaPublicacion = this.Fecha;
+                      }
+                    }
+          
+                    if(element.fechaLimite!=null){
+                      this.Fecha = this.pipe.transform(element.fechaLimite.toString(), 'yyyy-MM-dd');
+          
+                      console.log(this.Fecha?.toString());
+                      if(this.Fecha){
+                        element.fechaLimite = this.Fecha;
+                      }
+                    }
+                  });
                   console.log(this.listarOfetas);
                 }
                

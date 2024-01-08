@@ -29,7 +29,7 @@
           <td ><button class="btn btn-primary" type="submit" (click)="editarUsuario(dato.codigo)">Editar</button></td>
           <td ><button class="btn btn-danger" type="submit" (click)="eliminarUsuario(dato.username)">Eliminar</button></td>
           <td ><div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="suspension{{i+1}}">
+            <input class="form-check-input" type="checkbox" role="switch" [checked] = "dato.suspension"  (change)="suspenderUsuario(dato.username, $event)" id="suspension{{i+1}}">
             <label class="form-check-label" for="suspension{{i+1}}">Suspension</label>
           </div></td>
         </tr>

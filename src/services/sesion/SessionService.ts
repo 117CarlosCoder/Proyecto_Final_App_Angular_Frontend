@@ -30,5 +30,4 @@ export class SessionService {
     return '';
   }
 
-  // Otros métodos relacionados con la sesión, como cerrar sesión, etc.
 }

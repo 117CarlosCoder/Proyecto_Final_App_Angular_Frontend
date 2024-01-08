@@ -95,10 +95,10 @@ export class CrearOfertaComponent implements OnInit {
       console.log(this.oferta)
       this.empleadorService.enviarOferta(this.oferta).subscribe({
         next:(response: HttpResponse<Ofertas>)=>{
-          if (response.body) {
+       
             this.limpiar();
             this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
-          }
+          
         },
         error: (error) => {
           if(error.status === 406){

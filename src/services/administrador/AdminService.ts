@@ -24,6 +24,7 @@ export class AdminService {
     readonly API_URL = "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-servlet";
     readonly API_URL_REPORTS = "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-report-changer-servlet";
     readonly API_URL_REPORTS_PDF = "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-reports-servlet/";
+    headers : HttpHeaders = new HttpHeaders(this.usuarioService.getCredenciales());
 
     constructor(private httpClient: HttpClient,
         private usuarioService: UsuarioService) {
@@ -36,6 +37,7 @@ export class AdminService {
 
     public listarUsuarios(rol:String): Observable<HttpResponse<UsuarioT[]>> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        console.log(headers)
         return this.httpClient.get<UsuarioT[]>(this.API_URL+"/listar-usuarios?rol="+rol, { observe : 'response',headers});
     }
 
@@ -47,6 +49,11 @@ export class AdminService {
     public listarUsuarioEspecifico(): Observable<HttpResponse<UsuarioT>> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario-especifico", {observe: 'response', headers});
+    }
+
+    public listarPdf(codigo:number) {
+        const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/admin-servlet/listar-curriculum?codigo="+codigo,{ responseType: "arraybuffer", observe: 'response', headers:headers });
     }
 
     public listarTelefonos(codigo:number): Observable<HttpResponse<NumTelefono[]>> {
@@ -74,6 +81,8 @@ export class AdminService {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.put<Ofertas>(this.API_URL+"/actualizar-oferta", oferta, {observe : 'response',headers});
     }
+
+    
 
     public listarCategorias(): Observable<HttpResponse<Categoria[]>> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
@@ -161,6 +170,12 @@ export class AdminService {
         
     }
 
+    public suspender(username: String, estado: boolean){
+        const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get(this.API_URL+"/suspender-usuario?username="+username+"&estado="+estado, {observe : 'response',headers});
+        
+    }
+    
     public eliminarUsuario(username : String){
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.delete(this.API_URL+"/eliminar-usuario?username="+username, {observe : 'response',headers});

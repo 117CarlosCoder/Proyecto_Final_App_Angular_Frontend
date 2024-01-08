@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,9 +9,11 @@ import { CrearUsuario } from 'src/entities/CrearUsuario';
 import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
-import { AdminService } from 'src/services/administrador/AdminService';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
+import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UsuarioService } from 'src/services/usuario/UsuarioService';
 
 @Component({
   selector: 'app-perfil-solicitante',
@@ -35,12 +37,18 @@ export class PerfilSolicitanteComponent {
   FechaF!:Date;
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
+  pdfUrl!: SafeResourceUrl;
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
     private modalService: BsModalService,
-    private solicitanteService: SolicitanteService
- ){}
+    private solicitanteService: SolicitanteService,
+    private usuarioService: UsuarioService,
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
+ ){
+
+ }
 
  ngOnInit(): void {
   this.solicitanteService.listarUsuarioEspecifico().subscribe({
@@ -59,7 +67,7 @@ export class PerfilSolicitanteComponent {
         this.FechaFString = this.pipe.transform(this.usuario.fechaFundacion.toString(), 'yyyy-MM-dd');
         console.log(this.FechaF)
         if(this.FechaFString?.toString()){
-          this.FechaN = new Date(this.FechaFString.toString());
+          this.FechaF = new Date(this.FechaFString.toString());
         }
       }
       this.form = this.formBuilder.group({
@@ -71,9 +79,35 @@ export class PerfilSolicitanteComponent {
         email: [this.usuario.email, [Validators.required]],
         cui:[this.usuario.cui, [Validators.required]],
         fechaFundacion: [this.FechaF],
-        fechaNacimiento: [this.FechaN],
+        fechaNacimiento: [this.FechaN, [Validators.required]],
         rol:[this.usuario.rol]
       });
+      if (this.usuario.codigo != undefined) {
+        this.solicitanteService.listarPdf(this.usuario.codigo).subscribe(
+          
+          (response: HttpResponse<ArrayBuffer>) =>{
+            var data: ArrayBuffer | null= null; 
+            if (response.body) {
+              data = response.body;
+              console.log(data);
+              const blob = new Blob([data], { type: 'application/pdf' });
+              this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+              console.log(data)
+              console.log(this.pdfUrl);
+            }     
+          },
+          (error) => {
+            console.error('Error al obtener el PDF', error);
+           
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }
+          
+          }
+        
+      );
+      }
+      console.log("codigo : " + this.usuario.codigo)
     },
     error: (error) => {
       if(error.status === 406){
@@ -84,6 +118,9 @@ export class PerfilSolicitanteComponent {
     }
   });
 
+  
+ 
+
   this.form = this.formBuilder.group({
     codigo:[],
     nombre: [null, [Validators.required]],
@@ -92,8 +129,8 @@ export class PerfilSolicitanteComponent {
     password: [null, [Validators.required]],
     email: [null, [Validators.required]],
     cui:[null, [Validators.required]],
-    fechaFundacion: [],
-    fechaNacimiento: [],
+    fechaFundacion: [null, [Validators.required]],
+    fechaNacimiento: [null, [Validators.required]],
     rol:[]
   });
 
@@ -266,8 +303,6 @@ export class PerfilSolicitanteComponent {
               }); 
               }
             this.modalRef = this.modalService.show(template);
-            this.limpiar();
-            this.router.navigate(['solicitante-aplicar-oferta']);
           
       },
       error: (error) => {
@@ -283,6 +318,40 @@ export class PerfilSolicitanteComponent {
     
   }
 }
+
+async subirArchivo(event: any) {
+  if (event.target.files && event.target.files.length > 0) {
+  
+  const file: File = event.target.files[0];
+  console.log(file)
+  console.log(file.type)
+  const nombreArchivo = file.name;
+  const datos = await file.arrayBuffer();
+
+  const blob = new Blob([datos], { type: file.type });
+
+
+  console.log('post')
+
+  const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+  this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/actualizar-pdf', blob,{observe: 'response', headers}).subscribe({
+    next: (data:any) => {
+      console.log("se envio");
+      location.reload();
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+  });
+
+  console.log(blob)
+}
+}
+
 
 limpiar(): void {
   this.form.reset({});

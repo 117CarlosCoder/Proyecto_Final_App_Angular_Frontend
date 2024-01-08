@@ -61,7 +61,7 @@ export class PerfilAdminComponent {
         this.FechaFString = this.pipe.transform(this.usuario.fechaFundacion.toString(), 'yyyy-MM-dd');
         console.log(this.FechaF)
         if(this.FechaFString?.toString()){
-          this.FechaN = new Date(this.FechaFString.toString());
+          this.FechaF = new Date(this.FechaFString.toString());
         }
       }
       this.form = this.formBuilder.group({
@@ -72,8 +72,8 @@ export class PerfilAdminComponent {
         password: [this.usuario.password, [Validators.required]],
         email: [this.usuario.email, [Validators.required]],
         cui:[this.usuario.cui, [Validators.required]],
-        fechaFundacion: [this.FechaF],
-        fechaNacimiento: [this.FechaN],
+        fechaFundacion: [this.FechaN],
+        fechaNacimiento: [this.FechaN, [Validators.required]],
         rol:[this.usuario.rol]
       });
         }
@@ -97,7 +97,7 @@ export class PerfilAdminComponent {
     email: [null, [Validators.required]],
     cui:[null, [Validators.required]],
     fechaFundacion: [],
-    fechaNacimiento: [],
+    fechaNacimiento: [null, [Validators.required]],
     rol:[]
   });
 
@@ -263,8 +263,6 @@ export class PerfilAdminComponent {
               }); 
               }
             this.modalRef = this.modalService.show(template);
-            this.limpiar();
-            this.router.navigate(['admin-dashboard']);
           
       },
       error: (error) => {

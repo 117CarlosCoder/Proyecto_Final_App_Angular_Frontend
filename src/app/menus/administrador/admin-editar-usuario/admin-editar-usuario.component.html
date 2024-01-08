@@ -2,6 +2,7 @@
 <div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
     <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
         <div  [formGroup]="form" >
+          <h2 class="text-center">{{rol}} : {{usuario.nombre}}</h2>
                 <h5>Nombre</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
@@ -195,6 +196,18 @@
         </div>
         
     </div>
-    
+    <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
+      <h2 class="text-center mb-3">Curriculum</h2>
+    <div class="h-75 w-100 " *ngIf="pdfUrl">
+          <object  width="100%" height="600px" [data]="pdfUrl" type="application/pdf" ></object>
+          <div class="mb-5">
+            <h5>Cambiar Curriculum</h5>
+            <input  type="file"  (change)="subirArchivo($event)" class="form-control" aria-label="file example" required 
+            id="curriculum" name="curriculum" formControlName="curriculum">
+            <div class="invalid-feedback">Ingrese algun archivo</div>
+        </div>
+      </div>
+      <div *ngIf="!pdfUrl">PDF no encontrado</div> 
+    </div>
 </div>
 

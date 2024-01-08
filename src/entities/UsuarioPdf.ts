@@ -1,5 +1,5 @@
 export interface UsuarioPdf {
     codigo:number,
     codigoUsuario:number,
-    pdf:Blob
+    pdf:Blob|string
 }

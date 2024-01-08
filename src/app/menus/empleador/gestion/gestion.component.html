@@ -2,6 +2,12 @@
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center" [formGroup]="form">
     <h1>Gestion</h1>
     <div class="row row-cols-3 g-4 mt-3 mb-5 border border-black rounded p-4">
+        <h5>Tipo de fecha</h5>
+          <select class="form-select" aria-label="Default select example"
+          id="fechaS" placeholder="fechaS" name="fechaS" formControlName="fechaS"  >
+            <option selected >Seleccione tipo fecha</option>
+            <option *ngFor="let dato of listarFechas  let i = index" value="{{dato.valor}}">{{dato.nombre}}</option>
+          </select>
         <h3>Filtro de fechas</h3>
         <div class=" form-group " >
             <label for="fechaA" class="form-label">Fecha Inicial</label>

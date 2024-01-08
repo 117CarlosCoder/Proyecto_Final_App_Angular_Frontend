@@ -39,6 +39,7 @@ import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/per
 import { hasRole } from './auth/auth.guard';
 import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
 import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
+import { CargarPdfsComponent } from './menus/general/cargar-pdfs/cargar-pdfs.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,12 @@ const routes: Routes = [
     path: "cargar",
     title: "Cargar Datos",
     component: CargarDatosComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
+  },
+  {
+    path: "cargar-pdf-usuario",
+    title: "Cargar PDF",
+    component: CargarPdfsComponent,
     canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {

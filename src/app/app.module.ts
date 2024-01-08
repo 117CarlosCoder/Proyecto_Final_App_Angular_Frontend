@@ -57,6 +57,7 @@ import { PerfilSolicitanteComponent } from './menus/solicitante/perfil-solicitan
 import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/perfil-empleador.component';
 import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
 import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
+import { CargarPdfsComponent } from './menus/general/cargar-pdfs/cargar-pdfs.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.
     PerfilSolicitanteComponent,
     PerfilEmpleadorComponent,
     PaginaNoPermitidaComponent,
-    PaginaErrorComponent
+    PaginaErrorComponent,
+    CargarPdfsComponent
     
   ],
   imports: [

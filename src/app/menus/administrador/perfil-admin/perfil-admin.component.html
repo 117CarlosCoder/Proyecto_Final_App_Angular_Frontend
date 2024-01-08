@@ -2,6 +2,7 @@
 <div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
     <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
         <div  [formGroup]="form" >
+          <h2 class="text-center">Usuario</h2>
                 <h5>Nombre</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
@@ -44,6 +45,24 @@
                           </div>
                         <label for="direccion">Direccion</label>
                     </div>
+
+                    <h5>Fecha Nacimiento</h5>
+                    <div class=" form-group mb-3">
+                      <input type="text"
+                          placeholder="Datepicker"
+                          class="form-control "
+                          bsDatepicker
+                          [class.is-invalid]="form.controls['fechaNacimiento'].invalid && form.controls['fechaNacimiento'].touched"
+                          id="fechaNacimiento"  name = "fechaNacimiento" formControlName="fechaNacimiento"
+                      >
+                      <div
+                              *ngIf="form.controls['fechaNacimiento'].invalid && (form.controls['fechaNacimiento'].dirty || form.controls['fechaNacimiento'].touched)"
+                              class="invalid-feedback">
+                              <div>
+                                  Por favor ingrese la fecha 
+                              </div>
+                          </div>
+                  </div>
                     
                 <h5>Correo Electronico</h5>
                     <div class="form-floating mb-3">
