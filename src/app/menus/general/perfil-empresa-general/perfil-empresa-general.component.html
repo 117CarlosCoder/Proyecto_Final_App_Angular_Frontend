@@ -1,0 +1,14 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="container border border-black rounded-top p-4 mt-5 h-auto d-flex flex-row justify-content-evenly align-items-start" >
+    <div class="w-25 " *ngIf="oferta">
+        <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-thumbnail" alt="Empresa">
+        <h4 class="mt-3">Empresa</h4>
+        <h5 class="text-primary">{{oferta.nombre}}</h5>
+    </div>  
+    <p *ngFor="let dato of listarOfetas let i = index">{{dato.empresa}}</p>
+    <a href="/crear-usuario" class="btn-flotante">Crear Cuenta</a>
+    <a href="/login" class="btn-flotante2">Inciar Sesion</a>
+  </div>
+
+
+

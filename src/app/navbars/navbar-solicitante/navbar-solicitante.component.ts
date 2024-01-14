@@ -3,6 +3,7 @@ import { UsuarioService } from 'src/services/usuario/UsuarioService';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { Router } from '@angular/router';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
+import { Notificaciones } from 'src/entities/Notificaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class NavbarSolicitanteComponent {
   nombreVistaPagina !: String;
   completarInfo!:boolean;
   siguientePagina!: String;
+  notificaciones!: Notificaciones[];
 
   constructor(private usuarioService: UsuarioService, private router :Router, private solicitanteService : SolicitanteService,private sharedService : ActualizarNavbarService) {}
 
@@ -26,6 +28,19 @@ export class NavbarSolicitanteComponent {
       this.completarInfo = value;
     }); 
     this.nombreVistaPagina = this.solicitanteService.nombrePagina('completar');
+    this.usuarioService.listarNotificaciones().subscribe({
+      next:(data:Notificaciones[])=>{
+        console.log(data)
+        this.notificaciones = data;
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
   }
 
   cambiarPagina(pagina : String){

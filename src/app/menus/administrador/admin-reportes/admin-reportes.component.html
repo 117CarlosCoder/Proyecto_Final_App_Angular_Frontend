@@ -12,14 +12,16 @@
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Comision</th>
-                  <th scope="col">Fecha</th>
+                  <th scope="col">Fecha Inicial</th>
+                  <th scope="col">Fecha Final</th>
                 </tr>
               </thead>
               <tbody *ngFor="let dato of listarRegistroComision let i = index">
                 <tr>
-                  <th>{{i+1}}</th>
+                  <th>{{dato.codigo}}</th>
                   <td>{{dato.comision}}</td>
-                  <td>{{dato.fecha}}</td>
+                  <td>{{dato.fechaInicial}}</td>
+                  <td>{{dato.fechaFinal}}</td>
                 </tr>
               </tbody>
             </table>

@@ -1,7 +1,12 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
     <h1 *ngIf="cargar" >Candidatos Oferta  {{listarPostulantes[0].nombre}}</h1>
-<table class="table table-primary" >
+    <div class="d-flex flex-row justify-content-between ">
+      <button class="btn btn-primary mt-3 w-25" type="submit" (click)="cancelar()" >Cancelar</button>
+      <button class="btn btn-primary mt-3 w-25" type="submit" (click)="faseEntrevista()" >Pasar fase entrevista</button>  
+    </div>
+    
+<table class="table table-primary mt-5" >
     <thead>
       <tr>
         <th scope="col">No</th>
@@ -19,4 +24,5 @@
       </tr>
     </tbody>
 </table>
+
 </div>

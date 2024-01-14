@@ -6,7 +6,8 @@ import { Informacion } from 'src/entities/Informacion';
 import { Router } from '@angular/router';
 import { NavbarSolicitanteComponent } from 'src/app/navbars/navbar-solicitante/navbar-solicitante.component';
 import { ActualizarNavbarService } from 'src/services/solcitante/ActualizarNavbarService';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UsuarioService } from 'src/services/usuario/UsuarioService';
 
 @Component({
   selector: 'app-completar-informacion',
@@ -23,6 +24,7 @@ export class CompletarInformacionComponent{
 
   constructor(private solicitanteService: SolicitanteService, private formBuilder: FormBuilder, private router : Router, private navbar: NavbarSolicitanteComponent, 
     private sharedService : ActualizarNavbarService,
+    private usuarioService : UsuarioService,
     private http: HttpClient) {
     this.form = this.formBuilder.group({
       curriculum: [null, Validators.required],
@@ -75,10 +77,11 @@ export class CompletarInformacionComponent{
 
     const blob = new Blob([datos], { type: file.type });
 
-  
+    const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+
     console.log('post')
 
-    this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/guardar-pdf', blob).subscribe({
+    this.http.post('http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-curriculum/guardar-pdf', blob,{observe: 'response', headers}).subscribe({
       next: (data:any) => {
         console.log("se envio")
       },
@@ -93,6 +96,9 @@ export class CompletarInformacionComponent{
 
     console.log(blob)
   }
+  }
+  getCredenciales(): string | { [name: string]: string | number | (string | number)[]; } | Headers | undefined {
+    throw new Error('Method not implemented.');
   }
 
   

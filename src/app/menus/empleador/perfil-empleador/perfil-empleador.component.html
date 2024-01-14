@@ -80,20 +80,7 @@
                           </div>
                         <label for="emailtxt">Correo</label>
                     </div>
-                <h5>Contraseña</h5>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" 
-                          [class.is-invalid]="form.controls['password'].invalid && form.controls['password'].touched"
-                          id="password" placeholder="password" name="password" formControlName="password">
-                          <div
-                            *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)"
-                            class="invalid-feedback">
-                            <div>
-                              Por favor ingrese la Correo
-                            </div>
-                          </div>
-                        <label for="password">Contraseña</label>
-                    </div>
+                
                 <h5>Codigo Unico de Identificacion (CUI)</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
@@ -288,11 +275,14 @@
               <label for="cantidad">Cantidad</label>
           </div>
 
+         
 
           <div class="d-flex justify-content-start w-100">
               <button type="submit" class="btn btn-primary mt-3" (click)="editarTarjeta(template)" >Editar</button>
           </div>
 
+
+          
           <ng-template #template>
               <div class="modal-header">
                   <h4 class="modal-title pull-left">Mensaje</h4>
@@ -311,6 +301,23 @@
                 
           </ng-template>
           
+      </div>
+
+      
+
+    </div>
+    <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
+      <h2 class="text-center mb-3">Contraseña</h2>
+    <div class="h-75 w-100 " >
+          <div class="mb-5">
+            <h5>Cambiar Contraseña</h5>
+            <div class="form-floating mb-3" >
+              <input type="text" class="form-control"
+                id="password" placeholder="Contraseña nueva" name="password" [(ngModel)]="nuevaContrasena">
+              <label for="password">Nueva Contraseña</label>
+            </div>
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena()">Cambiar Contraseña</button>
+        </div>
       </div>
     </div>
 </div>

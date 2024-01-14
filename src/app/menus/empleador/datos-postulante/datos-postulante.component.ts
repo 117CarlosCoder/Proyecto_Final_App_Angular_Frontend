@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, RouteReuseStrategy, Router } from '@angular/router';
 import { DatosPostulante } from 'src/entities/DatosPostulante';
+import { Usuario } from 'src/entities/Usuario';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
+import { UsuarioService } from 'src/services/usuario/UsuarioService';
 
 
 @Component({
@@ -93,10 +95,11 @@ export class DatosPostulanteComponent implements OnInit {
 
   pasarEntrevista(){
     console.log(this.listarPostulante.codigoOferta)
+    
     this.router.navigate(['generar-entrevista', {codigo:this.listarPostulante.codigo, oferta:this.oferta}]);
   }
   
   cancelar(){
-    this.router.navigate(['revisar-postulaciones']);
+    this.router.navigate(["empleador-postulantes",{codigo:this.oferta}]);
   }
 }

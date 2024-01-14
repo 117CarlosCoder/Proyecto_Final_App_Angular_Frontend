@@ -21,6 +21,15 @@
           <li class="nav-item">
           <a class="nav-link" (click)="cambiarPagina('perfil')" [ngClass]="{ 'disabled': completarInfo }">Perfil</a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"  aria-expanded="false">
+            Dropdown link
+          </a>
+          <ul class="dropdown-menu " style="max-height: 200px; overflow-y: auto; width: 500px;">
+            <li *ngFor="let dato of notificaciones let i = index"><a class="dropdown-item">{{dato.mensaje}}</a></li>
+          </ul>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" (click)="close()">Cerrar Sesion</a>
           </li>

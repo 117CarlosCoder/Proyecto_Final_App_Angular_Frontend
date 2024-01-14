@@ -48,21 +48,23 @@
         
         <div class="d-flex flex-row w-100 justify-content-between align-items-center">
             <button class="btn btn-primary w-25 mb-3" type="submit" (click)="cambiarFechaOferta()" >cargar</button>
-            <button class="btn btn-primary w-25 mb-3" type="submit" (click)="descargarEntrevistaEstado()">Descarga</button>
+            <button class="btn btn-primary w-25 mb-3" type="submit" (click)="descargarOfertaEstado()">Descarga</button>
         </div>
         <table class="table table-primary mb-5" >
             <thead>
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Oferta</th>
-                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha Limite</th>
               </tr>
             </thead>
             <tbody *ngFor="let dato of fechasOferta let i = index">
               <tr>
                 <th>{{i+1}}</th>
                 <td>{{dato.nombre}}</td>
-                <td>{{dato.fechaPublicacion}}</td>
+                <td>{{dato.estado}}</td>
+                <td>{{dato.fechaLimite}}</td>
               </tr>
             </tbody>
           </table>
@@ -105,6 +107,7 @@
                   <th scope="col">Oferta</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Estado</th>
+                  <th scope="col">Usuario</th>
                 </tr>
               </thead>
               <tbody *ngFor="let dato of listarEntrevistaFecha let i =index">
@@ -113,6 +116,7 @@
                   <td>{{dato.oferta}}</td>
                   <td>{{dato.fecha}}</td>
                   <td>{{dato.estado}}</td>
+                  <td>{{dato.usuario}}</td>
                 </tr>
               </tbody>
         </table>  

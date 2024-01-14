@@ -40,6 +40,11 @@ import { hasRole } from './auth/auth.guard';
 import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
 import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
 import { CargarPdfsComponent } from './menus/general/cargar-pdfs/cargar-pdfs.component';
+import { EmpleosComponent } from './menus/general/empleos/empleos.component';
+import { EmpleosMasInfoComponent } from './menus/general/empleos-mas-info/empleos-mas-info.component';
+import { PerfilEmpresaGeneralComponent } from './menus/general/perfil-empresa-general/perfil-empresa-general.component';
+import { PostulantesEntrevistaComponent } from './menus/empleador/postulantes-entrevista/postulantes-entrevista.component';
+import { ContratacionComponent } from './menus/empleador/contratacion/contratacion.component';
 
 
 const routes: Routes = [
@@ -58,6 +63,24 @@ const routes: Routes = [
     path: "cargar-pdf-usuario",
     title: "Cargar PDF",
     component: CargarPdfsComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
+  },
+  {
+    path: "empleos",
+    title: "Todos los empleos",
+    component: EmpleosComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
+  },
+  {
+    path: "empleos-mas-info",
+    title: "Empleo Informacion",
+    component: EmpleosMasInfoComponent,
+    canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
+  },
+  {
+    path: "perfil-empresa-general",
+    title: "Empresa",
+    component: PerfilEmpresaGeneralComponent,
     canActivate: [hasRole(['Invitado', 'Administrador', 'Empleador', 'Solicitante'])]
   },
   {
@@ -168,6 +191,18 @@ const routes: Routes = [
     path: "empleador-postulantes",
     title: "Revision de Postulantes",
     component: PostulantesOfertaComponent,
+    canActivate: [hasRole(['Empleador'])]
+  },
+  {
+    path: "entresvistas-empleador-oferta",
+    title: "Revision de Entrevistas",
+    component: PostulantesEntrevistaComponent,
+    canActivate: [hasRole(['Empleador'])]
+  },
+  {
+    path: "contratacion",
+    title: "Contratacion",
+    component: ContratacionComponent,
     canActivate: [hasRole(['Empleador'])]
   },
   {

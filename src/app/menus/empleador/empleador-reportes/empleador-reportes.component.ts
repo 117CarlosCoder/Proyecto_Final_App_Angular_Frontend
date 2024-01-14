@@ -39,13 +39,13 @@ export class EmpleadorReportesComponent implements OnInit {
 
   ngOnInit(){
     this.formreporte2 = this.formBuilder.group({
-      fechaA: [null, [Validators.required]],
+      fechaA: [null],
       estado: ["PENDIENTE", [Validators.required]]
     });
     this.formreporte1 = this.formBuilder.group({
-      fechaA: [null, [Validators.required]],
-      fechaB: [null, [Validators.required]],
-      estado: ["ACTIVA", [Validators.required]]
+      fechaA: [null],
+      fechaB: [null],
+      estado: ["ACTIVA"]
     });
 
     this.empleadorService.listarEstados().subscribe({
@@ -108,14 +108,96 @@ export class EmpleadorReportesComponent implements OnInit {
       }
     });
 
+
+    this.empleadorService.listarOfertaFecha("","","").subscribe({
+      next:(response: HttpResponse<Ofertas[]>)=>{       
+        var list: Ofertas[] | null= null; 
+        if (response.body) {
+          list = response.body;
+          if(list){
+            console.log("Cargar Oferta Fechas")
+            this.fechasOferta = list;
+            console.log(this.fechasOferta);
+            list.forEach(dato => {
+              let fechaFormateada1 = this.pipe.transform(dato.fechaPublicacion.toString(), 'yyyy-MM-dd');
+              let fechaFormateada2 = this.pipe.transform(dato.fechaLimite.toString(), 'yyyy-MM-dd');
+              if(fechaFormateada1?.toString()){
+                dato.fechaPublicacion = fechaFormateada1;
+              }
+              if(fechaFormateada2?.toString()){
+                dato.fechaLimite  = fechaFormateada2;
+              }
+              
+            });
+          }
+          else{
+            this.formreporte1.reset({
+              
+            });
+            this.formreporte1 = this.formBuilder.group({
+              fechaA: [null, [Validators.required]],
+              fechaB: [null, [Validators.required]],
+              estado: [null, [Validators.required]]
+            });
+          }
+        }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+      
+    });
+
+    this.empleadorService.listarEntrevistaFecha("","").subscribe({
+      next:(response: HttpResponse<EntrevistaFecha[]>)=>{
+        var list: EntrevistaFecha[] | null= null; 
+        if (response.body) {
+          list = response.body;
+          if(list){
+            console.log("Cargar Entrevistas Fechas")
+            this.listarEntrevistaFecha = list;
+            console.log(this.listarEntrevistaFecha);
+            list.forEach(dato => {
+              let fechaFormateada1 = this.pipe.transform(dato.fecha, 'yyyy-MM-dd');
+              if(fechaFormateada1?.toString()){
+                dato.fecha = fechaFormateada1;
+              }
+              
+            })
+          }
+          else{
+            this.formreporte2.reset({
+              
+            });
+            this.formreporte2 = this.formBuilder.group({
+              fechaA: [null, [Validators.required]],
+              estado: [null, [Validators.required]]
+            });
+          }
+        }
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+      
+    });
+
     this.formreporte2 = this.formBuilder.group({
-      fechaA: [null, [Validators.required]],
+      fechaA: [null],
       estado: ["PENDIENTE", [Validators.required]]
     });
     this.formreporte1 = this.formBuilder.group({
-      fechaA: [null, [Validators.required]],
-      fechaB: [null, [Validators.required]],
-      estado: ["ACTIVA", [Validators.required]]
+      fechaA: [null],
+      fechaB: [null],
+      estado: ["ACTIVA"]
     });
   }
   
@@ -123,7 +205,11 @@ export class EmpleadorReportesComponent implements OnInit {
     if (this.formreporte2.valid) {
       //this.modalRef = this.modalService.show(template);
       this.fechas = this.formreporte2.value as Fechas;
-      let fechaFormateada = format(this.fechas.fechaA, 'yyyy-MM-dd');
+      let fechaFormateada = "";
+      if (this.fechas.fechaA != null){
+        fechaFormateada = format(this.fechas.fechaA, 'yyyy-MM-dd');
+      }
+       
       console.log("Fechas" + this.fechas.fechaA);
       console.log(fechaFormateada)
       this.empleadorService.listarEntrevistaFecha(fechaFormateada,this.fechas.estado).subscribe({
@@ -135,6 +221,13 @@ export class EmpleadorReportesComponent implements OnInit {
               console.log("Cargar Entrevistas Fechas")
               this.listarEntrevistaFecha = list;
               console.log(this.listarEntrevistaFecha);
+              list.forEach(dato => {
+                let fechaFormateada1 = this.pipe.transform(dato.fecha, 'yyyy-MM-dd');
+                if(fechaFormateada1?.toString()){
+                  dato.fecha = fechaFormateada1;
+                }
+                
+              })
             }
             else{
               this.formreporte2.reset({
@@ -163,8 +256,12 @@ export class EmpleadorReportesComponent implements OnInit {
     if (this.formreporte1.valid) {
       //this.modalRef = this.modalService.show(template);
       this.fechaOferta = this.formreporte1.value as FechasOferta;
-      let fechaFormateada1 = format(this.fechaOferta.fechaA, 'yyyy-MM-dd');
-      let fechaFormateada2 = format(this.fechaOferta.fechaB, 'yyyy-MM-dd');
+      let fechaFormateada1 = '';
+      let fechaFormateada2 = '';
+      if(this.fechaOferta.fechaA != null && this.fechaOferta.fechaB != null){
+        fechaFormateada1 = format(this.fechaOferta.fechaA, 'yyyy-MM-dd');
+        fechaFormateada2 = format(this.fechaOferta.fechaB, 'yyyy-MM-dd');
+      }
       console.log("Fechas" + this.fechaOferta.fechaA);
       console.log(fechaFormateada1)
       this.empleadorService.listarOfertaFecha(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe({
@@ -176,6 +273,16 @@ export class EmpleadorReportesComponent implements OnInit {
               console.log("Cargar Oferta Fechas")
               this.fechasOferta = list;
               console.log(this.fechasOferta);
+              list.forEach(dato => {
+                let fechaFormateada1 = this.pipe.transform(dato.fechaPublicacion.toString(), 'yyyy-MM-dd');
+                let fechaFormateada2 = this.pipe.transform(dato.fechaLimite.toString(), 'yyyy-MM-dd');
+                if(fechaFormateada1?.toString()){
+                  dato.fechaPublicacion = fechaFormateada1;
+                }
+                if(fechaFormateada2?.toString()){
+                  dato.fechaLimite  = fechaFormateada2;
+                }
+              });
             }
             else{
               this.formreporte1.reset({
@@ -231,7 +338,11 @@ export class EmpleadorReportesComponent implements OnInit {
     if (this.formreporte2.valid) {
 
       this.fechas = this.formreporte2.value as Fechas;
-      let fechaFormateada = format(this.fechas.fechaA, 'yyyy-MM-dd');
+      let fechaFormateada = '';
+      if(this.fechas.fechaA != null){
+         fechaFormateada = format(this.fechas.fechaA, 'yyyy-MM-dd');
+      }
+     
 
       this.empleadorService.descargarEntrevistaFecha(fechaFormateada,this.fechas.estado).subscribe({
         next:(response: HttpResponse<Blob>) => {
@@ -258,13 +369,18 @@ export class EmpleadorReportesComponent implements OnInit {
     }
   }
 
-  descargarEntrevistaEstado(){
+  descargarOfertaEstado(){
     if (this.formreporte1.valid) {
 
       this.fechaOferta = this.formreporte1.value as FechasOferta;
-      let fechaFormateada1 = format(this.fechaOferta.fechaA, 'yyyy-MM-dd');
-      let fechaFormateada2 = format(this.fechaOferta.fechaB, 'yyyy-MM-dd');
-      this.empleadorService.descargarEntrevistaEstado(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe({
+      let fechaFormateada1 = "";
+      let fechaFormateada2 = "";
+      if (this.fechaOferta.fechaA != null || this.fechaOferta.fechaB != null) {
+        fechaFormateada1 = format(this.fechaOferta.fechaA, 'yyyy-MM-dd');
+       fechaFormateada2 = format(this.fechaOferta.fechaB, 'yyyy-MM-dd');
+      }
+       
+      this.empleadorService.descargarOfertasFecha(fechaFormateada1,fechaFormateada2,this.fechaOferta.estado).subscribe({
         next:(response: HttpResponse<Blob>) => {var list: Blob | null= null; 
           if (response.body) {
             list = response.body;

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ActualizarContrasena } from 'src/entities/ActualizarContrasena';
 import { CrearUsuario } from 'src/entities/CrearUsuario';
 import { NumTelefono } from 'src/entities/NumTelefono';
 import { Telefono } from 'src/entities/Telefono';
@@ -36,6 +37,11 @@ export class AdminEditarUsuarioComponent {
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
   pdfUrl!: SafeResourceUrl;
+  nuevaContrasena: string = '';
+  cambioContrasena : ActualizarContrasena ={
+    codigo:0,
+    contrasena:''
+  };
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
@@ -44,7 +50,6 @@ export class AdminEditarUsuarioComponent {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
-    private solicitanteService: SolicitanteService,
     private usuarioService:  UsuarioService
  ){}
 
@@ -69,9 +74,9 @@ export class AdminEditarUsuarioComponent {
         if (response.body) {
           list = response.body;
           this.usuario = list;
-        console.log(this.usuario);
-        console.log(this.usuario.fechaFundacion);
-        console.log(this.usuario.fechaFundacion);
+          console.log(this.usuario);
+          console.log(this.usuario.fechaFundacion);
+          console.log(this.usuario.fechaFundacion);
         if(this.usuario.fechaNacimiento!=null){
           this.FechaNString = this.pipe.transform(this.usuario.fechaNacimiento.toString(), 'yyyy/MM/dd');
           console.log(this.FechaNString);
@@ -95,7 +100,8 @@ export class AdminEditarUsuarioComponent {
           nombre: [this.usuario.nombre, [Validators.required]],
           direccion: [this.usuario.direccion, [Validators.required]],
           username: [this.usuario.username, [Validators.required]],
-          password: [this.usuario.password, [Validators.required]],
+          password: [this.usuario.password],
+          sal: [this.usuario.sal],
           email: [this.usuario.email, [Validators.required]],
           cui:[this.usuario.cui, [Validators.required]],
           fechaFundacion: [this.FechaF],
@@ -147,7 +153,8 @@ export class AdminEditarUsuarioComponent {
       nombre: [null, [Validators.required]],
       direccion: [null, [Validators.required]],
       username: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      password: [],
+      sal: [],
       email: [null, [Validators.required]],
       cui:[null, [Validators.required]],
       fechaFundacion: [],
@@ -361,6 +368,28 @@ export class AdminEditarUsuarioComponent {
     console.log(blob)
   }
   }
+
+  cambiarContrasena(){
+    if(this.nuevaContrasena !== ''){
+      this.cambioContrasena = {
+        codigo: this.usuario.codigo,
+        contrasena: this.nuevaContrasena
+      }
+      this.adminService.cambiarContrasena(this.cambioContrasena).subscribe({
+        next: (data:any) => {
+          console.log("contrasena cambiada");
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
+        }
+      });
+      
+    }
+  }  
 
   cancelar(){
       this.router.navigate(['admin-usuarios',{rol:this.rol}]);

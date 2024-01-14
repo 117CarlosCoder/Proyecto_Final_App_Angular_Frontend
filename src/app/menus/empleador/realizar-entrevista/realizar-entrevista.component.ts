@@ -70,37 +70,7 @@ export class RealizarEntrevistaComponent implements OnInit {
     }
   }
 
-  contratar(template: TemplateRef<any>){
-    if (this.form.valid) {
-      this.modalRef = this.modalService.show(template);
-      this.finalizarInfoEntrevista = this.form.value as EntrevistaFinal;
-      console.log(this.finalizarInfoEntrevista)
-      this.empleadorService.finalizarEntrevista(this.finalizarInfoEntrevista).subscribe({
-        next:(data:any)=>{
-          this.empleadorService.contratar(this.finalizarInfoEntrevista).subscribe({
-            next:(data:any)=>{
-              this.limpiar();
-              this.router.navigate([this.empleadorService.elegirPagina('entrevista')]);
-            },
-            error: (error) => {
-              if(error.status === 406){
-                this.router.navigate(['**']);
-              }else {
-                console.error('Error en la solicitud:', error);
-              }
-            }
-          });
-        },
-        error: (error) => {
-          if(error.status === 406){
-            this.router.navigate(['**']);
-          }else {
-            console.error('Error en la solicitud:', error);
-          }
-        }
-      });
-    }
-  }
+  
 
   limpiar(): void {
     this.form.reset({});

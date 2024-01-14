@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,9 +24,11 @@ export class CargarPdfsComponent {
 
  ngOnInit() {
     this.usuarioService.listarUsuariosPDF().subscribe({
-      next:(data: any) =>{
-          console.log(data)
-          this.listaUsuarios = data;
+      next:(response: HttpResponse<UsuarioT[]>) =>{
+          console.log(response.body)
+          var list : UsuarioT[] | null = response.body;
+          if (list) {
+            this.listaUsuarios = list;
           var nuevoUsuarioPdf: UsuarioPdf;
 
           if(this.listaUsuarios != undefined){
@@ -41,6 +44,9 @@ export class CargarPdfsComponent {
           });
         }
           console.log(this.listaUsuariosPdf)
+            
+          }
+          
       }
     })
 
@@ -95,7 +101,7 @@ cargarPdf(){
   this.usuarioService.cargarPdfs(this.listaUsuariosPdf).subscribe({
       next:(data : any)=>{  
         console.log("Pdfs subidos");
-        this.router.navigate(['login']);
+        this.router.navigate(['empleos']);
       }
   });
 }

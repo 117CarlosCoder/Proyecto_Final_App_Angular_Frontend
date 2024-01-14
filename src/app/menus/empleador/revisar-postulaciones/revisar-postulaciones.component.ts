@@ -62,7 +62,9 @@ export class RevisarPostulacionesComponent implements OnInit{
   
  
   seleccionarPostulante(codigo:number){
-    this.router.navigate(["empleador-postulantes",{codigo:codigo}]);
+        this.router.navigate(["empleador-postulantes",{codigo:codigo}]);
+    
+    
   }
 
 }

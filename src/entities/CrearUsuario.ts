@@ -3,6 +3,7 @@ export interface CrearUsuario {
     direccion:String,
     username:String,
     password:String,
+    sal:String,
     email:String,
     cui :String,
     telefono:number,

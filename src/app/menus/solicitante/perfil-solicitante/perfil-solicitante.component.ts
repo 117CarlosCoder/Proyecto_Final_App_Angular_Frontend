@@ -14,6 +14,7 @@ import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UsuarioService } from 'src/services/usuario/UsuarioService';
+import { ActualizarContrasena } from 'src/entities/ActualizarContrasena';
 
 @Component({
   selector: 'app-perfil-solicitante',
@@ -38,6 +39,12 @@ export class PerfilSolicitanteComponent {
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
   pdfUrl!: SafeResourceUrl;
+  nuevaContrasena: string = '';
+  cambioContrasena : ActualizarContrasena={
+    codigo:0,
+    contrasena:''
+  };
+
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
@@ -75,7 +82,8 @@ export class PerfilSolicitanteComponent {
         nombre: [this.usuario.nombre, [Validators.required]],
         direccion: [this.usuario.direccion, [Validators.required]],
         username: [this.usuario.username, [Validators.required]],
-        password: [this.usuario.password, [Validators.required]],
+        password: [this.usuario.password],
+        sal: [this.usuario.sal],
         email: [this.usuario.email, [Validators.required]],
         cui:[this.usuario.cui, [Validators.required]],
         fechaFundacion: [this.FechaF],
@@ -126,7 +134,8 @@ export class PerfilSolicitanteComponent {
     nombre: [null, [Validators.required]],
     direccion: [null, [Validators.required]],
     username: [null, [Validators.required]],
-    password: [null, [Validators.required]],
+    password: [],
+    sal:[],
     email: [null, [Validators.required]],
     cui:[null, [Validators.required]],
     fechaFundacion: [null, [Validators.required]],
@@ -350,6 +359,29 @@ async subirArchivo(event: any) {
 
   console.log(blob)
 }
+}
+
+cambiarContrasena(){
+  if(this.nuevaContrasena !== ''){
+    this.cambioContrasena = {
+      codigo: this.usuario.codigo,
+      contrasena: this.nuevaContrasena
+    }
+    this.solicitanteService.cambiarContrasena(this.cambioContrasena).subscribe({
+      next: (data:any) => {
+        console.log("contrasena cambiada");
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
+    
+  }
+  
 }
 
 

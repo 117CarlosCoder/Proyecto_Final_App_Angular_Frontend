@@ -1,0 +1,45 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
+    <h1  >Entrevistas Oferta  {{listarEntrevistas[0].nombreOferta}}</h1>
+  <table class="table table-primary mt-5" >
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Oferta</th>
+          <th scope="col">usuario</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Hora</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Contratar</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let dato of listarEntrevistas let i = index" >
+        <tr>
+          <th>{{i+1}}</th>
+          <td>{{dato.nombreOferta}}</td>
+          <td>{{dato.nombre}}</td>
+          <td>{{dato.fecha}}</td>
+          <td>{{dato.hora}}</td>
+          <td>{{dato.estado}}</td>
+          <td ><button class="btn btn-primary" type="submit"(click)="contratar(template, dato)" >Contratar</button></td>
+        </tr>
+      </tbody>
+  </table>
+  <ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Se ha Finalizado la Entrevista
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+</ng-template>
+  </div>

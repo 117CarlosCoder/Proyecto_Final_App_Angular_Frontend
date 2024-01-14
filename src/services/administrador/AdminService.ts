@@ -15,6 +15,7 @@ import { NumTelefono } from 'src/entities/NumTelefono';
 import { UsuarioService } from '../usuario/UsuarioService';
 import { Telefono } from 'src/entities/Telefono';
 import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
+import { ActualizarContrasena } from 'src/entities/ActualizarContrasena';
 
 @Injectable({
     providedIn: 'root'
@@ -82,6 +83,10 @@ export class AdminService {
         return this.httpClient.put<Ofertas>(this.API_URL+"/actualizar-oferta", oferta, {observe : 'response',headers});
     }
 
+    public cambiarContrasena(contrasena: ActualizarContrasena): Observable<HttpResponse<Ofertas>> {
+        const headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.put<Ofertas>(this.API_URL+"/actualizar-contrasena", contrasena, {observe : 'response',headers});
+    }
     
 
     public listarCategorias(): Observable<HttpResponse<Categoria[]>> {

@@ -67,14 +67,16 @@ export class AdminComisionComponent implements OnInit{
         this.registroComision = {
             codigo:0,
             comision:this.comision.cantidad,
-            fecha:format(Date.now(), 'yyyy-MM-dd')
+            fechaInicial:format(Date.now(), 'yyyy-MM-dd'),
+            fechaFinal:''
         }
         this.adminService.cambiarComision(this.comision).subscribe({
           next:(response: HttpResponse<any>)=>{
             if(response.status === 406){
               this.router.navigate(['**']);
             }
-            this.limpiar();
+            
+            console.log(this.registroComision)
             this.adminService.registrarComision(this.registroComision).subscribe({
               next:(data:any)=>{
                 console.log("Comision registrada");

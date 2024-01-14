@@ -41,8 +41,8 @@ export class AdminReportesComponent implements OnInit{
     this.cargainforme2= false;
     
       this.formreporte2 = this.formBuilder.group({
-        fechaA: [null, [Validators.required]],
-        fechaB: [null, [Validators.required]]
+        fechaA: [null],
+        fechaB: [null]
       });
       this.formreporte3 = this.formBuilder.group({
         fechaA: [null],
@@ -133,6 +133,41 @@ export class AdminReportesComponent implements OnInit{
                 });
               }
             }
+        },
+        error: (error) => {
+          if(error.status === 406){
+            this.router.navigate(['**']);
+          }else {
+            console.error('Error en la solicitud:', error);
+          }
+        }
+        
+      });
+
+      this.adminService.listarIngresoTotal("","").subscribe({
+        next:(response: HttpResponse<IngresoTotal[]>)=>{
+          var list:IngresoTotal[] | null= null; 
+            if (response.body) {
+              list = response.body;
+              if(list){
+                console.log("Cargar ingresos totales empleadores")
+                this.listarIngresosTotales = list;
+                console.log(this.listarIngresosTotales);
+                this.cargainforme2=true;
+              }
+              else{
+                this.formreporte2.reset({
+                  
+                });
+                this.formreporte2 = this.formBuilder.group({
+                  fechaA: [null, [Validators.required]],
+                  fechaB: [null, [Validators.required]]
+                });
+              }
+            }
+
+          
+          
         },
         error: (error) => {
           if(error.status === 406){
@@ -284,9 +319,14 @@ export class AdminReportesComponent implements OnInit{
     if (this.formreporte2.valid) {
 
       this.fechaIngresosTotal = this.formreporte2.value as FechaIngresos;
-      let fechaFormateada1 = format(this.fechaIngresosTotal.fechaA, 'yyyy-MM-dd');
-      let fechaFormateada2 = format(this.fechaIngresosTotal.fechaB, 'yyyy-MM-dd');
-
+      let fechaFormateada1 = '';
+      let fechaFormateada2 = '';
+      console.log(this.fechaIngresosTotal)
+      if (this.fechaIngresosTotal != null && this.fechaIngresosTotal.fechaA != null && this.fechaIngresosTotal.fechaB != null) {
+       fechaFormateada1 = format(this.fechaIngresosTotal.fechaA, 'yyyy-MM-dd');
+       fechaFormateada2 = format(this.fechaIngresosTotal.fechaB, 'yyyy-MM-dd');
+       console.log(this.fechaIngresosTotal)
+      }
       this.adminService.descargarEmpleadoresIngresos(fechaFormateada1,fechaFormateada2).subscribe({
         next:(response: HttpResponse<any>) => {
           const url = window.URL.createObjectURL(response.body);

@@ -1,5 +1,6 @@
 export interface RegistroComision {
     codigo:number,
     comision:number,
-    fecha:String
+    fechaInicial:String,
+    fechaFinal:String
 }

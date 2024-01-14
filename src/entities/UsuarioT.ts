@@ -4,6 +4,7 @@ export interface UsuarioT {
     direccion:String,
     username:String,
     password:String,
+    sal:String,
     email:String,
     cui :String,
     fechaFundacion:String,

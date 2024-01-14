@@ -58,6 +58,11 @@ import { PerfilEmpleadorComponent } from './menus/empleador/perfil-empleador/per
 import { PaginaNoPermitidaComponent } from './menus/general/pagina-no-permitida/pagina-no-permitida.component';
 import { PaginaErrorComponent } from './menus/general/pagina-error/pagina-error.component';
 import { CargarPdfsComponent } from './menus/general/cargar-pdfs/cargar-pdfs.component';
+import { EmpleosComponent } from './menus/general/empleos/empleos.component';
+import { EmpleosMasInfoComponent } from './menus/general/empleos-mas-info/empleos-mas-info.component';
+import { PerfilEmpresaGeneralComponent } from './menus/general/perfil-empresa-general/perfil-empresa-general.component';
+import { PostulantesEntrevistaComponent } from './menus/empleador/postulantes-entrevista/postulantes-entrevista.component';
+import { ContratacionComponent } from './menus/empleador/contratacion/contratacion.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +114,12 @@ import { CargarPdfsComponent } from './menus/general/cargar-pdfs/cargar-pdfs.com
     PerfilEmpleadorComponent,
     PaginaNoPermitidaComponent,
     PaginaErrorComponent,
-    CargarPdfsComponent
+    CargarPdfsComponent,
+    EmpleosComponent,
+    EmpleosMasInfoComponent,
+    PerfilEmpresaGeneralComponent,
+    PostulantesEntrevistaComponent,
+    ContratacionComponent
     
   ],
   imports: [

@@ -56,4 +56,39 @@ export class PostulantesOfertaComponent {
   seleccionarPostulante(codigo:number, oferta:number){
     this.router.navigate(['datos-postulantes',{codigo:codigo, oferta:oferta}]);
   }
+
+  faseEntrevista(){
+    this.empleadorService.faseEntrevista(this.codigo).subscribe({
+      next:(data: any)=>{
+        this.listarPostulantes.forEach(element => {
+          this.empleadorService.crearNotificacion("No entro a la fase de entrevistas de la oferta " + this.listarPostulantes[0].nombre, element.usuario ).subscribe({
+            next:(data : any) =>{
+              console.log("Notificando entrevista");
+            },
+            error: (error) => {
+              if(error.status === 406){
+                this.router.navigate(['**']);
+              }else {
+                console.error('Error en la solicitud:', error);
+              }
+            }
+
+          });
+        });
+        this.router.navigate(['revisar-entrevistas']);
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
+   
+  }
+
+  cancelar(){
+    this.router.navigate(['revisar-postulaciones']);
+  }
 }

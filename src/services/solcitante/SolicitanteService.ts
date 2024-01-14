@@ -21,6 +21,7 @@ import { TelefonoUsuario } from "src/entities/TelefonoUsuario";
 import { CrearUsuario } from "src/entities/CrearUsuario";
 import { NumTelefono } from "src/entities/NumTelefono";
 import { UsuarioT } from "src/entities/UsuarioT";
+import { ActualizarContrasena } from "src/entities/ActualizarContrasena";
 
 @Injectable({
     providedIn: 'root'
@@ -84,6 +85,11 @@ export class SolicitanteService {
         return this.httpClient.post(this.API_URL+"/crear-telefonos-usuario",telefonos,{observe: 'response', headers:this.headers});
     }
 
+    public cambiarContrasena(contrasena : ActualizarContrasena){
+        this.headers = new HttpHeaders({'Content-Type': 'application/json', ...this.usuarioService.getCredenciales()});
+        return this.httpClient.post(this.API_URL+"/actualizar-contrasena",contrasena,{ observe: 'response', headers:this.headers});
+    }
+
     public actualizarUsuario(usuario : CrearUsuario){
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.put(this.API_URL+"/actualizar-usuario",usuario,{observe: 'response', headers:this.headers});
@@ -93,7 +99,8 @@ export class SolicitanteService {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.put(this.API_URL+"/actualizar-telefonos", telefonos, {headers:this.headers});
         
-    }public listarUsuarioEspecifico(): Observable<UsuarioT> {
+    }
+    public listarUsuarioEspecifico(): Observable<UsuarioT> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario-especifico", {headers});
     }

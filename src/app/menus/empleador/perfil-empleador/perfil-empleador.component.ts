@@ -12,6 +12,7 @@ import { UsuarioT } from 'src/entities/UsuarioT';
 import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { Tarjeta } from 'src/entities/Tarjeta';
+import { ActualizarContrasena } from 'src/entities/ActualizarContrasena';
 @Component({
   selector: 'app-perfil-empleador',
   templateUrl: './perfil-empleador.component.html',
@@ -39,6 +40,11 @@ export class PerfilEmpleadorComponent {
   carga1 : boolean = false;
   carga2 : boolean = false;
   carga3 : boolean = false;
+  nuevaContrasena: string = '';
+  cambioContrasena : ActualizarContrasena ={
+    codigo:0,
+    contrasena:''
+  };
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
@@ -376,6 +382,29 @@ editarTarjeta(template: TemplateRef<any>){
       }
     });
   }
+}
+
+cambiarContrasena(){
+  if(this.nuevaContrasena !== ''){
+    this.cambioContrasena = {
+      codigo: this.usuario.codigo,
+      contrasena: this.nuevaContrasena
+    }
+    this.empleadorService.cambiarContrasena(this.cambioContrasena).subscribe({
+      next: (data:any) => {
+        console.log("contrasena cambiada");
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
+    
+  }
+  
 }
 
 limpiar(): void {

@@ -1,7 +1,8 @@
 export interface EntrevistaFecha {
     codigo: number,
     oferta: String,
-    fecha: Date,
+    fecha: Date | string,
     empresa: String,
-    estado: String
+    estado: String,
+    usuario: String
 }

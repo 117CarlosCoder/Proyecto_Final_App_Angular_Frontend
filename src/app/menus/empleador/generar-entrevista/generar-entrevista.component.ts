@@ -5,6 +5,7 @@ import { DatosEntrevista } from 'src/entities/DatosEntrevista';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpResponse } from '@angular/common/http';
+import { Ofertas } from 'src/entities/Ofertas';
 
 @Component({
   selector: 'app-generar-entrevista',
@@ -19,6 +20,7 @@ export class GenerarEntrevistaComponent implements OnInit{
   codigo!:number;
   oferta!:number;
   modalRef?: BsModalRef;
+  ofertaNombre!: Ofertas;
 
   constructor(private formBuilder : FormBuilder,
     private empleadorService: EmpleadorService,
@@ -49,6 +51,25 @@ export class GenerarEntrevistaComponent implements OnInit{
       ubicacion: [null, [Validators.required]],
       hora:[null, [Validators.required]]
     });
+
+
+    this.empleadorService.listarOferta(this.oferta).subscribe({
+      next:(response: HttpResponse<Ofertas>)=>{
+        var data : Ofertas | null = null;
+        if (response.body) {
+          data = response.body;
+          this.ofertaNombre =data;
+        } 
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
+
   }
 
   generarEntrevista(template: TemplateRef<any>){
@@ -61,6 +82,19 @@ export class GenerarEntrevistaComponent implements OnInit{
         next:(response: HttpResponse<any>)=>{
           this.modalRef = this.modalService.show(template);
           this.limpiar();
+          this.empleadorService.crearNotificacion("Entro a la fase de entrevistas de la oferta " + this.ofertaNombre.empresa, this.codigo ).subscribe({
+            next:(data : any) =>{
+              console.log("Notificando entrevista");
+            },
+            error: (error) => {
+              if(error.status === 406){
+                this.router.navigate(['**']);
+              }else {
+                console.error('Error en la solicitud:', error);
+              }
+            }
+
+          });
           this.router.navigate([this.empleadorService.elegirPagina('postular')]);
         },
         error: (error) => {

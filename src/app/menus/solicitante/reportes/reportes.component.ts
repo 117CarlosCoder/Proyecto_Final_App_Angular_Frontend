@@ -38,17 +38,17 @@ export class ReportesComponent {
 
  ngOnInit(){
   this.formreporte1 = this.formBuilder.group({
-    fechaA: [null, [Validators.required]],
-    fechaB: [null, [Validators.required]]
+    fechaA: [null],
+    fechaB: [null]
   });
   this.formreporte2 = this.formBuilder.group({
-    fechaA: [null, [Validators.required]],
-    fechaB: [null, [Validators.required]],
+    fechaA: [null],
+    fechaB: [null],
     estado: ["ENTREVISTA", [Validators.required]]
   });
   this.formreporte3 = this.formBuilder.group({
-    fechaA: [null, [Validators.required]],
-    fechaB: [null, [Validators.required]],
+    fechaA: [null],
+    fechaB: [null],
     estado: ["SELECCION", [Validators.required]]
   });
 
@@ -68,14 +68,109 @@ export class ReportesComponent {
   }); 
 
   
+  this.solicitanteService.listarPostulacionesRetiradas("","").subscribe({
+    next:(list:RegistroRetirada[])=>{
+      if(list){
+        console.log("Cargar Oferta Retiradas Fechas ")
+        this.listarPostulacionesRetiradas = list;
+        console.log(this.listarPostulacionesRetiradas);
+      }
+      else{
+        this.formreporte1.reset({
+          
+        });
+        this.formreporte1 = this.formBuilder.group({
+          fechaA: [null, [Validators.required]],
+          fechaB: [null, [Validators.required]]
+        });
+      }
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+  });
+
+  this.fechasOferta = this.formreporte3.value as FechasOferta;
+
+  this.solicitanteService.listarOfertaFecha("","",this.fechasOferta.estado).subscribe({
+    next:(list: Ofertas[])=>{
+        
+
+      if(list){
+        console.log("Cargar Oferta Fechas")
+        this.ofertasFechaSelecciOn = list;
+        console.log(this.ofertasFechaSelecciOn);
+      }
+      else{
+        this.formreporte3.reset({
+          
+        });
+        this.formreporte3 = this.formBuilder.group({
+          fechaA: [null, [Validators.required]],
+          fechaB: [null, [Validators.required]],
+          estado: [null, [Validators.required]]
+        });
+      }
+      
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+  });
+
+  this.fechasOfertaEntrevista = this.formreporte2.value as FechasOferta;
+
+  this.solicitanteService.listarOfertaFecha("","",this.fechasOfertaEntrevista.estado).subscribe({
+    next:(list: Ofertas[])=>{
+        
+
+      if(list){
+        console.log("Cargar Oferta Fechas")
+        this.ofertasFechaEntrevista = list;
+        console.log(this.ofertasFechaEntrevista);
+      }
+      else{
+        this.formreporte2.reset({
+          
+        });
+        this.formreporte2 = this.formBuilder.group({
+          fechaA: [null, [Validators.required]],
+          fechaB: [null, [Validators.required]],
+          estado: [null, [Validators.required]]
+        });
+      }
+      
+    },
+    error: (error) => {
+      if(error.status === 406){
+        this.router.navigate(['**']);
+      }else {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+  });
+  
 
 }
 
 elegirFechaPostulacionRetirada(){
    if(this.formreporte1.valid) {
     this.fechasOfertaRetirada = this.formreporte1.value as FechasOferta;
-    let fechaFormateada1 = format(this.fechasOfertaRetirada.fechaA, 'yyyy-MM-dd');
-    let fechaFormateada2 = format(this.fechasOfertaRetirada.fechaB, 'yyyy-MM-dd');
+    let fechaFormateada1 = "";
+    let fechaFormateada2 = "";
+    if(this.fechasOfertaRetirada.fechaA != null && this.fechasOfertaRetirada.fechaB != null){
+       fechaFormateada1 = format(this.fechasOfertaRetirada.fechaA, 'yyyy-MM-dd');
+       fechaFormateada2 = format(this.fechasOfertaRetirada.fechaB, 'yyyy-MM-dd');
+    }
+    
     this.solicitanteService.listarPostulacionesRetiradas(fechaFormateada1,fechaFormateada2).subscribe({
       next:(list:RegistroRetirada[])=>{
         if(list){
@@ -230,9 +325,14 @@ descargarOfertasFaseSeleccion(){
   if (this.formreporte3.valid) {
 
     this.fechasOferta = this.formreporte3.value as FechasOferta;
-    let fechaFormateada1 = format(this.fechasOferta.fechaA, 'yyyy-MM-dd');
-    let fechaFormateada2 = format(this.fechasOferta.fechaB, 'yyyy-MM-dd');
-    this.solicitanteService.descargarOfertasFaseSeleccion(fechaFormateada1,fechaFormateada2,this.fechasOfertaEntrevista.estado).subscribe(
+    let fechaFormateada1 = '';
+    let fechaFormateada2 = '';
+    if(this.fechasOferta.fechaA != null && this.fechasOferta.fechaB != null) {
+      fechaFormateada1 = format(this.fechasOferta.fechaA, 'yyyy-MM-dd');
+      fechaFormateada2 = format(this.fechasOferta.fechaB, 'yyyy-MM-dd');
+    }
+    
+    this.solicitanteService.descargarOfertasFaseSeleccion(fechaFormateada1,fechaFormateada2,this.fechasOferta.estado).subscribe(
       response => {
         const url = window.URL.createObjectURL(response);
         const a = document.createElement('a');
@@ -257,8 +357,12 @@ descargarOfertaEntrevista(){
   if (this.formreporte2.valid) {
 
     this.fechasOfertaEntrevista = this.formreporte2.value as FechasOferta;
-    let fechaFormateada1 = format(this.fechasOfertaEntrevista.fechaA, 'yyyy-MM-dd');
-    let fechaFormateada2 = format(this.fechasOfertaEntrevista.fechaB, 'yyyy-MM-dd');
+    let fechaFormateada1 = '';
+    let fechaFormateada2 = '';
+    if(this.fechasOfertaEntrevista.fechaA != null && this.fechasOfertaEntrevista.fechaB != null) {
+     fechaFormateada1 = format(this.fechasOfertaEntrevista.fechaA, 'yyyy-MM-dd');
+     fechaFormateada2 = format(this.fechasOfertaEntrevista.fechaB, 'yyyy-MM-dd');
+    }
     this.solicitanteService.descargarOfertasFaseSeleccion(fechaFormateada1,fechaFormateada2,this.fechasOfertaEntrevista.estado).subscribe(
       response => {
         const url = window.URL.createObjectURL(response);
@@ -284,8 +388,12 @@ descargarPostulacionesRetiradas(){
   if (this.formreporte1.valid) {
 
     this.fechasOfertaRetirada = this.formreporte1.value as FechasOferta;
-    let fechaFormateada1 = format(this.fechasOfertaRetirada.fechaA, 'yyyy-MM-dd');
-    let fechaFormateada2 = format(this.fechasOfertaRetirada.fechaB, 'yyyy-MM-dd');
+    let fechaFormateada1 = '';
+    let fechaFormateada2 = '';
+    if(this.fechasOfertaRetirada.fechaA!= null && this.fechasOfertaRetirada.fechaB != null) {
+     fechaFormateada1 = format(this.fechasOfertaRetirada.fechaA, 'yyyy-MM-dd');
+     fechaFormateada2 = format(this.fechasOfertaRetirada.fechaB, 'yyyy-MM-dd');
+    }
     this.solicitanteService.descargarPostulacioneRetiradas(fechaFormateada1,fechaFormateada2).subscribe(
       response => {
         const url = window.URL.createObjectURL(response);

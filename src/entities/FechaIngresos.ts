@@ -1,4 +1,4 @@
 export interface FechaIngresos {
-    fechaA: Date,
-    fechaB: Date
+    fechaA: Date ,
+    fechaB: Date 
 }

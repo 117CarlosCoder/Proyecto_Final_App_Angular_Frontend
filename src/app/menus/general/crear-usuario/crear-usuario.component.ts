@@ -79,21 +79,23 @@ export class CrearUsuarioComponent implements OnInit{
           this.usuarioService.crearUsuarioSolicitante(this.usario).subscribe({
             
             next: ( response: HttpResponse<any>)=>{
-              const data = response.body;
-              if(response.status === 201){
-                this.usuarioService.crearUsuarioTelefonos(this.telefonos).subscribe({
-                  next:(data:any)=>{
-                      console.log("Telefonos creados")
-                  }
-                });
-                this.modalRef = this.modalService.show(template);
-                this.limpiar();
-                this.router.navigate(['login']);
+              console.log(this.telefonos)
+            
+              if(response.status === 200 || response.status === 201 ){
+                if (this.form2.valid) {
+                  this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
+                    next:(data:any)=>{
+                        console.log("Telefonos creados")
+                        this.modalRef = this.modalService.show(template);
+                        this.limpiar();
+                        this.router.navigate(['login']);
+                    }
+                  });
+                  
+                }
+                
               }
               if(response.status === 400){
-                console.log("correo repetido");
-              }
-              if(response.status === 200){
                 console.log("correo repetido");
               }
           }
@@ -106,21 +108,21 @@ export class CrearUsuarioComponent implements OnInit{
           console.log(this.usario)
           this.usuarioService.crearUsuarioEmpleador(this.usario).subscribe({
             next: ( response: HttpResponse<any>)=>{
-              const data = response.body;
-              if(response.status === 201){
-              this.usuarioService.crearUsuarioTelefonos(this.telefonos).subscribe({
-                next:(data:any)=>{
-                    console.log("Telefonos creados")
+              if(response.status === 200 || response.status === 201){
+                if(this.form2.valid){
+                  this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
+                    next:(data:any)=>{
+                        console.log("Telefonos creados")
+                        this.modalRef = this.modalService.show(template);
+                        this.limpiar();
+                        this.router.navigate(['login']);
+                    }
+                  });
                 }
-              });
-              this.modalRef = this.modalService.show(template);
-              this.limpiar();
-              this.router.navigate(['login']);
+              
+              
             }
             if(response.status === 400){
-              console.log("correo repetido");
-            }
-            if(response.status === 200){
               console.log("correo repetido");
             }
             }
@@ -129,6 +131,8 @@ export class CrearUsuarioComponent implements OnInit{
         
       }
     }
+
+
 
 
     limpiar(): void {
