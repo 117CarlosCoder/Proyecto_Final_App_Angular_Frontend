@@ -58,7 +58,17 @@ export class PostulacionesComponent implements OnInit {
     console.log(this.crearPostulaciones);
     this.solicitanteService.crearRegitroRetirada(this.crearPostulaciones).subscribe({
       next:(dato: any) => {
-        
+        this.solicitanteService.crearNotificacion("Postulacion Eliminada  " ,this.crearPostulaciones.codigo).subscribe({
+          next:(data : any) =>{
+            console.log("Notificando entrevista");
+          },
+          error: (error) => {
+            if(error.status === 406){
+              this.router.navigate(['**']);
+            }else {
+              console.error('Error en la solicitud:', error);
+            }
+          }});
           console.log("Crer postulaciones")
        },
        error: (error) => {

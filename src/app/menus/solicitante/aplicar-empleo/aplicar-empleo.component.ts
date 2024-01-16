@@ -46,6 +46,19 @@ export class AplicarEmpleoComponent implements OnInit{
         console.log(this.mensajeUsuario)
         this.solicitanteService.enviaMensaje(this.mensajeUsuario).subscribe({
           next:(data:any)=>{
+            this.solicitanteService.crearNotificacion("Nueva postulacion  " ,parseInt(this.codigo.toString())).subscribe({
+              next:(data : any) =>{
+                console.log("Notificando entrevista");
+              },
+              error: (error) => {
+                if(error.status === 406){
+                  this.router.navigate(['**']);
+                }else {
+                  console.error('Error en la solicitud:', error);
+                }
+              }
+  
+            });
             this.modalRef = this.modalService.show(template);
             this.limpiar();
             this.router.navigate([this.solicitanteService.elegirPagina('aplicar')]);

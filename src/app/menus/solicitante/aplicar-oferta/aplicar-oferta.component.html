@@ -41,6 +41,9 @@
 
 
 <div class="container mt-5 mb-5 h-auto d-flex flex-column justify-content-center align-items-center p-5 border border-primary rounded " >     
+    <div class=" w-100 mb-5 d-flex justify-content-center align-items-center" style="background-color: #aca5a5; height: 150px;">
+        <h1>Publicidad</h1>
+    </div>
     <div class="d-flex justify-content-evenly align-items-center    mb-5 w-100" *ngIf="cargaOfertasA">
         <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="todasOferta()">Todas las Ofertas</button>
         <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="sugerencias()">Sugerencias</button>
@@ -70,6 +73,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class=" w-100 mb-5 d-flex justify-content-center align-items-center" style="background-color: #aca5a5; height: 150px;">
+        <h1>Publicidad</h1>
     </div>
         <h1 class="text-center" *ngIf="!cargaOfertasA">No hay ofertas</h1>
 </div>

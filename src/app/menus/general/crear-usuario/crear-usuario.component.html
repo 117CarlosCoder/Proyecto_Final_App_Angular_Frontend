@@ -30,6 +30,20 @@
                       </div>
                     <label for="username">Nombre</label>
                   </div>
+                  <h5>Contraseña</h5>
+                  <div class="form-floating mb-3">
+                      <input type="text" class="form-control" 
+                        [class.is-invalid]="form.controls['password'].invalid && form.controls['password'].touched"
+                        id="password" placeholder="password" name="password" formControlName="password">
+                        <div
+                          *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)"
+                          class="invalid-feedback">
+                          <div>
+                            Por favor ingrese la contraseña
+                          </div>
+                        </div>
+                      <label for="password">Contraseña</label>
+                    </div>
                   <h5>Rol</h5>
                   <select class="form-select" aria-label="Default select example"
                   id="rol" name="rol" formControlName="rol" >

@@ -106,6 +106,12 @@ export class SolicitanteService {
         return this.httpClient.put(this.API_URL+"/actualizar-telefonos", telefonos, {headers:this.headers});
         
     }
+
+    public crearNotificacion(mensaje: String, codigo: number){
+        this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-reports-servlet/crear-notificaciones?mensaje="+mensaje+"&codigo="+codigo,{observe: 'response', headers:this.headers});
+    }
+
     public listarUsuarioEspecifico(): Observable<UsuarioT> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.get<UsuarioT>(this.API_URL+"/listar-usuario-especifico", {headers});

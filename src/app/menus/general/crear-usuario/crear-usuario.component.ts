@@ -51,6 +51,7 @@ export class CrearUsuarioComponent implements OnInit{
         this.form = this.formBuilder.group({
           nombre: [null, [Validators.required]],
           username: [null, [Validators.required]],
+          password: [null, [Validators.required]],
           rol: ["Solicitante", [Validators.required]],
           direccion: [null, [Validators.required]],
           email: [null, [Validators.required]],
@@ -83,6 +84,7 @@ export class CrearUsuarioComponent implements OnInit{
             
               if(response.status === 200 || response.status === 201 ){
                 if (this.form2.valid) {
+                  this.telefonos = this.form2.value as Telefono;
                   this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
                     next:(data:any)=>{
                         console.log("Telefonos creados")
@@ -110,6 +112,7 @@ export class CrearUsuarioComponent implements OnInit{
             next: ( response: HttpResponse<any>)=>{
               if(response.status === 200 || response.status === 201){
                 if(this.form2.valid){
+                  this.telefonos = this.form2.value as Telefono;
                   this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
                     next:(data:any)=>{
                         console.log("Telefonos creados")

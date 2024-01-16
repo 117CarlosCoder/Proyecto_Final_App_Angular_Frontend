@@ -1,13 +1,13 @@
 
-<div class="h-100 w-100" style="background-color: #2B2A4C">
-  <div class="container p-5">
-    <div class="alert alert-danger" role="alert" style="background-color: #dc3545; color: white; padding: 20px;">
-      <h4 class="alert-heading">Dirección no permitida para este usuario</h4>
-      <p>Lo sentimos, pero no tienes acceso a esta página.</p>
-      <hr>
-      <p class="mb-0">Por favor, regresa a la página anterior.</p>
-    </div>
-    <button class="btn btn-light" (click)="goBack()">Volver</button>
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div class="text-center">
+      <h1 class="display-1 fw-bold">406</h1>
+      <p class="fs-3"> <span class="text-danger">Opps!</span> Dirección no permitida para este usuario</p>
+      <p class="lead">
+          Por favor, regresa a la página anterior o al incio de sesion.
+        </p>
+      <a class="btn btn-primary" (click)="goBack()">Regresar</a>
   </div>
 </div>
 
