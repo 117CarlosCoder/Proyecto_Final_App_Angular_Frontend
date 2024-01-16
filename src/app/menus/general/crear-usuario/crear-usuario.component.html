@@ -121,39 +121,12 @@
              
           </div>
 
-        <div [formGroup]="form2">
-          <h5>Telefono</h5>
-                      <div class="form-floating mb-3" >
-                          <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
-                            [class.is-invalid]="form2.controls['telefono1'].invalid && form2.controls['telefono1'].touched"
-                            id="telefono1" placeholder="telefono1" name="telefono1" formControlName="telefono1">
-                            <div
-                              *ngIf="form2.controls['telefono1'].invalid && (form2.controls['telefono1'].dirty || form2.controls['telefono1'].touched)"
-                              class="invalid-feedback">
-                            <div>
-                              Por favor ingrese el telefono
-                            </div>
-                          </div>
-                            <label for="telefono1">Telefono</label>
-                        </div>
-
-                        <h5>Telefon2 (opcional)</h5>
-                        <div class="form-floating mb-3" >
-                            <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
-                              id="telefono2" placeholder="telefono2" name="telefono2" formControlName="telefono2">
-                            <label for="telefono2">Telefono</label>
-                          </div>
-
-                          <h5>Telefono3 (opcional)</h5>
-                      <div class="form-floating mb-3" >
-                          <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
-                            id="telefono3" placeholder="telefono3" name="telefono3" formControlName="telefono3">
-                          <label for="telefono3">Telefono</label>
-                        </div>
+        
+         
 
                         <div class="d-flex flex-row w-100 justify-content-between mt-5">
                           <button class="btn btn-primary h-25 mb-5" type="submit"  (click)="cancelar()">Cancelar</button>
-                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearUsuario(template)" >Crear</button>
+                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="crearUsuario(template,template2)" >Crear</button>
                       </div>
                       
                       <ng-template #template>
@@ -164,7 +137,27 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              Verifique su correo, ahi esta su contraseña
+                             Usuario creado por favor inicie sesion
+                            
+                            </div>
+                            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+                              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                                  OK  
+                              </button>
+                            </div>
+                            
+                      </ng-template> 
+
+                      <ng-template #template2>
+                          <div class="modal-header">
+                              <h4 class="modal-title pull-left">Mensaje</h4>
+                              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                                <span aria-hidden="true" class="visually-hidden">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                             correo repetido por favor ponga otro correo
+                            
                             </div>
                             <div class="d-flex w-100 justify-content-center align-items-center mb-3">
                               <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
@@ -174,7 +167,7 @@
                             
                       </ng-template> 
                   
-        </div>
+     
         
     </div>
     

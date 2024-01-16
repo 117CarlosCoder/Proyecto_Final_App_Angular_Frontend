@@ -68,10 +68,9 @@ export class CrearUsuarioComponent implements OnInit{
       this.router.navigate(['login']);
     }
 
-    crearUsuario(template: TemplateRef<any>){
+    crearUsuario(template: TemplateRef<any>,template2: TemplateRef<any>){
       
       if (this.form.valid) {
-        this.telefonos = this.form2.value as Telefono;
         this.usario = this.form.value as CrearUsuario;
         if (this.usario.rol == 'Solicitante') {
           console.log("Nombre " + this.usario.nombre);
@@ -80,26 +79,12 @@ export class CrearUsuarioComponent implements OnInit{
           this.usuarioService.crearUsuarioSolicitante(this.usario).subscribe({
             
             next: ( response: HttpResponse<any>)=>{
-              console.log(this.telefonos)
-            
-              if(response.status === 200 || response.status === 201 ){
-                if (this.form2.valid) {
-                  this.telefonos = this.form2.value as Telefono;
-                  this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
-                    next:(data:any)=>{
-                        console.log("Telefonos creados")
-                        this.modalRef = this.modalService.show(template);
-                        this.limpiar();
-                        this.router.navigate(['login']);
-                    }
-                  });
-                  
-                }
-                
-              }
               if(response.status === 400){
                 console.log("correo repetido");
+                this.modalRef = this.modalService.show(template2);
               }
+              this.modalRef = this.modalService.show(template);
+              this.router.navigate(['login']);
           }
           });
         }
@@ -111,22 +96,14 @@ export class CrearUsuarioComponent implements OnInit{
           this.usuarioService.crearUsuarioEmpleador(this.usario).subscribe({
             next: ( response: HttpResponse<any>)=>{
               if(response.status === 200 || response.status === 201){
-                if(this.form2.valid){
-                  this.telefonos = this.form2.value as Telefono;
-                  this.usuarioService.crearUsuarioTelefonos(this.telefonos, this.usario.username).subscribe({
-                    next:(data:any)=>{
-                        console.log("Telefonos creados")
-                        this.modalRef = this.modalService.show(template);
-                        this.limpiar();
-                        this.router.navigate(['login']);
-                    }
-                  });
-                }
+                this.modalRef = this.modalService.show(template);
+                this.router.navigate(['login']);
               
               
             }
             if(response.status === 400){
               console.log("correo repetido");
+              this.modalRef = this.modalService.show(template2);
             }
             }
           });
