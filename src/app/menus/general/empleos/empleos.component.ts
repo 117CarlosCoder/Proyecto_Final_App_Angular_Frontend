@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +27,7 @@ export class EmpleosComponent {
   form!:FormGroup;
   filtros !: Filtros;
   titulo : String = "Todas las ofertas";
+  cargaOfertasA:boolean = false;
 
     constructor(
     private invitadoService: InvitadoService,
@@ -34,16 +36,30 @@ export class EmpleosComponent {
   }
 
   ngOnInit() {
+
+    this.invitadoService.listarCategorias().subscribe({
+      next: (list:HttpResponse<Categoria[]>) => {
+        var lista: Categoria[]| null = null
+        if (list.body) {
+          lista = list.body;
+          this.listacategorias = lista;
+        }
+      },
+      error: (error) => {
+        
+          console.error('Error en la solicitud:', error);
+        
+      }
+    });
+
     this.invitadoService.listarSalarios().subscribe({
       next: (list: Salario[]) => {
         this.listaSalarios = list;
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
 
@@ -52,11 +68,9 @@ export class EmpleosComponent {
         this.listaUbicaciones = list;
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
 
@@ -71,13 +85,12 @@ export class EmpleosComponent {
         console.log("Cargar ofertas")
         this.listaOfertas = list;
         console.log(this.listaOfertas);
+        this.cargaOfertasA=true;
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
 
@@ -86,11 +99,9 @@ export class EmpleosComponent {
         console.log("Visita")
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
 
@@ -124,13 +135,12 @@ export class EmpleosComponent {
         console.log("Cargar ofertas")
         this.listaOfertas = list;
         console.log(this.listaOfertas);
+        
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
     
@@ -159,11 +169,9 @@ export class EmpleosComponent {
         console.log(this.listaOfertas);
       },
       error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
+        
           console.error('Error en la solicitud:', error);
-        }
+        
       }
     });
   }
@@ -172,7 +180,9 @@ export class EmpleosComponent {
     this.router.navigate(['empleos-mas-info',{codigo:codigo}]);
   }
 
-  
+  reiciar(){
+    location.reload();
+  }
 
 
 }

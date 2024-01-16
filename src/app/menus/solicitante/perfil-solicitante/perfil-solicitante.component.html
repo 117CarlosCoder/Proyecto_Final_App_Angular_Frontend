@@ -176,26 +176,10 @@
                         </div>
 
                         <div class="d-flex flex-row w-100 justify-content-between mt-5">
-                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template)" >editar</button>
+                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template,template2)" >editar</button>
                       </div>
                       
-                      <ng-template #template>
-                          <div class="modal-header">
-                              <h4 class="modal-title pull-left">Mensaje</h4>
-                              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
-                                <span aria-hidden="true" class="visually-hidden">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              Usuario Actualizado
-                            </div>
-                            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
-                              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
-                                  OK  
-                              </button>
-                            </div>
-                            
-                      </ng-template> 
+                     
                   
         </div>
         
@@ -213,7 +197,7 @@
                 id="password" placeholder="Contraseña nueva" name="password" [(ngModel)]="nuevaContrasena">
               <label for="password">Nueva Contraseña</label>
             </div>
-            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena()">Cambiar Contraseña</button>
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena(template3, template4)">Cambiar Contraseña</button>
         </div>
       </div>
     </div>
@@ -225,8 +209,8 @@
           <object  width="100%" height="600px" [data]="pdfUrl" type="application/pdf" ></object>
           <div class="mb-5">
             <h5>Cambiar Curriculum</h5>
-            <input  type="file"  (change)="subirArchivo($event)" class="form-control" aria-label="file example" required 
-            id="curriculum" name="curriculum" formControlName="curriculum">
+            <input  type="file"  (change)="subirArchivo($event,template5)" class="form-control" aria-label="file example" required 
+            id="curriculum" name="curriculum">
             <div class="invalid-feedback">Ingrese algun archivo</div>
         </div>
       </div>
@@ -236,3 +220,93 @@
       
      
 </div>
+
+<ng-template #template5>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Achivo no valido
+     
+    </div>
+    <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+      <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+          OK  
+      </button>
+    </div>
+    
+</ng-template>
+<ng-template #template4>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      
+      La Contraseña no se pudo cambiar
+    </div>
+    <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+      <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+          OK  
+      </button>
+    </div>
+    
+</ng-template>
+<ng-template #template3>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Contraseña Actualizada
+    </div>
+    <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+      <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+          OK  
+      </button>
+    </div>
+    
+</ng-template> 
+<ng-template #template2>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      
+      La informacion no es valida,dejaste espacios obligatorios en blanco o el usuario o emial se repiten
+    </div>
+    <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+      <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+          OK  
+      </button>
+    </div>
+    
+</ng-template>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Se ha Actualizado la informacion
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+</ng-template>

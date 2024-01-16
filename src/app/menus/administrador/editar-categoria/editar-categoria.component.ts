@@ -1,7 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Categoria } from 'src/entities/Categoria';
 import { AdminService } from 'src/services/administrador/AdminService';
 
@@ -16,11 +17,13 @@ export class EditarCategoriaComponent implements OnInit{
     categoria!:Categoria;
     carga!:boolean;
     codigo!:number;
+    modalRef?:BsModalRef;
 
     constructor(private adminService: AdminService,
       private route:ActivatedRoute,
       private formBuilder:FormBuilder,
-      private router: Router){
+      private router: Router,
+      private modalService: BsModalService){
   
     }
 
@@ -67,7 +70,7 @@ export class EditarCategoriaComponent implements OnInit{
        
     }
 
-    editarCategoria(){
+    editarCategoria(template: TemplateRef<any>,template2: TemplateRef<any>){
       if (this.form.valid) {
         //this.modalRef = this.modalService.show(template);
         this.categoria = this.form.value as Categoria;
@@ -76,11 +79,15 @@ export class EditarCategoriaComponent implements OnInit{
         this.adminService.editarCategoria(this.categoria).subscribe({
           next:(response: HttpResponse<any>)=>{
             this.limpiar();
+            this.modalRef = this.modalService.show(template);
             this.router.navigate([this.adminService.elegirPagina('gestion')]);
           },
           error: (error) => {
             if(error.status === 406){
               this.router.navigate(['**']);
+            }
+            if(error.status === 400){
+              this.modalRef = this.modalService.show(template2);
             }else {
               console.error('Error en la solicitud:', error);
             }

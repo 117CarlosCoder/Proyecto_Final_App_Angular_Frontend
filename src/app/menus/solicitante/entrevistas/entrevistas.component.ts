@@ -11,6 +11,7 @@ import { EntrevistaN } from 'src/entities/EntrevistaN';
 })
 export class EntrevistasComponent {
   listarEntrevistas!:EntrevistaN[];
+  carga:boolean=false;
 
   constructor(private solicitanteService: SolicitanteService,
     private router:Router){
@@ -23,6 +24,9 @@ export class EntrevistasComponent {
         console.log("Cargar Entrevistas")
         this.listarEntrevistas = list;
         console.log(this.listarEntrevistas);
+        if(list.length !== 0){
+          this.carga=true;
+        }
       },
       error: (error) => {
         if(error.status === 406){

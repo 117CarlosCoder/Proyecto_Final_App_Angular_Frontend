@@ -1,6 +1,7 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
     <form class=" border w-75 mb-5 rounded-top p-4 " [formGroup]="form" >
+      <h1 class="mb-5">Actualizar Oferta</h1>
         <h5>Nombre de la oferta</h5>
         <div class="form-floating mb-3">
             <input type="text" class="form-control" 
@@ -56,7 +57,7 @@
             </div>
           <h5>Salario aproximado</h5>
         <div class="form-floating mb-3">
-            <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
+            <input type="number" class="form-control" min="1"
               [class.is-invalid]="form.controls['salario'].invalid && form.controls['salario'].touched"
               id="salario" placeholder="Salario" name="salario" formControlName="salario">
               <div
@@ -101,9 +102,27 @@
               </div>
             <label for="detalles">Detalles</label>
         </div>
+
+        <form  [formGroup]="form2" >
+          <h3>Mensaja de actualizacion de oferta</h3>
+          <div class="form-floating w-100 mt-5 mb-5">
+            <textarea class="form-control" 
+                [class.is-invalid]="form2.controls['notas'].invalid && form2.controls['notas'].touched"
+                id="floatingTextarea1" style="height: 250px" formControlName="notas"></textarea>
+            <label for="floatingTextarea1">Escribe Aqui</label>
+            <div
+              *ngIf="form2.controls['notas'].invalid && (form2.controls['notas'].dirty || form2 .controls['notas'].touched)"
+              class="invalid-feedback">
+              <div>
+                Por favor escribe el  mensaje 
+              </div>
+        </div>
+        </div>
+        </form> 
+
         <div class="d-flex flex-row w-100 justify-content-between mt-5">
             <button class="btn btn-primary h-25 mb-5" type="submit" (click)="cancelarOferta()" >Cancelar</button>
-            <button class="btn btn-primary h-25 mb-5" type="submit" (click)="actualizarOferta(template)" >Actualizar Oferta</button>
+            <button class="btn btn-primary h-25 mb-5" type="submit" (click)="actualizarOferta(template, template2)" >Actualizar Oferta</button>
         </div>
         <ng-template #template>
             <div class="modal-header">
@@ -122,6 +141,30 @@
               </div>
               
         </ng-template>
-    </form>
+
+        <ng-template #template2>
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">Mensaje</h4>
+              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Por favor no deje espacios vacios, toda la informacion debe ser valida, 
+              y la fecha limite no debe ser menor  a la fecha actual
+            </div>
+            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                  OK  
+              </button>
+            </div>
+            
+      </ng-template>
+
+
+      
+      
+    </form>   
+    
 </div>
 

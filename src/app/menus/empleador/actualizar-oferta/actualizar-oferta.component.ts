@@ -8,6 +8,8 @@ import { Ofertas } from 'src/entities/Ofertas';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpResponse } from '@angular/common/http';
+import { Postulante } from 'src/entities/Postulante';
+import { EntrevistaFinal } from 'src/entities/EntrevistaFinal';
 
 @Component({
   selector: 'app-actualizar-oferta',
@@ -16,6 +18,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ActualizarOfertaComponent {
   form!:FormGroup;
+  form2!:FormGroup;
   listaOferta !: Ofertas;
   listacategorias !: Categoria[];
   listaModalidades !: Modalidad[];
@@ -25,6 +28,9 @@ export class ActualizarOfertaComponent {
   pipe = new DatePipe('en-US');
   modalRef?: BsModalRef;
   codigo!:number;
+  cargar:boolean=false;
+  listarPostulantes!:Postulante[];
+  finalizarInfoEntrevista!:EntrevistaFinal;
 
   constructor(private formBuilder :FormBuilder,
     private empleadorService : EmpleadorService,
@@ -46,18 +52,27 @@ export class ActualizarOfertaComponent {
       console.log(this.codigo)
     });
 
+    this.empleadorService.listarPostulantes(this.codigo).subscribe({
+      next: (response: HttpResponse<Postulante[]>) => {
+          this.cargar= true;
+          console.log("Cargar Ofertas")
+          var list: Postulante[] | null= null; 
+          if (response.body) {
+            list = response.body;
+            this.listarPostulantes = list;
+            console.log(this.listarPostulantes);
+          }
+          
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
 
-    /*this.form = this.formBuilder.group({
-      codigo: [this.codigo, [Validators.required]],
-      nombre: [null, [Validators.required]],
-      descripcion: [null, [Validators.required]],
-      categoria: [null, [Validators.required]],
-      fechaLimite: [null, [Validators.required]],
-      salario: [null, [Validators.required]],
-      modalidad:[null, [Validators.required]],
-      ubicacion: [null, [Validators.required]],
-      detalles: [null, [Validators.required]]
-    });*/
 
     this.empleadorService.listarOferta(this.codigo).subscribe({
       next: (response : HttpResponse<Ofertas>) => {
@@ -129,6 +144,12 @@ export class ActualizarOfertaComponent {
       detalles: [null, [Validators.required]]
     });
     
+    this.form2 = this.formBuilder.group({
+      codigo: [this.codigo],
+      usuario: [],
+      notas: [null, [Validators.required]],
+      codigoOferta: [],
+    });
     
   }
 
@@ -148,24 +169,36 @@ export class ActualizarOfertaComponent {
 
   }
 
-  actualizarOferta(template: TemplateRef<any>){
+  actualizarOferta(template: TemplateRef<any>, template2: TemplateRef<any>){
     //this.formattedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+    this.finalizarInfoEntrevista = this.form2.value as EntrevistaFinal;
     this.todayWithPipe != this.pipe.transform(Date.now(), 'yyyy/MM/dd');
     console.log("Oferta" + this.oferta);
     console.log(this.form.value)
     if (this.form.valid) {
-      this.modalRef = this.modalService.show(template);
+      
       this.oferta = this.form.value as Ofertas;
       console.log("Oferta" + this.oferta.nombre);
       console.log(this.oferta)
       this.empleadorService.actualizarOferta(this.oferta).subscribe({
         next:(response : HttpResponse<Ofertas>)=>{
+          this.listarPostulantes.forEach(postulante=>{
+          this.empleadorService.crearNotificacion(this.finalizarInfoEntrevista.notas + " " + this.listaOferta.empresa,postulante.codigo).subscribe({
+            next:(data : any)=>{
+              console.log("notificaciones creadas")
+            }
+          });
+          });
           this.limpiar();
+          this.modalRef = this.modalService.show(template);
           this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
         },
         error: (error) => {
           if(error.status === 406){
             this.router.navigate(['**']);
+          }
+          if(error.status === 400){
+            this.modalRef = this.modalService.show(template2);
           }else {
             console.error('Error en la solicitud:', error);
           }

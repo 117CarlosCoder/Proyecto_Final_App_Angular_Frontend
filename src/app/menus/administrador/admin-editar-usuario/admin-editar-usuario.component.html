@@ -1,5 +1,5 @@
 <app-navbar-admin></app-navbar-admin>
-<div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
+<div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center" *ngIf="carga" >
     <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
         <div  [formGroup]="form" >
           <h2 class="text-center">{{rol}} : {{usuario.nombre}}</h2>
@@ -127,7 +127,7 @@
              
           </div>
 
-        <div [formGroup]="form2">
+        <div [formGroup]="form2" *ngIf="cargaTelefonos">
           <h5>Telefono</h5>
                       <div class="form-floating mb-3" >
                           <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
@@ -159,7 +159,7 @@
 
                         <div class="d-flex flex-row w-100 justify-content-between mt-5">
                           <button class="btn btn-danger h-25 mb-5" type="submit"  (click)="cancelar()">Cancelar</button>
-                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template)" >editar</button>
+                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template, template2)" >editar</button>
                       </div>
                       
                       <ng-template #template>
@@ -182,7 +182,7 @@
         </div>
     </div>
 
-    <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
+    <div class=" border border-black w-75 mb-5 rounded-top p-4 " *ngIf="carga">
       <h2 class="text-center mb-3">Contraseña</h2>
     <div class="h-75 w-100 " >
           <div class="mb-5">
@@ -192,10 +192,28 @@
                 id="password" placeholder="Contraseña nueva" name="password" [(ngModel)]="nuevaContrasena">
               <label for="password">Nueva Contraseña</label>
             </div>
-            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena()">Cambiar Contraseña</button>
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena(template2, template3)">Cambiar Contraseña</button>
         </div>
       </div>
     </div>
+
+    <ng-template #template3>
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Mensaje</h4>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Su Contraseña ha sido cambiada
+        </div>
+        <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+          <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+              OK  
+          </button>
+        </div>
+        
+    </ng-template>
 
 
     <div class=" border border-black w-75 mb-5 rounded-top p-4 " *ngIf="rol == 'Solicitante' ">
@@ -204,7 +222,7 @@
           <object  width="100%" height="600px" [data]="pdfUrl" type="application/pdf" ></object>
           <div class="mb-5">
             <h5>Cambiar Curriculum</h5>
-            <input  type="file"  (change)="subirArchivo($event)" class="form-control" aria-label="file example" required 
+            <input  type="file"  (change)="subirArchivo($event, template2)" class="form-control" aria-label="file example" required 
             id="curriculum" name="curriculum" formControlName="curriculum">
             <div class="invalid-feedback">Ingrese algun archivo</div>
         </div>
@@ -212,4 +230,27 @@
       <div *ngIf="!pdfUrl">PDF no encontrado</div> 
     </div>
 </div>
+
+<div class="w-100 h-50" *ngIf="!carga">
+<div class="d-flex justify-content-center align-items-center h-100">
+  <h1>No hay Usuario</h1>
+</div>
+</div>
+<ng-template #template2>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Mensaje</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Por favor ingrese valores validos y no deje espacios en blanco
+    </div>
+    <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+      <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+          OK  
+      </button>
+    </div>
+    
+</ng-template>
 

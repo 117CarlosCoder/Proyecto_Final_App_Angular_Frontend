@@ -2,7 +2,8 @@
 <div class="container-lg mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
     <div class=" border border-black w-75 mb-5 rounded p-4 ">
         <div  [formGroup]="form" >
-                <h5>Nombre</h5>
+          <h1>Creando Empleador</h1>
+                <h5 class="mt-3">Nombre</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
                       [class.is-invalid]="form.controls['nombre'].invalid && form.controls['nombre'].touched"
@@ -57,7 +58,7 @@
                             </div>
                           </div>
                         <label for="direccion">Direccion</label>
-                    </div>border
+                    </div>
                     
                 <h5>Correo Electronico</h5>
                     <div class="form-floating mb-3">

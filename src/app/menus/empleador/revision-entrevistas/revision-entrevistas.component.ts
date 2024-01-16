@@ -2,8 +2,6 @@ import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Entrevista } from 'src/entities/Entrevista';
-import { EntrevistaInfo } from 'src/entities/EntrevistaInfo';
 import { OfertasDate } from 'src/entities/OfertasDate';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
 
@@ -16,6 +14,7 @@ export class RevisionEntrevistasComponent implements OnInit{
   listaOferta!:OfertasDate[];
   Fecha!: string | null;
   pipe = new DatePipe('en-US');
+  carga: boolean = false;
 
   constructor(private empleadorService : EmpleadorService,
     private router:Router){}
@@ -51,6 +50,10 @@ export class RevisionEntrevistasComponent implements OnInit{
             });
           }
           console.log(this.listaOferta);
+          if(this.listaOferta.length !== 0){
+            this.carga = true
+          }
+          
       },
       error: (error) => {
         if(error.status === 406){

@@ -15,7 +15,42 @@
                 <div class="invalid-feedback">Por favor seleccione un archivo</div>
               </div>
             </div>
-          <button class="btn btn-primary mt-3 w-50"  (click)="uploadFile()" >Subir</button>
+          <button class="btn btn-primary mt-3 w-50"  (click)="uploadFile(template, template2)" >Subir</button>
         </div>
       </div>
+      <ng-template #template>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Mensaje</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Por favor ingrese un archivo con formato Json Valido
+          </div>
+          <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                OK  
+            </button>
+          </div>
+          
+    </ng-template>
+
+    <ng-template #template2>
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Mensaje</h4>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Ya Hay Datos en la Base de Datos
+        </div>
+        <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+          <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+              OK  
+          </button>
+        </div>
+        
+  </ng-template>
 </div>

@@ -1,0 +1,60 @@
+<app-navbar-empleador></app-navbar-empleador>
+<div class="h-auto d-flex flex-column justify-content-center align-items-center p-3">
+    <form [formGroup]="form" class=" border w-75 rounded-top p-4 ">
+  <h3>Mensaja de eliminacion de oferta</h3>
+        <div class="form-floating w-100 mt-5 mb-5">
+            <textarea class="form-control" 
+                [class.is-invalid]="form.controls['notas'].invalid && form.controls['notas'].touched"
+                id="floatingTextarea1" style="height: 250px" formControlName="notas"></textarea>
+            <label for="floatingTextarea1">Escribe Aqui</label>
+            <div
+              *ngIf="form.controls['notas'].invalid && (form.controls['notas'].dirty || form.controls['notas'].touched)"
+              class="invalid-feedback">
+              <div>
+                Por favor escribe el  mensaje 
+              </div>
+        </div>
+        </div>
+
+  <div class="d-flex w-100 justify-content-end align-items-end">
+      <button class="btn btn-danger mt-5 mb-5" type="submit" (click)="eliminarOferta(template, template2)">Eliminar Oferta</button>
+      
+  </div>
+  <ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Se ha eliminado la oferta
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+</ng-template>
+
+  <ng-template #template2>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        La oferta no puede ser eliminada
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+  </ng-template> 
+    </form>
+  </div> 
+

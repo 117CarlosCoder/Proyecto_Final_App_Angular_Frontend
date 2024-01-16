@@ -1,5 +1,5 @@
 <app-navbar-solicitante></app-navbar-solicitante>
-<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center border border-black rounded p-4">
+<div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center border border-black rounded p-4" *ngIf="carga">
   <h3>Revision de Postulaciones</h3>  
   <table class="table table-primary" >
         <thead>
@@ -21,4 +21,8 @@
           </tr>
         </tbody>
       </table>  
+</div>
+
+<div class="d-flex justify-content-center align-items-center h-75 w-100 " *ngIf="!carga">
+      <h1>No hay postulaciones</h1>
 </div>

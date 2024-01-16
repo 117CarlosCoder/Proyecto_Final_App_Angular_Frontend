@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { OfertaInvitado } from 'src/entities/OfertaInvitado';
 import { Ofertas } from 'src/entities/Ofertas';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 
@@ -11,9 +12,11 @@ import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 })
 export class CargarOfertaComponent implements OnInit{
   codigo !: number;
-  oferta !: Ofertas;
+  oferta !: OfertaInvitado;
   cargar !: boolean;
   valor : boolean = true;
+  valorEmpresa !: number;
+ 
 
   constructor(private router:Router,
      private route: ActivatedRoute,
@@ -38,10 +41,11 @@ ngOnInit() {
     });
 
     console.log(this.codigo)
-    this.solicitanteService.listarOferta(this.codigo.toString(), this.valor).subscribe({
-      next: (list: Ofertas) => {
+    this.solicitanteService.listarOfertCodigo(this.codigo).subscribe({
+      next: (list: OfertaInvitado) => {
         console.log("Cargar oferta")
         this.oferta = list;
+        this.valorEmpresa = this.oferta.codigoEmpresa;
         console.log(this.oferta);
         this.cargar=true;
       },
@@ -57,6 +61,15 @@ ngOnInit() {
 
   aplicar(codigo:number){
     this.router.navigate(['solicitante-aplicar-empleo',{codigo:codigo}]);
+  }
+
+
+  PerfilEmpresa(){
+    this.router.navigate(['solicitante-perfil-empresa',{codigo:this.valorEmpresa}]);
+  }
+
+  regresar(){
+    this.router.navigate(['solicitante-aplicar-oferta']);
   }
 }
 

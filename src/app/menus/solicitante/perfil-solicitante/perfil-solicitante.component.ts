@@ -183,7 +183,7 @@ export class PerfilSolicitanteComponent {
  }
 
 
- editarUsuario(template: TemplateRef<any>){
+ editarUsuario(template: TemplateRef<any>,template2: TemplateRef<any>){
   console.log('editar ');
   console.log(this.form)
   console.log(this.form.valid)
@@ -198,16 +198,6 @@ export class PerfilSolicitanteComponent {
     if (this.listaTelefonos[2]!=null) {
       this.listaTelefonos[2].numero = this.telefonos.telefono3;
     }
-
-
-
-    
-
-    
-
-  
-   
-    
     console.log(this.listaTelefonos)
     console.log(this.listTelefono)
     this.usario = this.form.value as CrearUsuario;
@@ -226,10 +216,13 @@ export class PerfilSolicitanteComponent {
             this.solicitanteService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
                   console.log("Telefonos actualizados")
+                  this.modalRef = this.modalService.show(template);
               },
               error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
+                }if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -255,10 +248,13 @@ export class PerfilSolicitanteComponent {
               next:(data:any)=>{
                 this.listTelefono =[];
                   console.log("Telefonos creados")
+                  this.modalRef = this.modalService.show(template);
               },
               error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
+                }if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -283,6 +279,7 @@ export class PerfilSolicitanteComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
@@ -301,22 +298,26 @@ export class PerfilSolicitanteComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){
                     this.router.navigate(['**']);
+                  }if(error.status === 400){
+                    this.modalRef = this.modalService.show(template2);
                   }else {
                     console.error('Error en la solicitud:', error);
                   }
                 }
               }); 
               }
-            this.modalRef = this.modalService.show(template);
-          
+              localStorage.setItem('username',this.usario.username.toString())
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
+        }if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
         }else {
           console.error('Error en la solicitud:', error);
         }
@@ -328,12 +329,17 @@ export class PerfilSolicitanteComponent {
   }
 }
 
-async subirArchivo(event: any) {
+async subirArchivo(event: any, template: TemplateRef<any>) {
   if (event.target.files && event.target.files.length > 0) {
   
   const file: File = event.target.files[0];
   console.log(file)
   console.log(file.type)
+
+  if (file.type !== 'application/pdf') {
+    this.modalRef = this.modalService.show(template);
+    return;
+  }
   const nombreArchivo = file.name;
   const datos = await file.arrayBuffer();
 
@@ -361,7 +367,7 @@ async subirArchivo(event: any) {
 }
 }
 
-cambiarContrasena(){
+cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
   if(this.nuevaContrasena !== ''){
     this.cambioContrasena = {
       codigo: this.usuario.codigo,
@@ -370,10 +376,15 @@ cambiarContrasena(){
     this.solicitanteService.cambiarContrasena(this.cambioContrasena).subscribe({
       next: (data:any) => {
         console.log("contrasena cambiada");
+        this.modalRef = this.modalService.show(template);
+        localStorage.setItem('password',this.cambioContrasena.contrasena)
+        
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
+        }if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
         }else {
           console.error('Error en la solicitud:', error);
         }

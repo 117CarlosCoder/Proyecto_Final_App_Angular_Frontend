@@ -1,22 +1,61 @@
 <app-navbar-inicio></app-navbar-inicio>
-<div class="h-75 w-100 d-flex flex-column justify-content-center align-items-center">
-    <h1>Suba los curriculums de cada usuario </h1>
-    <div class="card col-md-8">
+<div class="h-auto w-100 d-flex flex-column justify-content-center align-items-center">
+    <h1 class="mt-5 mb-5">Suba los curriculums de cada usuario </h1>
+    <div class="card col-md-auto ">
         <div class="card-header text-center" >Usuarios</div>
         
+        <div class="row row-cols-1 row-cols-md-3 g-1">
+          <div class="col" *ngFor=" let dato of listaUsuarios">
         <div class="card-body d-flex flex-column align-items-center">
            
-          <div class="form-group w-75" *ngFor=" let dato of listaUsuarios">
-            <h2>Usuario: {{dato.username}}</h2>
-            <h5>Pdf : {{dato.curriculum}}</h5>
-            <input type="file" class="form-control" aria-label="file example" (change)="onFileChange($event, dato)" required>
-
-            <div class="d-flex flex-column justify-content-center align-items-center mb-5">
-                <div class="invalid-feedback">Por favor seleccione un archivo</div>
+          <div class="form-group w-auto" >
+            <div class="card d-flex justify-content-center align-items-center p-4" style="width: 18rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#0275d8" class="bi bi-person"
+                viewBox="0 0 16 16">
+                <path
+                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+              </svg>
+              <div class="card text-center">
+                <div class="card-header">
+                  Usuario: {{dato.username}}
+                </div>
+                <div class="card-body">
+                  <p class="card-text"><strong>Pdf a subir:</strong> {{dato.curriculum}}</p>
+                  <input type="file" class="form-control" aria-label="file example" (change)="onFileChange($event, dato)" required>
+                  <div class="d-flex flex-column justify-content-center align-items-center ">
+                  <div class="invalid-feedback">Por favor seleccione un archivo</div>
+                  <div>
+                  </div>
+                </div>
               </div>
+              </div>
+              
             </div>
-            <button class="btn btn-primary mt-3  mb-3 w-50" (click)="cargarPdf()">Subir</button>
+          
         </div>
       </div>
+          </div>
+          </div>
+          <div class="w-100 d-flex justify-content-center align-items-center">
+            <button class="btn btn-primary w-50 mt-3 mb-3 " (click)="cargarPdf(template)">Subir</button>
+          </div>
+          <ng-template #template>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Mensaje</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                  <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Por favor Verifique que esta enviando los archivos correctos en formato pdf
+              </div>
+              <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+                <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                    OK  
+                </button>
+              </div>
+              
+        </ng-template>
+</div>
 </div>
 

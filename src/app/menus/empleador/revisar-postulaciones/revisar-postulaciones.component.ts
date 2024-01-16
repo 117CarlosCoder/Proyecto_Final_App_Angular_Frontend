@@ -14,6 +14,7 @@ export class RevisarPostulacionesComponent implements OnInit{
   listaOferta!:OfertasDate[];
   Fecha!: string | null;
   pipe = new DatePipe('en-US');
+  carga:boolean=false;
 
   constructor(private empleadorService : EmpleadorService,
     private router:Router){}
@@ -26,6 +27,9 @@ export class RevisarPostulacionesComponent implements OnInit{
           console.log("Cargar Ofertas")
           var list: OfertasDate[] | null= null; 
           if (response.body) {
+            if (response.body.length !== 0) {
+              this.carga=true;
+            }
             list = response.body;
             this.listaOferta = list;
             list.forEach(element => {
@@ -49,6 +53,7 @@ export class RevisarPostulacionesComponent implements OnInit{
             });
           }
           console.log(this.listaOferta);
+          
       },
       error: (error) => {
         if(error.status === 406){

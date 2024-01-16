@@ -34,6 +34,8 @@ export class AdminEditarUsuarioComponent {
   FechaFString!: String|null;
   FechaN!:Date;
   FechaF!:Date;
+  carga:boolean =false;
+  cargaTelefonos:boolean =false;
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
   pdfUrl!: SafeResourceUrl;
@@ -108,7 +110,7 @@ export class AdminEditarUsuarioComponent {
           fechaNacimiento: [this.FechaN],
           rol:[this.usuario.rol]
         });
-        if (this.usuario.codigo != undefined) {
+        if (this.usuario.codigo != undefined && this.usuario.rol === "Solicitante") {
           console.log("Usuario : " + this.usuario.codigo)
           this.adminService.listarPdf(this.usuario.codigo).subscribe(
             
@@ -134,6 +136,7 @@ export class AdminEditarUsuarioComponent {
           
         );
         }
+        this.carga =true;
       }
         },
         error: (error) => {
@@ -188,11 +191,17 @@ export class AdminEditarUsuarioComponent {
             telefono3: [numero3]
           });
         }
+
+        this.cargaTelefonos = true;
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
-        }else {
+        }
+        if(error.status === 400){
+          this.router.navigate(['**']);
+        }
+        else {
           console.error('Error en la solicitud:', error);
         }
       }
@@ -208,7 +217,7 @@ export class AdminEditarUsuarioComponent {
     
   }
 
-  editarUsuario(template: TemplateRef<any>){
+  editarUsuario(template: TemplateRef<any>,template2: TemplateRef<any>){
     console.log('editar ');
     console.log(this.form)
     console.log(this.form.valid)
@@ -242,6 +251,20 @@ export class AdminEditarUsuarioComponent {
               this.adminService.actualizarTelefono(this.listaTelefonos).subscribe({
                 next:(data:any)=>{
                     console.log("Telefonos actualizados")
+                    this.modalRef = this.modalService.show(template);
+                    this.limpiar();
+                    this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+                },
+                 error: (error) => {
+                  if(error.status === 406){
+                    this.router.navigate(['**']);
+                  }
+                  if(error.status === 400){
+                    this.modalRef = this.modalService.show(template2);
+                  }
+                  else {
+                    console.error('Error en la solicitud:', error);
+                  }
                 }
               });
             }
@@ -263,11 +286,18 @@ export class AdminEditarUsuarioComponent {
               if (this.listaTelefonos[0] == null && this.telefonos.telefono1 ) {
               this.adminService.crearTelefonos(this.listTelefono).subscribe({
                 next:(response: HttpResponse<any>)=>{
+                  
                   if(response.status === 406){
                     this.router.navigate(['**']);
                   }
+                  if(response.status === 400){
+                    this.modalRef = this.modalService.show(template2);
+                  }
                     this.listTelefono =[];
                     console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
+                    this.limpiar();
+                    this.router.navigate(['admin-usuarios',{rol:this.rol}]);
                 }
               }); 
               }
@@ -288,11 +318,21 @@ export class AdminEditarUsuarioComponent {
               if (this.listaTelefonos[1] == null && this.telefonos.telefono2  ) {
                 this.adminService.crearTelefonos(this.listTelefono).subscribe({
                   next:(response: HttpResponse<any>)=>{
+                    
                     if(response.status === 406){
                       this.router.navigate(['**']);
                     }
+                    if(response.status === 400){
+                      this.modalRef = this.modalService.show(template2);
+                    }
                       this.listTelefono =[];
                       console.log("Telefonos creados")
+                      this.modalRef = this.modalService.show(template);
+                      this.limpiar();
+                      this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+                      
+                      
+                      
                   }
                 }); 
                 }
@@ -309,24 +349,35 @@ export class AdminEditarUsuarioComponent {
               }
               if ( this.listaTelefonos[2] == null && this.telefonos.telefono3 ) {
                 this.adminService.crearTelefonos(this.listTelefono).subscribe({
+                  
                   next:(response: HttpResponse<any>)=>{
+                    
                     if(response.status === 406){
                       this.router.navigate(['**']);
+                    }if(response.status === 400){
+                      this.modalRef = this.modalService.show(template2);
                     }
                     this.listTelefono =[];
-                      console.log("Telefonos creados")
+                    console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
+                    this.limpiar();
+                    this.router.navigate(['admin-usuarios',{rol:this.rol}]);
                   }
                 }); 
                 }
-              this.modalRef = this.modalService.show(template);
-              this.limpiar();
-              this.router.navigate(['admin-usuarios',{rol:this.rol}]);
+              
+              
+              
             
         },
         error: (error) => {
           if(error.status === 406){
             this.router.navigate(['**']);
-          }else {
+          }
+          if(error.status === 400){
+            this.modalRef = this.modalService.show(template2);
+          }
+          else {
             console.error('Error en la solicitud:', error);
           }
         }
@@ -336,7 +387,7 @@ export class AdminEditarUsuarioComponent {
     }
   }
 
-  async subirArchivo(event: any) {
+  async subirArchivo(event: any,template: TemplateRef<any>) {
     if (event.target.files && event.target.files.length > 0) {
     
     const file: File = event.target.files[0];
@@ -359,7 +410,11 @@ export class AdminEditarUsuarioComponent {
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
-        }else {
+        }
+        if(error.status === 400){
+          this.modalRef = this.modalService.show(template);
+        }
+        else {
           console.error('Error en la solicitud:', error);
         }
       }
@@ -369,7 +424,7 @@ export class AdminEditarUsuarioComponent {
   }
   }
 
-  cambiarContrasena(){
+  cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
     if(this.nuevaContrasena !== ''){
       this.cambioContrasena = {
         codigo: this.usuario.codigo,
@@ -378,10 +433,15 @@ export class AdminEditarUsuarioComponent {
       this.adminService.cambiarContrasena(this.cambioContrasena).subscribe({
         next: (data:any) => {
           console.log("contrasena cambiada");
+          this.modalRef = this.modalService.show(template2);
+          this.router.navigate(['admin-usuarios',{rol:this.rol}]);
         },
         error: (error) => {
           if(error.status === 406){
             this.router.navigate(['**']);
+          }
+          if(error.status === 400){
+            this.modalRef = this.modalService.show(template);
           }else {
             console.error('Error en la solicitud:', error);
           }

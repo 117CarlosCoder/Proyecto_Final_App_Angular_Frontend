@@ -45,6 +45,8 @@ import { EmpleosMasInfoComponent } from './menus/general/empleos-mas-info/empleo
 import { PerfilEmpresaGeneralComponent } from './menus/general/perfil-empresa-general/perfil-empresa-general.component';
 import { PostulantesEntrevistaComponent } from './menus/empleador/postulantes-entrevista/postulantes-entrevista.component';
 import { ContratacionComponent } from './menus/empleador/contratacion/contratacion.component';
+import { MensajeEliminarOfertaComponent } from './menus/empleador/mensaje-eliminar-oferta/mensaje-eliminar-oferta.component';
+import { PerfilEmpresaComponent } from './menus/solicitante/perfil-empresa/perfil-empresa.component';
 
 
 const routes: Routes = [
@@ -132,6 +134,12 @@ const routes: Routes = [
     canActivate: [hasRole(['Solicitante'])]
   },
   {
+    path: "solicitante-perfil-empresa",
+    title: "Perfil Empresa",
+    component: PerfilEmpresaComponent,
+    canActivate: [hasRole(['Solicitante'])]
+  },
+  {
     path: "solicitante-cargar-oferta-info",
     title: "Cargar oferta",
     component: SolicitanteCargarOfertaInfoComponent,
@@ -166,6 +174,12 @@ const routes: Routes = [
     path: "empleador-gestion",
     title: "Gestion",
     component: GestionComponent,
+    canActivate: [hasRole(['Empleador'])]
+  },
+  {
+    path: "eliminar-oferta",
+    title: "Eliminar Oferta",
+    component: MensajeEliminarOfertaComponent ,
     canActivate: [hasRole(['Empleador'])]
   },
   {

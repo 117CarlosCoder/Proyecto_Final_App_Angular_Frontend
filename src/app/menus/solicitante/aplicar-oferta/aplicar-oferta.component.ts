@@ -10,6 +10,7 @@ import { Modalidad } from 'src/entities/Modalidad';
 import { Salario } from 'src/entities/Salario';
 import { Ubicacion } from 'src/entities/Ubicacion';
 import { Filtros } from 'src/entities/Filtros';
+import { OfertaInvitado } from 'src/entities/OfertaInvitado';
 
 @Component({
   selector: 'app-aplicar-oferta',
@@ -18,6 +19,7 @@ import { Filtros } from 'src/entities/Filtros';
 })
 export class AplicarOfertaComponent implements OnInit {
   listaOfertas !: Ofertas[];
+  listarOfertaPrincipal!: OfertaInvitado[];
   valorBusqueda: String = '';
   listacategorias !: Categoria[];
   listaModalidades !: Modalidad[];
@@ -26,6 +28,7 @@ export class AplicarOfertaComponent implements OnInit {
   form!:FormGroup;
   filtros !: Filtros;
   titulo : String = "Todas las ofertas";
+  cargaOfertasA:boolean=false;
 
     constructor(private sharedService :ActualizarNavbarService,
     private solicitanteService: SolicitanteService,
@@ -41,6 +44,7 @@ export class AplicarOfertaComponent implements OnInit {
     this.solicitanteService.listarCategorias().subscribe({
       next: (list: Categoria[]) => {
         this.listacategorias = list;
+        
       },
       error: (error) => {
         if(error.status === 406){
@@ -88,6 +92,7 @@ export class AplicarOfertaComponent implements OnInit {
         console.log("Cargar ofertas")
         this.listaOfertas = list;
         console.log(this.listaOfertas);
+        this.cargaOfertasA = true;
       },
       error: (error) => {
         if(error.status === 406){
@@ -216,6 +221,10 @@ export class AplicarOfertaComponent implements OnInit {
 
   masInformacion(codigo:number){
     this.router.navigate(['solicitante-cargar-oferta',{codigo:codigo}]);
+  }
+
+  reiciar(){
+    location.reload();
   }
   
 }

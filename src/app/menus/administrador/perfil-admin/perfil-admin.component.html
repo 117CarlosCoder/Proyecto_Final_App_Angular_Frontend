@@ -78,20 +78,7 @@
                           </div>
                         <label for="email">Correo</label>
                     </div>
-                <h5>Contraseña</h5>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" 
-                          [class.is-invalid]="form.controls['password'].invalid && form.controls['password'].touched"
-                          id="password" placeholder="password" name="password" formControlName="password">
-                          <div
-                            *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)"
-                            class="invalid-feedback">
-                            <div>
-                              Por favor ingrese la Correo
-                            </div>
-                          </div>
-                        <label for="password">Contraseña</label>
-                    </div>
+                
                 <h5>Codigo Unico de Identificacion (CUI)</h5>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" 
@@ -174,7 +161,7 @@
                             <label for="telefono1">Telefono</label>
                         </div>
 
-                        <h5>Telefon2 (opcional)</h5>
+                        <h5>Telefono 2 (opcional)</h5>
                         <div class="form-floating mb-3" >
                             <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
                               id="telefono2" placeholder="telefono2" name="telefono2" formControlName="telefono2">
@@ -189,7 +176,7 @@
                         </div>
 
                         <div class="d-flex flex-row w-100 justify-content-between mt-5">
-                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template)" >editar</button>
+                          <button class="btn btn-primary h-25 mb-5" type="submit" (click)="editarUsuario(template, template2)" >editar</button>
                       </div>
                       
                       <ng-template #template>
@@ -209,8 +196,79 @@
                             </div>
                             
                       </ng-template> 
+
+                      <ng-template #template2>
+                        <div class="modal-header">
+                            <h4 class="modal-title pull-left">Mensaje</h4>
+                            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                              <span aria-hidden="true" class="visually-hidden">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            La informacion no es valida,dejaste espacios obligatorios en blanco o el usuario o emial se repiten
+                          </div>
+                          <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+                            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                                OK  
+                            </button>
+                          </div>
+                          
+                      </ng-template>
                   
         </div>
+
+        <div class=" border border-black w-75 mb-5 rounded-top p-4 ">
+          <h2 class="text-center mb-3">Contraseña</h2>
+        <div class="h-75 w-100 " >
+              <div class="mb-5">
+                <h5>Cambiar Contraseña</h5>
+                <div class="form-floating mb-3" >
+                  <input type="text" class="form-control"
+                    id="password" placeholder="Contraseña nueva" name="password" [(ngModel)]="nuevaContrasena">
+                  <label for="password">Nueva Contraseña</label>
+                </div>
+                <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="cambiarContrasena(template3, template4)">Cambiar Contraseña</button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #template3>
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">Mensaje</h4>
+              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Contraseña Actualizada
+            </div>
+            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                  OK  
+              </button>
+            </div>
+            
+      </ng-template> 
+
+      <ng-template #template4>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Mensaje</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+            La Contraseña no se pudo cambiar
+          </div>
+          <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                OK  
+            </button>
+          </div>
+          
+      </ng-template>
         
     </div>
     

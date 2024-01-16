@@ -100,6 +100,11 @@ export class EmpleadorService {
         return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/fase-entrevista?codigo="+codigo, {observe: 'response', headers:this.headers});
     }
 
+    public faseContratacion(codigo:number) {
+        this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/fase-contratacion?codigo="+codigo, {observe: 'response', headers:this.headers});
+    }
+
     public listarPostulantes(codigo:number ): Observable<HttpResponse<Postulante[]>> {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.post<Postulante[]>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-postulantes?codigo="+codigo,null, {observe: 'response', headers:this.headers});
@@ -192,14 +197,14 @@ export class EmpleadorService {
         return this.httpClient.get<Categoria[]>(this.API_URL + "/listar-categorias", {observe: 'response', headers:this.headers});
     }
 
-    public listarEntrevistas(): Observable<HttpResponse<EntrevistaInfo[]>> {
+    public listarEntrevistas(codigo : number): Observable<HttpResponse<EntrevistaInfo[]>> {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
-        return this.httpClient.get<EntrevistaInfo[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-entrevistas", {observe: 'response', headers:this.headers});
+        return this.httpClient.get<EntrevistaInfo[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-entrevistas?codigo="+codigo, {observe: 'response', headers:this.headers});
     }
 
-    public listarEntrevistasContratacion(): Observable<HttpResponse<EntrevistaInfo[]>> {
+    public listarEntrevistasContratacion(codigo :number): Observable<HttpResponse<EntrevistaInfo[]>> {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
-        return this.httpClient.get<EntrevistaInfo[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-entrevistas-contratacion", {observe: 'response', headers:this.headers});
+        return this.httpClient.get<EntrevistaInfo[]>( "http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/employer-nomination-servlet/cargar-entrevistas-contratacion?codigo="+codigo, {observe: 'response', headers:this.headers});
     }
 
     public listarModalidades(): Observable<HttpResponse<Modalidad[]>> {

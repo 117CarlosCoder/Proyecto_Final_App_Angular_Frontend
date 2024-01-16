@@ -1,7 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UsuarioPdf } from 'src/entities/UsuarioPdf';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { UsuarioService } from 'src/services/usuario/UsuarioService';
@@ -16,11 +17,12 @@ export class CargarPdfsComponent {
   form!:FormGroup;
   listaUsuarios!:UsuarioT[];
   listaUsuariosPdf:UsuarioPdf[] = [];
+  modalRef?: BsModalRef;
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
-    private usuarioService: UsuarioService
- ){}
+    private usuarioService: UsuarioService,
+    private modalService: BsModalService){}
 
  ngOnInit() {
     this.usuarioService.listarUsuariosPDF().subscribe({
@@ -30,6 +32,8 @@ export class CargarPdfsComponent {
           if (list) {
             this.listaUsuarios = list;
           var nuevoUsuarioPdf: UsuarioPdf;
+
+         
 
           if(this.listaUsuarios != undefined){
           this.listaUsuarios.forEach(datos => {
@@ -66,7 +70,7 @@ export class CargarPdfsComponent {
 
   if (usuarioEncontrado) {
     usuarioEncontrado.pdf = base64String;
-
+    
     console.log(this.listaUsuariosPdf)
   } 
 
@@ -95,13 +99,16 @@ arrayBufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-cargarPdf(){
+cargarPdf(template: TemplateRef<any>){
   console.log(this.listaUsuariosPdf)
  
   this.usuarioService.cargarPdfs(this.listaUsuariosPdf).subscribe({
       next:(data : any)=>{  
         console.log("Pdfs subidos");
         this.router.navigate(['empleos']);
+      },
+      error: (error) => {
+        this.modalRef = this.modalService.show(template);
       }
   });
 }

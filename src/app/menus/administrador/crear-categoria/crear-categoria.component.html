@@ -33,7 +33,43 @@
           </div>
           <div class="d-flex flex-row w-100 justify-content-between">
             <button class="btn btn-primary" type="submit" (click)="cancelar()" >Cancelar</button>
-                <button class="btn btn-primary" type="submit" (click)="crearCategoria()" >Crear</button>
+                <button class="btn btn-primary" type="submit" (click)="crearCategoria(template, template2)" >Crear</button>
           </div>
     </form>
+
+    <ng-template #template>
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Mensaje</h4>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Categoria creada
+        </div>
+        <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+          <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+              OK  
+          </button>
+        </div>
+        
+    </ng-template>
+
+    <ng-template #template2>
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Mensaje</h4>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          El nombre de la categoria ya existe, esta vacio o la decripcion esta vacia 
+        </div>
+        <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+          <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+              OK  
+          </button>
+        </div>
+        
+    </ng-template>
 </div>

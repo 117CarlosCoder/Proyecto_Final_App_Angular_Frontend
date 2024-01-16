@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Ofertas } from 'src/entities/Ofertas';
 import { EmpleadorService } from 'src/services/empleador/EmpleadorService';
@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { format } from 'date-fns';
 import { CargarOfertasFechas } from 'src/entities/CargarOfertasFechas';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-gestion',
@@ -21,9 +22,10 @@ export class GestionComponent {
   codigoFinal!: Codigo;
   Fecha!: string | null;
   pipe = new DatePipe('en-US');
+  modalRef?:BsModalRef;
   FechaOFerta !: CargarOfertasFechas;
   listarFechas = [{
-    "nombre":'Fecha Publcacion',
+    "nombre":'Fecha Publicacion',
     "valor":'fechaPublicacion' 
   }, 
   {
@@ -33,7 +35,8 @@ export class GestionComponent {
 
   constructor( private empleadorService : EmpleadorService,
     private formBuilder: FormBuilder,
-    private router : Router){
+    private router : Router,
+    private modalService: BsModalService){
 
   }
 
@@ -80,7 +83,7 @@ export class GestionComponent {
     this.form = this.formBuilder.group({
       fechaA: [null, [Validators.required]],
       fechaB: [null, [Validators.required]],
-      fechaS: [null, [Validators.required]]
+      fechaS: ["Seleccione tipo fecha", [Validators.required]]
     });
   }
 
@@ -131,56 +134,7 @@ export class GestionComponent {
   }
 
   eliminarOferta(codigo:number){
-    this.empleadorService.eliminarOferta(codigo).subscribe({
-      next:(response: HttpResponse<Ofertas>) => {
-          console.log("Eliminado");
-          this.empleadorService.listarOfertas().subscribe({
-            next: (response: HttpResponse<OfertasDate[]>) => {
-                console.log("Cargar ofertas");
-                var list: OfertasDate[] | null= null; 
-                if (response.body) {
-                  list = response.body; 
-                  this.listarOfetas = list;
-                  list.forEach(element => {
-                    if(element.fechaPublicacion!=null){
-                      this.Fecha = this.pipe.transform(element.fechaPublicacion.toString(), 'yyyy-MM-dd');
-          
-                      console.log(this.Fecha?.toString());
-                      if(this.Fecha){
-                        element.fechaPublicacion = this.Fecha;
-                      }
-                    }
-          
-                    if(element.fechaLimite!=null){
-                      this.Fecha = this.pipe.transform(element.fechaLimite.toString(), 'yyyy-MM-dd');
-          
-                      console.log(this.Fecha?.toString());
-                      if(this.Fecha){
-                        element.fechaLimite = this.Fecha;
-                      }
-                    }
-                  });
-                  console.log(this.listarOfetas);
-                }
-               
-            },
-            error: (error) => {
-              if(error.status === 406){
-                this.router.navigate(['**']);
-              }else {
-                console.error('Error en la solicitud:', error);
-              }
-            }
-        });
-      },
-      error: (error) => {
-        if(error.status === 406){
-          this.router.navigate(['**']);
-        }else {
-          console.error('Error en la solicitud:', error);
-        }
-      }
-  });
+    this.router.navigate(['eliminar-oferta',{codigo:codigo}]);
   }
 
 }

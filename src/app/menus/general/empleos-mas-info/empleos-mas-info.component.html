@@ -1,48 +1,70 @@
 <app-navbar-inicio></app-navbar-inicio>
-<div class="container border border-black rounded-top p-4 mt-5 h-auto d-flex flex-row justify-content-evenly align-items-start" *ngIf="cargar">
-    <div class="w-25 " *ngIf="oferta">
+<div class="container border border-black rounded-top p-4 mt-5 h-auto d-flex flex-row justify-content-evenly align-items-start" *ngIf="cargar && oferta">
+    <div class="w-25 "  *ngIf="oferta">
         <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-thumbnail" alt="Empresa">
-        <h4 class="mt-3">Empresa</h4>
+        <h4 class="mt-3">Empresa (<a (click)="PerfilEmpresa()" style="color: #3f6bad;; font-size: medium;">Perfil Empresa</a>)</h4>
+        
         <h5 class="text-primary">{{oferta.empresa}}</h5>
         <h4 class="mt-3">Lugar</h4>
         <h5 class="text-primary">{{oferta.ubicacion}}</h5>
-        <a (click)="PerfilEmpresa()">Perfil</a>
+        <button type="button" class="btn btn-primary" (click)="regresar()" >Regresar</button>
     </div>
     <div>
+      <div class="card text-bg-primary mb-3" style="max-width: 18rem;">
+        <div class="card-body">
+            <h3 class="card-text">{{oferta.nombre}}</h3>
+        </div>
+    </div>  
         <ul class="list-group">
-            <li class="list-group-item">Empresa
+            <li class="list-group-item"><h4>Empresa</h4> 
                 <p>{{oferta.empresa}}</p>
             </li>
-            <li class="list-group-item">Puesto
-                <p>{{oferta.nombre}}</p>
-            </li>
-            <li class="list-group-item">Salario X
+            <li class="list-group-item"><h4>Salario</h4> 
                 <p>{{oferta.salario}}</p>
             </li>
+            <li class="list-group-item"><h4>Modalidad</h4> 
+              <p>{{oferta.modalidad}}</p>
+          </li>
+          <li class="list-group-item"><h4>Fecha de Publicacion</h4> 
+            <p>{{oferta.fechaPublicacion}}</p>
+        </li>
+        <li class="list-group-item"><h4>Feche Limite</h4> 
+          <p>{{oferta.fechaLimite}}</p>
+      </li>
           </ul>
+          
     </div>
     <div>
-        <div class="card mb-5">
-            <div class="card-header">
-              Descripcion
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Oferta {{oferta.nombre}}</h5>
-              <p class="card-text">{{oferta.descripcion}}</p>
-            </div>
+      <div class="card mb-5">
+        <div class="card-header">
+          <h4>Requisitos</h4>
         </div>
-        <div class="card">
-            <div class="card-header">
-              Requisitos
-            </div>
-            <div class="card-body">
-              <p class="card-text">{{oferta.detalles}}</p>
-            </div>
+        <div class="card-body">
+          <p class="card-text">{{oferta.detalles}}</p>
         </div>
-        
-     </div>
+    </div>
+      <div class="card" >
+          <div class="card-header">
+           <h4> Descripcion </h4>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Oferta {{oferta.nombre}}</h5>
+            <p class="card-text">{{oferta.descripcion}}</p>
+          </div>
+      </div>
+      
+      
+   </div>
      <a href="/crear-usuario" class="btn-flotante">Crear Cuenta</a>
 <a href="/login" class="btn-flotante2">Inciar Sesion</a>
   </div>
+<div class="w-100 h-50" *ngIf="!oferta">
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <h1>No hay oferta</h1>
+  </div>
+  
+</div>
+<div style="height: 15%;">
 
+</div>
 

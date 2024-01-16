@@ -19,6 +19,8 @@ export class PerfilEmpresaGeneralComponent {
   codigo !: number;
   oferta !: OfertaInformacion;
   cargar !: boolean;
+
+  cargarEmpresa !: boolean;
   valor : boolean = true;
   form!:FormGroup;
   listarOfetas!:OfertasDate[];
@@ -53,6 +55,7 @@ export class PerfilEmpresaGeneralComponent {
           if (valor) {
             list = valor;
             this.oferta = list;
+            this.cargarEmpresa=true;
           }
         },
         error: (error) => {
@@ -93,7 +96,7 @@ export class PerfilEmpresaGeneralComponent {
           });
           console.log(this.listarOfetas);
             }
-          
+          this.cargar = true;
         },
         error: (error) => {
           if(error.status === 406){
@@ -104,4 +107,13 @@ export class PerfilEmpresaGeneralComponent {
         }
       });
      }
+
+
+     masInformacion(codigo:number){
+      this.router.navigate(['empleos-mas-info',{codigo:codigo}]);
+    }
+
+    regresar(){
+      this.router.navigate(['empleos']);
+    }
 }

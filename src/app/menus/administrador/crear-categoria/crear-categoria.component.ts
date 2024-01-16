@@ -1,7 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Categoria } from 'src/entities/Categoria';
 import { AdminService } from 'src/services/administrador/AdminService';
 
@@ -13,10 +14,12 @@ import { AdminService } from 'src/services/administrador/AdminService';
 export class CrearCategoriaComponent implements OnInit{
   form!:FormGroup;
   categoria!:Categoria;
+  modalRef?:BsModalRef;
 
   constructor(private formBuilder:FormBuilder,
     private adminService:AdminService,
-    private router : Router){}
+    private router : Router,
+    private modalService: BsModalService){}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -25,7 +28,7 @@ export class CrearCategoriaComponent implements OnInit{
     }); 
   }
 
-  crearCategoria(){
+  crearCategoria(template: TemplateRef<any>,template2: TemplateRef<any>){
     if (this.form.valid) {
       //this.modalRef = this.modalService.show(template);
       this.categoria = this.form.value as Categoria;
@@ -34,11 +37,16 @@ export class CrearCategoriaComponent implements OnInit{
       this.adminService.crearCategoria(this.categoria).subscribe({
         next:(response: HttpResponse<any>)=>{
           this.limpiar();
+          this.modalRef = this.modalService.show(template);
           this.router.navigate([this.adminService.elegirPagina('gestion')]);
+
+
         },
         error: (error) => {
           if(error.status === 406){
             this.router.navigate(['**']);
+          }if(error.status === 400){
+            this.modalRef = this.modalService.show(template2);
           }else {
             console.error('Error en la solicitud:', error);
           }
@@ -49,7 +57,7 @@ export class CrearCategoriaComponent implements OnInit{
 
   cancelar(){
     this.limpiar();
-    //this.router.navigate([this.adminService.elegirPagina('gestion')]);
+    this.router.navigate([this.adminService.elegirPagina('gestion')]);
   }
 
   limpiar(): void {

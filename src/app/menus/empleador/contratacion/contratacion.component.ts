@@ -41,7 +41,7 @@ ngOnInit(): void {
     console.log(this.codigo)
   });
  
-    this.empleadorService.listarEntrevistasContratacion().subscribe({
+    this.empleadorService.listarEntrevistasContratacion(this.codigo).subscribe({
       next: (response: HttpResponse<EntrevistaInfo[]>) => {
           console.log("Cargar Entrevistas")
           var list: EntrevistaInfo[] | null= null; 

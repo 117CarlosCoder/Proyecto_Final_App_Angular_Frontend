@@ -48,4 +48,8 @@ export class AdminDashboardComponent implements OnInit{
     this.router.navigate(['admin-usuarios',{rol:rol}]);
   }
 
+  reporte(){
+    this.router.navigate(['admin-reportes']);
+  }
+
 }

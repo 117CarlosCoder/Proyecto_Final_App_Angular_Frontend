@@ -16,6 +16,7 @@ export class PostulacionesComponent implements OnInit {
   crearPostulaciones!:RegistroRetirada;
   todayWithPipe!: String|null;
   pipe = new DatePipe('en-US');
+  carga:boolean=false;
 
   constructor(private solicitanteService: SolicitanteService, 
     private router:Router){}
@@ -26,6 +27,9 @@ export class PostulacionesComponent implements OnInit {
         console.log("Cargar ofertas")
         this.listarPostulantes = list;
         console.log(this.listarPostulantes);
+        if(list.length !== 0){
+          this.carga = true;
+        }
       },
       error: (error) => {
         if(error.status === 406){

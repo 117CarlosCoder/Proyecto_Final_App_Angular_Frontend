@@ -1,10 +1,12 @@
 <app-navbar-solicitante></app-navbar-solicitante>
 
-<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center">
+<<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center p-0" *ngIf="cargaOfertasA">
     <h2>{{titulo}}</h2>
     <form class="d-flex flex-column justify-content-center align-items-center w-100" role="search" (ngSubmit)="buscarEmpresa()"  [formGroup]="form" >
-        <input class="form-control me-2 mt-3" type="search" placeholder="Buscar Empresa" aria-label="Search"  id="nombre" placeholder="Buscar Oferta" name="nombre" formControlName="nombre" >
-        <button class="btn btn-outline-primary mt-3 w-25" type="submit"  >Buscar</button>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <input class="form-control me-2 mt-3 border border-primary " type="search" placeholder="Buscar Empresa" aria-label="Search"  id="nombre" placeholder="Buscar Oferta" name="nombre" formControlName="nombre" >
+            <button class="btn btn-primary mt-3 w-25" type="submit"  >Buscar</button>
+        </div>
         <br>
         <div class="w-100 d-flex flex-row justify-content-between mt-3 border border-primary rounded p-4">
             <p class="fs-3" >Filtros</p>
@@ -28,19 +30,24 @@
                 <option selected>Elige salario</option>
                 <option *ngFor="let dato of listaSalarios let i = index" value={{dato.salario}}>{{dato.salario}}</option>
             </select> 
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-primary" (click)="reiciar()">Reiniciar</button>
+            </div>
         </div>
+
+        
     </form>
 </div>
 
 
-<div class="container mt-5 h-auto d-flex flex-column justify-content-center align-items-center p-0 ">     
-    <div class="d-flex justify-content-evenly align-items-center    mb-5 w-100">
+<div class="container mt-5 mb-5 h-auto d-flex flex-column justify-content-center align-items-center p-5 border border-primary rounded " >     
+    <div class="d-flex justify-content-evenly align-items-center    mb-5 w-100" *ngIf="cargaOfertasA">
         <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="todasOferta()">Todas las Ofertas</button>
         <button class="btn btn-outline-primary mt-3 w-25 " type="button" (click)="sugerencias()">Sugerencias</button>
     </div>   
-    <div class="container p-0 d-flex">
+    <div class="container p-0 d-flex" *ngIf="cargaOfertasA">
         <div class="row row-cols-2 g-2 justify-content-between w-100">
-            <div class="card mb-3 ms-2 border border-primary border-4 rounded p-0" *ngFor="let dato of listaOfertas let i = index" style="max-width: 540px;">
+            <div class="card mb-3 ms-2 border border-primary border-4 rounded p-0" *ngFor="let dato of listaOfertas let i = index" style="max-width: 500px; ">
                 <div class="row g-0 h-100">
                 <div class="col-md-4 ">
                     <img src="../../../../assets/Imagenes/trabajo.jpg" class="img-fluid rounded-start h-100 " alt="Empresa">
@@ -64,4 +71,12 @@
             </div>
         </div>
     </div>
+        <h1 class="text-center" *ngIf="!cargaOfertasA">No hay ofertas</h1>
 </div>
+
+<div style="height: 5%;">
+
+</div>
+
+
+

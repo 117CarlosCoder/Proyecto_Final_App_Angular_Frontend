@@ -1,11 +1,11 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center">
-    <h1  >Entrevistas Oferta  {{listarEntrevistas[0].nombreOferta}}</h1>
+    <h1 *ngIf="carga" >Entrevistas Oferta  {{listarEntrevistas[0].nombreOferta}}</h1>
     <div class="d-flex flex-row justify-content-between ">
-      <button class="btn btn-primary mt-3 w-25" type="submit" (click)="cancelar()" >Cancelar</button>
-      <button class="btn btn-primary mt-3 w-25" type="submit" (click)="faseContrato()" >Pasar fase contratacion</button>  
+      <button class="btn btn-primary mt-3 w-25" type="submit" (click)="cancelar()" >Regresar</button>
+      <button class="btn btn-primary mt-3 w-25" *ngIf="carga" type="submit" (click)="faseContrato(template)" >Pasar fase contratacion</button>  
     </div>
-  <table class="table table-primary mt-5" >
+  <table class="table table-primary mt-5" *ngIf="carga" >
       <thead>
         <tr>
           <th scope="col">No</th>
@@ -29,4 +29,21 @@
         </tr>
       </tbody>
   </table>
+  <ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Mensaje</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          Noy hay almenos una entrevista finalizada para pasar a contratacion
+      </div>
+      <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+            OK  
+        </button>
+      </div>
+      
+  </ng-template> 
   </div>

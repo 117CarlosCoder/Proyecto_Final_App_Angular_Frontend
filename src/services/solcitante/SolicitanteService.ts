@@ -22,6 +22,7 @@ import { CrearUsuario } from "src/entities/CrearUsuario";
 import { NumTelefono } from "src/entities/NumTelefono";
 import { UsuarioT } from "src/entities/UsuarioT";
 import { ActualizarContrasena } from "src/entities/ActualizarContrasena";
+import { OfertaInvitado } from "src/entities/OfertaInvitado";
 
 @Injectable({
     providedIn: 'root'
@@ -53,6 +54,11 @@ export class SolicitanteService {
     public listarOfertas(): Observable<Ofertas[]> {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.get<Ofertas[]>(this.API_URL + "/listar-ofertas", {headers:this.headers});
+    }
+
+    public listarOfertasCodigo(): Observable<Ofertas[]> {
+        this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get<Ofertas[]>(this.API_URL + "/listar-ofertas-codigo", {headers:this.headers});
     }
 
     public listarPdf(codigo:number) {
@@ -139,6 +145,11 @@ export class SolicitanteService {
         this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
         console.log(valor)
         return this.httpClient.get<Ofertas>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-postulacion?codigo="+codigo+"&valor="+valor, {headers:this.headers});
+    }
+
+    public listarOfertCodigo(codigo: number): Observable<OfertaInvitado> {
+        this.headers = new HttpHeaders(this.usuarioService.getCredenciales());
+        return this.httpClient.get<OfertaInvitado>("http://localhost:8080/Proyecto_Final_Servlet_war_exploded/v1/applicant-nomination-servlet/listar-oferta-codigo?codigo="+codigo, {headers:this.headers});
     }
 
     public listarOfertaFecha(fechaA : String,fechaB : String,estado:String): Observable<Ofertas[]> {

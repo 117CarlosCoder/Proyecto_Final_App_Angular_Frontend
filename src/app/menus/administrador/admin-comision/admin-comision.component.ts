@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Comision } from 'src/entities/Comision';
@@ -7,6 +7,7 @@ import { AdminService } from 'src/services/administrador/AdminService';
 import { DatePipe } from '@angular/common';
 import { format } from 'date-fns';
 import { HttpResponse } from '@angular/common/http';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-admin-comision',
@@ -21,9 +22,12 @@ export class AdminComisionComponent implements OnInit{
     registroComision!:RegistroComision;
     pipe = new DatePipe('en-US');
 
+    modalRef?:BsModalRef;
+
     constructor(private adminService:AdminService,
       private formBuilder : FormBuilder,
-      private router :Router){}
+      private router :Router,
+      private modalService: BsModalService){}
 
     ngOnInit(): void {
       console.log("Comision" + this.comision);
@@ -57,7 +61,7 @@ export class AdminComisionComponent implements OnInit{
     
   
 
-    cambiarComision(){
+    cambiarComision(template: TemplateRef<any>,template2: TemplateRef<any>){
       console.log("Cambiar Comision")
       if (this.form.valid) {
         //this.modalRef = this.modalService.show(template);
@@ -75,14 +79,26 @@ export class AdminComisionComponent implements OnInit{
             if(response.status === 406){
               this.router.navigate(['**']);
             }
-            
+            if(response.status === 400){
+              this.modalRef = this.modalService.show(template2);
+            }
             console.log(this.registroComision)
             this.adminService.registrarComision(this.registroComision).subscribe({
               next:(data:any)=>{
                 console.log("Comision registrada");
+                this.modalRef = this.modalService.show(template);
+                location.reload();
+              },
+              error: (error) => {
+                if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
+                }else {
+                  console.error('Error en la solicitud:', error);
+                }
               }
+              
             });
-             location.reload();
+             
           }
         });
         

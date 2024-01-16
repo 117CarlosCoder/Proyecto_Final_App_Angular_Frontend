@@ -1,6 +1,7 @@
 <app-navbar-empleador></app-navbar-empleador>
 <div class="container-sm mt-5 h-auto d-flex flex-column justify-content-center align-items-center"  >
     <form class=" border w-75 mb-5 rounded-top p-4 " [formGroup]="form" >
+      <h1 class="mb-5">Creacion de Nueva Oferta</h1>
         <h5>Nombre de la oferta</h5>
         <div class="form-floating mb-3">
             <input type="text" class="form-control"
@@ -32,7 +33,7 @@
           <h5>Categoria</h5>
           <select class="form-select" aria-label="Default select example"
           id="categoria" placeholder="categoria" name="categoria" formControlName="categoria"  >
-            <option selected >Seleccione Categorias</option>
+            <option selected >Seleccione Categoria</option>
             <option *ngFor="let dato of listacategorias let i = index" value={{dato.codigo}}>{{dato.nombre}}</option>
           </select>
           <h5 class="mt-3">Fecha limite aplicacion</h5>
@@ -56,7 +57,7 @@
             </div>
           <h5>Salario aproximado</h5>
         <div class="form-floating mb-3">
-            <input type="number" class="form-control" min="1" pattern="^[0-9]+" 
+            <input type="number" class="form-control" min="1"
               [class.is-invalid]="form.controls['salario'].invalid && form.controls['salario'].touched"
               id="salario" placeholder="Salario" name="salario" formControlName="salario">
               <div
@@ -104,7 +105,7 @@
         </div>
         <div class="d-flex flex-row w-100 justify-content-between mt-5">
             <button class="btn btn-primary h-25 mb-5" type="submit" (click)="cancelarOferta()" >Cancelar</button>
-            <button class="btn btn-primary h-25 mb-5" type="submit" (click)="enviarOferta(template)" >Crear Oferta</button>
+            <button class="btn btn-primary h-25 mb-5" type="submit" (click)="enviarOferta(template, template2)" >Crear Oferta</button>
         </div>
         <ng-template #template>
             <div class="modal-header">
@@ -123,6 +124,24 @@
               </div>
               
         </ng-template>
+        <ng-template #template2>
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">Mensaje</h4>
+              <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Por favor no deje espacios vacios, toda la informacion debe ser valida, 
+              y la fecha limite no debe ser menor o igual a la fecha actual
+            </div>
+            <div class="d-flex w-100 justify-content-center align-items-center mb-3">
+              <button type="button" class="btn btn-primary w-25" aria-label="Close" (click)="modalRef?.hide()">
+                  OK  
+              </button>
+            </div>
+            
+      </ng-template>
     </form>
 </div>
 

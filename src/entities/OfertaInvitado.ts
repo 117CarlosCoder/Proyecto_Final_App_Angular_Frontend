@@ -8,7 +8,7 @@ export interface OfertaInvitado {
     estado: String,
     fechaPublicacion: Date | string,
     fechaLimite: Date | string,
-    salario: String,
+    salario: number,
     modalidad: String,
     ubicacion: String,
     detalles: String,

@@ -133,6 +133,7 @@ export class AdminService {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());
         return this.httpClient.put<Comision>(this.API_URL+"/actualizar-comision",comision, {observe: 'response', headers});
     }
+    
 
     public registrarComision(comision : RegistroComision): Observable<HttpResponse<RegistroComision>> {
         const headers = new HttpHeaders(this.usuarioService.getCredenciales());

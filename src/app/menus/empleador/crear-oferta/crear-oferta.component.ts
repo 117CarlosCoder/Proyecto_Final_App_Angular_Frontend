@@ -74,28 +74,28 @@ export class CrearOfertaComponent implements OnInit {
     this.form = this.formBuilder.group({
       nombre: [null, [Validators.required]],
       descripcion: [null, [Validators.required]],
-      categoria: [null, [Validators.required]],
+      categoria: ["Seleccione Categoria", [Validators.required]],
       estado:  ["ACTIVA"],
       fechaPublicacion: [this.todayWithPipe],
       fechaLimite: [null, [Validators.required]],
       salario: [null, [Validators.required]],
-      modalidad:[null, [Validators.required]],
+      modalidad:["Seleccione Modalidad", [Validators.required]],
       ubicacion: [null, [Validators.required]],
       detalles: [null, [Validators.required]]
     });
   }
 
-  enviarOferta(template: TemplateRef<any>){
+  enviarOferta(template: TemplateRef<any>,template2: TemplateRef<any>){
     //this.formattedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.todayWithPipe != this.pipe.transform(Date.now(), 'yyyy/MM/dd');
     
     if (this.form.valid) {
-      this.modalRef = this.modalService.show(template);
+      
       this.oferta = this.form.value as Ofertas;
       console.log(this.oferta)
       this.empleadorService.enviarOferta(this.oferta).subscribe({
         next:(response: HttpResponse<Ofertas>)=>{
-       
+            this.modalRef = this.modalService.show(template);
             this.limpiar();
             this.router.navigate([this.empleadorService.elegirPagina('gestion')]);
           
@@ -103,6 +103,9 @@ export class CrearOfertaComponent implements OnInit {
         error: (error) => {
           if(error.status === 406){
             this.router.navigate(['**']);
+          }
+          if(error.status === 400){
+            this.modalRef = this.modalService.show(template2);
           }else {
             console.error('Error en la solicitud:', error);
           }

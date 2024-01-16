@@ -59,7 +59,7 @@ export class PerfilEmpleadorComponent {
     nombre: [null, [Validators.required]],
     direccion: [null, [Validators.required]],
     username: [null, [Validators.required]],
-    password: [null, [Validators.required]],
+    password: [],
     email: [null, [Validators.required]],
     cui:[null, [Validators.required]],
     fechaFundacion: [],
@@ -110,7 +110,7 @@ export class PerfilEmpleadorComponent {
               nombre: [this.usuario.nombre, [Validators.required]],
               direccion: [this.usuario.direccion, [Validators.required]],
               username: [this.usuario.username, [Validators.required]],
-              password: [this.usuario.password, [Validators.required]],
+              password: [],
               email: [this.usuario.email, [Validators.required]],
               cui:[this.usuario.cui, [Validators.required]],
               fechaFundacion: [this.FechaN, [Validators.required]],
@@ -135,7 +135,7 @@ export class PerfilEmpleadorComponent {
     nombre: [null, [Validators.required]],
     direccion: [null, [Validators.required]],
     username: [null, [Validators.required]],
-    password: [null, [Validators.required]],
+    password: [],
     email: [null, [Validators.required]],
     cui:[null, [Validators.required]],
     fechaFundacion: [],
@@ -222,7 +222,7 @@ export class PerfilEmpleadorComponent {
  }
 
 
- editarUsuario(template: TemplateRef<any>){
+ editarUsuario(template: TemplateRef<any>,template2: TemplateRef<any>){
   console.log('editar ');
   console.log(this.form)
   console.log(this.form.valid)
@@ -256,10 +256,13 @@ export class PerfilEmpleadorComponent {
             this.empleadorService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
                   console.log("Telefonos actualizados")
+                  this.modalRef = this.modalService.show(template);
               },
               error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
+                }if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -284,11 +287,14 @@ export class PerfilEmpleadorComponent {
             this.empleadorService.crearTelefonosUsuario(this.listTelefono).subscribe({
               next:(data:any)=>{
                 this.listTelefono =[];
+                this.modalRef = this.modalService.show(template);
                   console.log("Telefonos creados")
               },
               error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
+                }if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -313,10 +319,14 @@ export class PerfilEmpleadorComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){
                     this.router.navigate(['**']);
+                  }
+                  if(error.status === 400){
+                    this.modalRef = this.modalService.show(template2);
                   }else {
                     console.error('Error en la solicitud:', error);
                   }
@@ -338,22 +348,28 @@ export class PerfilEmpleadorComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){
                     this.router.navigate(['**']);
+                  }
+                  if(error.status === 400){
+                    this.modalRef = this.modalService.show(template2);
                   }else {
                     console.error('Error en la solicitud:', error);
                   }
                 }
               }); 
               }
-            this.modalRef = this.modalService.show(template);
-          
+            
+            localStorage.setItem('username',this.usario.username.toString())
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
+        } if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
         }else {
           console.error('Error en la solicitud:', error);
         }
@@ -365,7 +381,7 @@ export class PerfilEmpleadorComponent {
   }
 }
 
-editarTarjeta(template: TemplateRef<any>){
+editarTarjeta(template: TemplateRef<any>, template2: TemplateRef<any>){
   if (this.formTarjeta.valid) {
    
     this.tarjeta = this.formTarjeta.value as Tarjeta;
@@ -376,6 +392,9 @@ editarTarjeta(template: TemplateRef<any>){
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
+        }
+        if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
         }else {
           console.error('Error en la solicitud:', error);
         }
@@ -384,7 +403,7 @@ editarTarjeta(template: TemplateRef<any>){
   }
 }
 
-cambiarContrasena(){
+cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
   if(this.nuevaContrasena !== ''){
     this.cambioContrasena = {
       codigo: this.usuario.codigo,
@@ -393,10 +412,15 @@ cambiarContrasena(){
     this.empleadorService.cambiarContrasena(this.cambioContrasena).subscribe({
       next: (data:any) => {
         console.log("contrasena cambiada");
+        this.modalRef = this.modalService.show(template);
+        localStorage.setItem('password',this.cambioContrasena.contrasena)
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
+        }
+        if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
         }else {
           console.error('Error en la solicitud:', error);
         }

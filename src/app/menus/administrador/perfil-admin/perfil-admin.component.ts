@@ -11,6 +11,8 @@ import { Telefono } from 'src/entities/Telefono';
 import { UsuarioT } from 'src/entities/UsuarioT';
 import { AdminService } from 'src/services/administrador/AdminService';
 import { TelefonoUsuario } from 'src/entities/TelefonoUsuario';
+import { ActualizarContrasena } from 'src/entities/ActualizarContrasena';
+import { UsuarioService } from 'src/services/usuario/UsuarioService';
 @Component({
   selector: 'app-perfil-admin',
   templateUrl: './perfil-admin.component.html',
@@ -34,11 +36,18 @@ export class PerfilAdminComponent {
   FechaF!:Date;
   pipe = new DatePipe('en-US');
   usuario!:UsuarioT;
+  nuevaContrasena: string = '';
+  cambioContrasena : ActualizarContrasena ={
+    codigo:0,
+    contrasena:''
+  };
 
   constructor (private formBuilder : FormBuilder,
     private router:Router,
     private modalService: BsModalService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private usuarioService: UsuarioService,
+    
  ){}
 
  ngOnInit(): void {
@@ -146,11 +155,11 @@ export class PerfilAdminComponent {
  }
 
 
- editarUsuario(template: TemplateRef<any>){
+ editarUsuario(template: TemplateRef<any>,template2: TemplateRef<any>){
   console.log('editar ');
   console.log(this.form)
   console.log(this.form.valid)
-  if (this.form.valid) {
+  if (this.form2.valid) {
     this.telefonos = this.form2.value as Telefono;
     if (this.listaTelefonos[0]!=null) {
       this.listaTelefonos[0].numero = this.telefonos.telefono1;
@@ -162,14 +171,6 @@ export class PerfilAdminComponent {
       this.listaTelefonos[2].numero = this.telefonos.telefono3;
     }
 
-
-
-    
-
-    
-
-  
-   
     
     console.log(this.listaTelefonos)
     console.log(this.listTelefono)
@@ -189,6 +190,17 @@ export class PerfilAdminComponent {
             this.adminService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
                   console.log("Telefonos actualizados")
+                  localStorage.setItem('username',this.usario.username.toString())
+              },error: (error) => {
+                if(error.status === 406){
+                  this.router.navigate(['**']);
+                }
+                if(error.status === 400){
+                  this.modalRef = this.modalService.show(template2);
+                }
+                else {
+                  console.error('Error en la solicitud:', error);
+                }
               }
             });
           }
@@ -212,9 +224,15 @@ export class PerfilAdminComponent {
                 if(response.status === 406){
                   this.router.navigate(['**']);
                 }
+                if(response.status === 400){
+                  this.modalRef = this.modalService.show(template2);
+                }
                 this.listTelefono =[];
                   console.log("Telefonos creados")
+                  localStorage.setItem('username',this.usario.username.toString())
+                  this.modalRef = this.modalService.show(template);
               }
+              
             }); 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2) {
@@ -236,8 +254,14 @@ export class PerfilAdminComponent {
                   if(response.status === 406){
                     this.router.navigate(['**']);
                   }
+
+                  if(response.status === 400){
+                    this.modalRef = this.modalService.show(template2);
+                  }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    localStorage.setItem('username',this.usario.username.toString())
+                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
@@ -257,18 +281,27 @@ export class PerfilAdminComponent {
                   if(response.status === 406){
                     this.router.navigate(['**']);
                   }
+                  if(response.status === 400){
+                    this.modalRef = this.modalService.show(template2);
+                  }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
+                    localStorage.setItem('username',this.usario.username.toString())
+                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
             this.modalRef = this.modalService.show(template);
-          
+            localStorage.setItem('username',this.usario.username.toString())
       },
       error: (error) => {
         if(error.status === 406){
           this.router.navigate(['**']);
-        }else {
+        }
+        if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
+        }
+        else {
           console.error('Error en la solicitud:', error);
         }
       }
@@ -278,6 +311,36 @@ export class PerfilAdminComponent {
     
   }
 }
+
+cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
+  if(this.nuevaContrasena !== ''){
+    this.cambioContrasena = {
+      codigo: this.usuario.codigo,
+      contrasena: this.nuevaContrasena
+    }
+    this.adminService.cambiarContrasena(this.cambioContrasena).subscribe({
+      next: (data:any) => {
+        console.log("contrasena cambiada");
+        this.modalRef = this.modalService.show(template);
+        localStorage.setItem('password',this.cambioContrasena.contrasena)
+        
+      },
+      error: (error) => {
+        if(error.status === 406){
+          this.router.navigate(['**']);
+        }
+        if(error.status === 400){
+          this.modalRef = this.modalService.show(template2);
+        }else {
+          console.error('Error en la solicitud:', error);
+        }
+      }
+    });
+    
+  }
+  
+}
+
 
 limpiar(): void {
   this.form.reset({});

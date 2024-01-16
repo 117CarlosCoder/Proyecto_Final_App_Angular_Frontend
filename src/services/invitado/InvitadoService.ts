@@ -24,7 +24,7 @@ export class InvitadoService {
 
     public listarCategorias(): Observable<HttpResponse<Categoria[]>> {
         
-        return this.httpClient.get<Categoria[]>(this.API_URL + "/cargar-categorias", {observe : 'response'});
+        return this.httpClient.get<Categoria[]>(this.API_URL + "/listar-categorias", {observe : 'response'});
     }
     
 
