@@ -212,6 +212,7 @@ export class PerfilSolicitanteComponent {
         
         next: ( response: HttpResponse<any>)=>{
           const data = response.body;
+          localStorage.setItem('username',this.usario.username.toString())
           if (this.listaTelefonos && (this.listaTelefonos[0] != null ) || (this.listaTelefonos[1] != null ) || (this.listaTelefonos[2] != null )){
             this.solicitanteService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
@@ -223,6 +224,7 @@ export class PerfilSolicitanteComponent {
                   this.router.navigate(['**']);
                 }if(error.status === 400){
                   this.modalRef = this.modalService.show(template2);
+                  return;
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -248,13 +250,13 @@ export class PerfilSolicitanteComponent {
               next:(data:any)=>{
                 this.listTelefono =[];
                   console.log("Telefonos creados")
-                  this.modalRef = this.modalService.show(template);
               },
               error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
                 }if(error.status === 400){
                   this.modalRef = this.modalService.show(template2);
+                  return;
                 }else {
                   console.error('Error en la solicitud:', error);
                 }
@@ -262,7 +264,6 @@ export class PerfilSolicitanteComponent {
             }); 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2) {
-              this.listTelefono =[];
               const telefonoObtenido2:TelefonoUsuario = {
                 username: this.usario.username,
                 numero: this.telefonos.telefono1
@@ -279,13 +280,11 @@ export class PerfilSolicitanteComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
         
             if (this.listaTelefonos[2] == null && this.telefonos.telefono3) {
-              this.listTelefono =[];
               const telefonoObtenido3:TelefonoUsuario = {
                 username: this.usario.username,
                 numero: this.telefonos.telefono1
@@ -298,19 +297,20 @@ export class PerfilSolicitanteComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){
                     this.router.navigate(['**']);
                   }if(error.status === 400){
                     this.modalRef = this.modalService.show(template2);
+                    return;
                   }else {
                     console.error('Error en la solicitud:', error);
                   }
                 }
               }); 
               }
+              
               localStorage.setItem('username',this.usario.username.toString())
       },
       error: (error) => {
@@ -318,6 +318,7 @@ export class PerfilSolicitanteComponent {
           this.router.navigate(['**']);
         }if(error.status === 400){
           this.modalRef = this.modalService.show(template2);
+          return;
         }else {
           console.error('Error en la solicitud:', error);
         }
@@ -378,6 +379,7 @@ cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
         console.log("contrasena cambiada");
         this.modalRef = this.modalService.show(template);
         localStorage.setItem('password',this.cambioContrasena.contrasena)
+        this.nuevaContrasena = '';
         
       },
       error: (error) => {
@@ -385,6 +387,7 @@ cambiarContrasena(template: TemplateRef<any>,template2: TemplateRef<any>){
           this.router.navigate(['**']);
         }if(error.status === 400){
           this.modalRef = this.modalService.show(template2);
+          return;
         }else {
           console.error('Error en la solicitud:', error);
         }

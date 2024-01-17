@@ -251,6 +251,7 @@ export class PerfilEmpleadorComponent {
       this.empleadorService.actualizarUsuario(this.usario).subscribe({
         
         next: ( response: HttpResponse<any>)=>{
+          localStorage.setItem('username',this.usario.username.toString())
           const data = response.body;
           if (this.listaTelefonos && (this.listaTelefonos[0] != null ) || (this.listaTelefonos[1] != null ) || (this.listaTelefonos[2] != null )){
             this.empleadorService.actualizarTelefono(this.listaTelefonos).subscribe({
@@ -287,7 +288,7 @@ export class PerfilEmpleadorComponent {
             this.empleadorService.crearTelefonosUsuario(this.listTelefono).subscribe({
               next:(data:any)=>{
                 this.listTelefono =[];
-                this.modalRef = this.modalService.show(template);
+                
                   console.log("Telefonos creados")
               },
               error: (error) => {
@@ -319,7 +320,6 @@ export class PerfilEmpleadorComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){
@@ -348,7 +348,6 @@ export class PerfilEmpleadorComponent {
                 next:(data:any)=>{
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    this.modalRef = this.modalService.show(template);
                 },
                 error: (error) => {
                   if(error.status === 406){

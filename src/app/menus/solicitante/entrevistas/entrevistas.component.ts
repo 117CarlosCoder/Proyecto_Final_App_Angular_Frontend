@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Entrevista } from 'src/entities/Entrevista';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 import { Router } from '@angular/router';
 import { EntrevistaN } from 'src/entities/EntrevistaN';
@@ -40,7 +39,7 @@ export class EntrevistasComponent {
 
 
   masInformacion(codigo: number){
-    this.router.navigate(['solicitante-cargar-oferta-info',{codigo:codigo,valor:false}]);
+    this.router.navigate(['solicitante-cargar-oferta-info',{codigo:codigo}]);
   }
 
 }

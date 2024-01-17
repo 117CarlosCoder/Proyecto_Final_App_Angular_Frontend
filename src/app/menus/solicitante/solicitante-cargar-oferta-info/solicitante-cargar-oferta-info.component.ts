@@ -12,6 +12,7 @@ export class SolicitanteCargarOfertaInfoComponent {
   codigo !: number;
   oferta !: Ofertas;
   valor !: boolean;
+  carga : boolean = false;
 
   constructor(private router:Router,
      private route: ActivatedRoute,
@@ -33,12 +34,13 @@ ngOnInit() {
       
     });
 
-    console.log(this.codigo)
-    this.solicitanteService.listarOferta(this.codigo.toString(), this.valor).subscribe({
+    console.log(this.codigo);
+    this.solicitanteService.listarOferta(this.codigo.toString(), true).subscribe({
       next: (list: Ofertas) => {
         console.log("Cargar oferta")
         this.oferta = list;
         console.log(this.oferta);
+        this.carga = true;
       },
       error: (error) => {
         if(error.status === 406){
@@ -49,4 +51,13 @@ ngOnInit() {
       }
     });
   }
+
+  PerfilEmpresa(){
+    this.router.navigate(['solicitante-perfil-empresa',{codigo:this.codigo}]);
+  }
+
+  regresar(){
+    this.router.navigate(['solicitante-entrevistas']);
+  }
+
 }

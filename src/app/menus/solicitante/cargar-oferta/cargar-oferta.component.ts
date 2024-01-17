@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { OfertaInvitado } from 'src/entities/OfertaInvitado';
-import { Ofertas } from 'src/entities/Ofertas';
 import { SolicitanteService } from 'src/services/solcitante/SolicitanteService';
 
 @Component({

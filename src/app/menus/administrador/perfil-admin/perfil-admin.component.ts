@@ -186,11 +186,13 @@ export class PerfilAdminComponent {
         
         next: ( response: HttpResponse<any>)=>{
           const data = response.body;
+          localStorage.setItem('username',this.usario.username.toString())
           if (this.listaTelefonos && (this.listaTelefonos[0] != null ) || (this.listaTelefonos[1] != null ) || (this.listaTelefonos[2] != null )){
             this.adminService.actualizarTelefono(this.listaTelefonos).subscribe({
               next:(data:any)=>{
                   console.log("Telefonos actualizados")
-                  localStorage.setItem('username',this.usario.username.toString())
+                  this.modalRef = this.modalService.show(template);
+                  
               },error: (error) => {
                 if(error.status === 406){
                   this.router.navigate(['**']);
@@ -230,13 +232,12 @@ export class PerfilAdminComponent {
                 this.listTelefono =[];
                   console.log("Telefonos creados")
                   localStorage.setItem('username',this.usario.username.toString())
-                  this.modalRef = this.modalService.show(template);
               }
               
             }); 
             }
             if (this.listaTelefonos[1] == null && this.telefonos.telefono2) {
-              this.listTelefono =[];
+              
               const telefonoObtenido2:TelefonoUsuario = {
                 username: this.usario.username,
                 numero: this.telefonos.telefono2
@@ -260,14 +261,12 @@ export class PerfilAdminComponent {
                   }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    localStorage.setItem('username',this.usario.username.toString())
-                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
         
             if (this.listaTelefonos[2] == null && this.telefonos.telefono3) {
-              this.listTelefono =[];
+              
               const telefonoObtenido3:TelefonoUsuario = {
                 username: this.usario.username,
                 numero: this.telefonos.telefono3
@@ -286,13 +285,12 @@ export class PerfilAdminComponent {
                   }
                   this.listTelefono =[];
                     console.log("Telefonos creados")
-                    localStorage.setItem('username',this.usario.username.toString())
-                    this.modalRef = this.modalService.show(template);
                 }
               }); 
               }
-            this.modalRef = this.modalService.show(template);
-            localStorage.setItem('username',this.usario.username.toString())
+              localStorage.setItem('username',this.usario.username.toString())
+            
+            
       },
       error: (error) => {
         if(error.status === 406){
